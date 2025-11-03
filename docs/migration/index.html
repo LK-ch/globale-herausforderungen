@@ -1,1 +1,1214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3CradialGradient id='globe' cx='50%25' cy='40%25'%3E%3Cstop offset='0%25' style='stop-color:%234a90e2;stop-opacity:1' /%3E%3Cstop offset='70%25' style='stop-color:%232c5aa0;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%231a3a6b;stop-opacity:1' /%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='400' cy='400' r='300' fill='url(%23globe)' opacity='0.3'/%3E%3Cg fill='%2334d399' opacity='0.4'%3E%3Cpath d='M 400 300 Q 420 310 425 340 Q 430 370 420 400 Q 410 430 400 450 Q 390 430 385 400 Q 380 360 390 330 Q 395 310 400 300 Z'/%3E%3Cpath d='M 380 260 Q 390 255 400 260 Q 410 265 415 275 Q 410 285 400 285 Q 390 285 385 280 Q 378 272 380 260 Z'/%3E%3Cpath d='M 430 250 Q 470 260 500 280 Q 520 300 530 330 Q 535 360 525 390 Q 515 410 500 420 Q 480 410 465 395 Q 450 375 445 350 Q 440 320 445 290 Q 440 270 430 250 Z'/%3E%3Cpath d='M 280 250 Q 300 240 320 245 Q 340 255 350 275 Q 355 300 345 325 Q 335 345 320 355 Q 305 350 295 335 Q 285 315 280 290 Q 275 270 280 250 Z'/%3E%3Cpath d='M 320 370 Q 330 365 340 375 Q 345 395 340 420 Q 335 450 325 475 Q 315 485 310 475 Q 305 455 308 430 Q 312 400 315 385 Q 318 375 320 370 Z'/%3E%3Cpath d='M 520 480 Q 540 475 555 485 Q 565 500 560 515 Q 550 525 535 522 Q 520 515 515 500 Q 513 487 520 480 Z'/%3E%3C/g%3E%3Cg stroke='%23ffffff' stroke-width='1' fill='none' opacity='0.15'%3E%3Cellipse cx='400' cy='400' rx='300' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='240'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='180'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='120'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='60'/%3E%3Cellipse cx='400' cy='400' rx='240' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='180' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='120' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='60' ry='300'/%3E%3Cline x1='400' y1='100' x2='400' y2='700'/%3E%3Cline x1='100' y1='400' x2='700' y2='400'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0 0 0;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem 1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .expandable-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .expandable-header:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .expandable-header .arrow {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .expandable-header.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .expandable-content.open {
+            max-height: 10000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .expandable-inner {
+            padding: 2rem;
+        }
+
+        .task-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .task-box h3 {
+            color: #92400e;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .task-box-blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .task-box-blue h3 {
+            color: #1e3a8a;
+        }
+
+        .task-box-blue p {
+            color: #1e40af;
+        }
+
+        .iframe-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .iframe-container h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f3f4f6;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .external-link:hover {
+            background: rgba(14, 165, 233, 0.2);
+            transform: translateX(5px);
+        }
+
+        .completion-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .completion-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem 3rem;
+            border-radius: 25px;
+            border: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .completion-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .completion-button.completed {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            cursor: default;
+        }
+
+        .completion-button:disabled {
+            cursor: not-allowed;
+        }
+
+        .expandable-header.white {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e3a8a;
+            border: 2px solid #e5e7eb;
+        }
+
+        .expandable-header.white:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: #cbd5e1;
+        }
+
+        .expandable-header.white .arrow {
+            color: #1e3a8a;
+        }
+
+        /* Quiz Game Styles */
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .task-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .task-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .task-btn.push {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .task-btn.pull {
+            background: #51cf66;
+            color: white;
+        }
+
+        .task-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-btn.active {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .task-content {
+            display: none;
+        }
+
+        .task-content.active {
+            display: block;
+        }
+
+        .cases-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .case-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-card.answered {
+            background: #f8f9fa;
+        }
+
+        .case-card.correct {
+            border-color: #51cf66;
+            background: #d3f9d8;
+        }
+
+        .case-card.incorrect {
+            border-color: #ff6b6b;
+            background: #ffe0e0;
+            animation: shake 0.5s;
+        }
+
+        .case-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .case-story {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .category-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .category-btn {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-btn.selected {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-btn.oekologisch {
+            border-color: #2ecc71;
+            color: #27ae60;
+        }
+
+        .category-btn.oekologisch.selected {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .category-btn.politisch {
+            border-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .category-btn.politisch.selected {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .category-btn.wirtschaftlich {
+            border-color: #f39c12;
+            color: #d68910;
+        }
+
+        .category-btn.wirtschaftlich.selected {
+            background: #f39c12;
+            color: white;
+        }
+
+        .category-btn.persoenlich {
+            border-color: #3498db;
+            color: #2874a6;
+        }
+
+        .category-btn.persoenlich.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .check-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.success {
+            background: #d3f9d8;
+            color: #2b8a3e;
+            border: 2px solid #51cf66;
+        }
+
+        .feedback.partial {
+            background: #fff3bf;
+            color: #e67700;
+            border: 2px solid #fab005;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .iframe-wrapper {
+                height: 400px;
+            }
+
+            .completion-button {
+                font-size: 1.1rem;
+                padding: 1.25rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✈️ Migration</h1>
+        <a href="index.html" class="back-link">← Zurück zum Lernpfad</a>
+    </header>
+
+    <main>
+        <!-- Aufklappbarer Aufgaben-Bereich -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand()">
+                <span>📋 Warum flüchten Menschen?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content">
+                <div class="expandable-inner">
+                    <div class="task-box task-box-blue">
+                        <h3>📚 Auftrag a:</h3>
+                        <p>Lesen Sie sich auf der folgenden Website mindestens zwei Geschichten von geflüchteten Personen durch und notieren Sie in Ihr OneNote dazu die Gründe für die Flucht. Fokussieren Sie sich beim Durchlesen insbesondere auf die Gründe, Sie müssen nicht alles im Text sonst lesen und verstehen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flüchtlingsgeschichten -->
+        <div class="iframe-container">
+            <h2>🌍 Flüchtlinge erzählen ihre Geschichten</h2>
+            <p style="color: #666; margin-bottom: 1rem;">Erfahren Sie aus erster Hand, warum Menschen ihre Heimat verlassen müssen und welche Herausforderungen sie auf ihrer Flucht erleben.</p>
+            
+            <div class="iframe-wrapper">
+                <iframe src="https://www.uno-fluechtlingshilfe.de/hilfe-weltweit/fluechtlinge-erzaehlen" 
+                        title="UNO-Flüchtlingshilfe: Flüchtlinge erzählen"
+                        loading="lazy">
+                </iframe>
+            </div>
+            
+            <a href="https://www.uno-fluechtlingshilfe.de/hilfe-weltweit/fluechtlinge-erzaehlen" 
+               target="_blank" 
+               class="external-link">
+                🔗 Link in neuem Tab öffnen
+            </a>
+        </div>
+
+        <!-- Migrationsgründe analysieren -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand2()">
+                <span>📋 Migrationsgründe analysieren</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content2">
+                <div class="expandable-inner">
+                    <div class="task-box">
+                        <h3>📚 Auftrag b:</h3>
+                        <p>Finden Sie in Ihrem Buch Gesellschaft das Kapitel zur Migration. Orientieren Sie sich dabei am Inhaltsverzeichnis. Lesen Sie das Kapitel durch und notieren Sie anschliessend, ob die Fluchtgründe aus den Geschichten der flüchtenden Personen Push- oder Pull-Faktoren waren.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Migrationsspiel -->
+        <div class="expandable-section">
+            <div class="expandable-header white" onclick="toggleExpand3()">
+                <span>🎮 Interaktive Übung: Push- und Pull-Faktoren</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content3">
+                <div class="expandable-inner">
+                    <div class="game-container">
+                        <p class="game-intro">
+                            Oft unterscheidet man zwischen ökologischen, politischen, wirtschaftlichen und persönlichen Hintergründen, welche eine Flucht veranlassen können. Lesen Sie jedes Fallbeispiel und klicken Sie auf die passende Kategorie. Handelt es sich um ökologische, politische, wirtschaftliche oder persönliche Gründe?
+                        </p>
+
+                        <div class="task-selector">
+                            <button class="task-btn push active" onclick="switchTask('push')">
+                                Push-Faktoren (Fluchtgründe)
+                            </button>
+                            <button class="task-btn pull" onclick="switchTask('pull')">
+                                Pull-Faktoren (Attraktivität)
+                            </button>
+                        </div>
+
+                        <!-- Push-Faktoren Aufgabe -->
+                        <div id="push-task" class="task-content active">
+                            <h2 style="text-align: center; color: #ff6b6b; margin-bottom: 20px;">
+                                Push-Faktoren: Warum verlassen Menschen ihre Heimat?
+                            </h2>
+                            
+                            <div class="cases-container" id="push-cases">
+                                <!-- Case 1 -->
+                                <div class="case-card" data-category="politisch" data-id="push-1">
+                                    <div class="case-name">Amira aus Syrien</div>
+                                    <div class="case-story">„Ich musste aus Damaskus fliehen, weil Journalisten, die kritisch über die Regierung berichten, verhaftet werden. Meine Kollegen sind im Gefängnis und ich habe Todesdrohungen bekommen."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-1', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-1', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-1', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-1', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 2 -->
+                                <div class="case-card" data-category="oekologisch" data-id="push-2">
+                                    <div class="case-name">Kofi aus Ghana</div>
+                                    <div class="case-story">„Unsere Region leidet unter extremer Dürre. Die Ernte ist seit drei Jahren ausgefallen, der Boden ist ausgetrocknet. Wir können unsere Familie nicht mehr ernähren und haben kein Trinkwasser."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-2', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-2', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-2', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-2', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 3 -->
+                                <div class="case-card" data-category="wirtschaftlich" data-id="push-3">
+                                    <div class="case-name">Maria aus Venezuela</div>
+                                    <div class="case-story">„Die Inflation ist so hoch, dass mein Monatsgehalt als Lehrerin nur noch für ein Kilo Brot reicht. Es gibt keine Arbeit mehr und meine Kinder haben oft Hunger. Wir leben in extremer Armut."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-3', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-3', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-3', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-3', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 4 -->
+                                <div class="case-card" data-category="persoenlich" data-id="push-4">
+                                    <div class="case-name">Fatima aus Afghanistan</div>
+                                    <div class="case-story">„Als Frau darf ich nicht mehr studieren oder arbeiten. Ich soll zwangsverheiratet werden mit einem Mann, den ich nicht kenne. Meine Familie unterdrückt mich und ich habe keine Zukunftsperspektive."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-4', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-4', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-4', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-4', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 5 -->
+                                <div class="case-card" data-category="politisch" data-id="push-5">
+                                    <div class="case-name">Wei aus Myanmar</div>
+                                    <div class="case-story">„Nach dem Militärputsch werden Demonstranten erschossen. Ich habe bei Protesten für Demokratie mitgemacht und werde jetzt vom Militär gesucht. Meine Freunde sind verschwunden."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-5', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-5', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-5', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-5', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 6 -->
+                                <div class="case-card" data-category="oekologisch" data-id="push-6">
+                                    <div class="case-name">Tala von den Malediven</div>
+                                    <div class="case-story">„Der Meeresspiegel steigt jedes Jahr. Unser Dorf wird regelmäßig überflutet und das Salzwasser zerstört unsere Felder. In 20 Jahren wird unsere Insel unbewohnbar sein."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-6', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-6', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-6', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-6', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 7 -->
+                                <div class="case-card" data-category="wirtschaftlich" data-id="push-7">
+                                    <div class="case-name">Javier aus Honduras</div>
+                                    <div class="case-story">„Es gibt keine Jobs in meiner Stadt. Die Arbeitslosenquote liegt bei 70%. Ich habe eine Ausbildung, aber selbst als Ingenieur finde ich keine Stelle. Ohne Arbeit kann ich meine Familie nicht versorgen."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-7', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-7', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-7', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-7', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 8 -->
+                                <div class="case-card" data-category="persoenlich" data-id="push-8">
+                                    <div class="case-name">Omar aus dem Irak</div>
+                                    <div class="case-story">„Ich bin homosexuell und in meinem Land bedeutet das die Todesstrafe. Meine eigene Familie hat gedroht, mich umzubringen. Ich muss meine Identität verstecken und lebe in ständiger Angst."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('push-8', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('push-8', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('push-8', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('push-8', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="controls">
+                                <button class="btn check-btn" onclick="checkAnswers('push')">Antworten überprüfen</button>
+                                <button class="btn reset-btn" onclick="resetTask('push')">Neu starten</button>
+                            </div>
+
+                            <div id="push-feedback" class="feedback"></div>
+                        </div>
+
+                        <!-- Pull-Faktoren Aufgabe -->
+                        <div id="pull-task" class="task-content">
+                            <h2 style="text-align: center; color: #51cf66; margin-bottom: 20px;">
+                                Pull-Faktoren: Was macht ein Land attraktiv?
+                            </h2>
+                            
+                            <div class="cases-container" id="pull-cases">
+                                <!-- Case 1 -->
+                                <div class="case-card" data-category="politisch" data-id="pull-1">
+                                    <div class="case-name">Hassan aus Eritrea</div>
+                                    <div class="case-story">„Ich möchte nach Deutschland, weil dort Pressefreiheit und Meinungsfreiheit garantiert sind. Man kann seine Meinung sagen, ohne Angst vor Verhaftung haben zu müssen. Es gibt eine echte Demokratie."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-1', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-1', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-1', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-1', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 2 -->
+                                <div class="case-card" data-category="oekologisch" data-id="pull-2">
+                                    <div class="case-name">Lina aus Bangladesch</div>
+                                    <div class="case-story">„Die Schweiz hat saubere Luft, sauberes Wasser und ist vor Naturkatastrophen geschützt. Die Umwelt ist intakt und die Natur wunderschön. Dort kann ich gesund leben ohne Angst vor Überflutungen."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-2', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-2', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-2', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-2', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 3 -->
+                                <div class="case-card" data-category="wirtschaftlich" data-id="pull-3">
+                                    <div class="case-name">Bogdan aus der Ukraine</div>
+                                    <div class="case-story">„In Kanada gibt es viele gut bezahlte Jobs für IT-Spezialisten. Der Mindestlohn ist hoch, die Wirtschaft stabil und die Arbeitslosenquote niedrig. Ich kann dort ein gutes Leben aufbauen."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-3', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-3', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-3', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-3', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 4 -->
+                                <div class="case-card" data-category="persoenlich" data-id="pull-4">
+                                    <div class="case-name">Aisha aus Pakistan</div>
+                                    <div class="case-story">„In Schweden werden Frauen gleichberechtigt behandelt. Ich kann dort als Ärztin arbeiten, mich frei bewegen und selbst entscheiden, wen ich heiraten möchte. Meine Träume werden respektiert."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-4', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-4', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-4', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-4', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 5 -->
+                                <div class="case-card" data-category="politisch" data-id="pull-5">
+                                    <div class="case-name">Chen aus China</div>
+                                    <div class="case-story">„Australien hat ein faires Rechtssystem und unabhängige Gerichte. Jeder wird vor dem Gesetz gleich behandelt, unabhängig von sozialer Stellung. Die Menschenrechte sind geschützt."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-5', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-5', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-5', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-5', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 6 -->
+                                <div class="case-card" data-category="oekologisch" data-id="pull-6">
+                                    <div class="case-name">Ibrahim aus Mauretanien</div>
+                                    <div class="case-story">„Norwegen investiert stark in erneuerbare Energien und Umweltschutz. Das Land ist grün, die Städte nachhaltig geplant. Ich möchte in einem Land leben, das die Natur für zukünftige Generationen erhält."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-6', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-6', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-6', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-6', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 7 -->
+                                <div class="case-card" data-category="wirtschaftlich" data-id="pull-7">
+                                    <div class="case-name">Sofia aus Bulgarien</div>
+                                    <div class="case-story">„In den Niederlanden sind die Gehälter dreimal höher als bei uns. Als Krankenschwester kann ich dort gut leben, eine Wohnung mieten und sogar sparen. Der Lebensstandard ist viel besser."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-7', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-7', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-7', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-7', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case 8 -->
+                                <div class="case-card" data-category="persoenlich" data-id="pull-8">
+                                    <div class="case-name">Marcus aus Uganda</div>
+                                    <div class="case-story">„Neuseeland hat exzellente Universitäten und kostenlose Bildung für Kinder. Meine Kinder können dort studieren und eine gute Ausbildung bekommen. Die Bildungschancen sind für alle gleich."</div>
+                                    <div class="category-buttons">
+                                        <button class="category-btn oekologisch" onclick="selectCategory('pull-8', 'oekologisch')">
+                                            🌱 Ökologisch
+                                        </button>
+                                        <button class="category-btn politisch" onclick="selectCategory('pull-8', 'politisch')">
+                                            ⚖️ Politisch
+                                        </button>
+                                        <button class="category-btn wirtschaftlich" onclick="selectCategory('pull-8', 'wirtschaftlich')">
+                                            💼 Wirtschaftlich
+                                        </button>
+                                        <button class="category-btn persoenlich" onclick="selectCategory('pull-8', 'persoenlich')">
+                                            👤 Persönlich
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="controls">
+                                <button class="btn check-btn" onclick="checkAnswers('pull')">Antworten überprüfen</button>
+                                <button class="btn reset-btn" onclick="resetTask('pull')">Neu starten</button>
+                            </div>
+
+                            <div id="pull-feedback" class="feedback"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand()">
+                <span>⁉️ Die Schweiz als Ein- oder Auswanderungsland?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content">
+                <div class="expandable-inner">
+                    <div class="task-box task-box-blue">
+                        <h3>📚 Auftrag c:</h3>
+                        <p>Ist die Schweiz eher ein Ein- oder ein Auswanderungsland? Lesen Sie dazu die entsprechenden Kapitel in Ihrem Buch Gesellschaft und markieren Sie wichtige Infos. 
+            Vergleichen Sie anschliessend die Auswanderungsgründe von Schweizer und Schweizerinnen von früher mit Einwanderungsgründen ausländischer Personen in die Schweiz heute. 
+            Vergleichen Sie die Aspekte 'Überleben', 'Wohlstand', 'Arbeiten' und 'Einfachheit des Einwanderungprozesses'. Notieren Sie Ihre Vermutungen dort, wozu Sie keine Expliziten Infos im Buch finden.
+               </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Abschluss-Button -->
+        <div class="completion-section" id="completion-section">
+            <h3 style="color: #1e3a8a; margin-bottom: 1rem;">Modul abschließen</h3>
+            <p style="color: #666; margin-bottom: 1.5rem;">Haben Sie die Inhalte durchgearbeitet?</p>
+            <button id="completion-button" class="completion-button">
+                <span>✓</span>
+                <span id="button-text">Modul als abgeschlossen markieren</span>
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // Quiz-Funktionalität
+        const assignments = { push: {}, pull: {} };
+
+        function selectCategory(caseId, category) {
+            const taskType = caseId.startsWith('push') ? 'push' : 'pull';
+            
+            // Speichere Auswahl
+            assignments[taskType][caseId] = category;
+
+            // Entferne vorherige Auswahl
+            const caseCard = document.querySelector(`[data-id="${caseId}"]`);
+            const buttons = caseCard.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+
+            // Markiere ausgewählten Button
+            const selectedButton = caseCard.querySelector(`.category-btn.${category}`);
+            selectedButton.classList.add('selected');
+            
+            // Markiere Karte als beantwortet
+            caseCard.classList.add('answered');
+        }
+
+        function switchTask(taskType) {
+            // Update buttons
+            document.querySelectorAll('.task-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show/hide task content
+            document.querySelectorAll('.task-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(taskType + '-task').classList.add('active');
+        }
+
+        function checkAnswers(taskType) {
+            const cards = document.querySelectorAll(`#${taskType}-cases .case-card`);
+            let correct = 0;
+            let total = cards.length;
+
+            cards.forEach(card => {
+                const caseId = card.dataset.id;
+                const correctCategory = card.dataset.category;
+                const assignedCategory = assignments[taskType][caseId];
+
+                if (assignedCategory === correctCategory) {
+                    card.classList.add('correct');
+                    card.classList.remove('incorrect');
+                    correct++;
+                } else if (assignedCategory) {
+                    card.classList.add('incorrect');
+                    card.classList.remove('correct');
+                    setTimeout(() => {
+                        card.classList.remove('incorrect');
+                    }, 2000);
+                }
+            });
+
+            // Show feedback
+            const feedback = document.getElementById(`${taskType}-feedback`);
+            feedback.classList.add('show');
+
+            if (correct === total) {
+                feedback.className = 'feedback show success';
+                feedback.textContent = '🎉 Perfekt! Alle Zuordnungen sind richtig!';
+            } else if (correct > total / 2) {
+                feedback.className = 'feedback show partial';
+                feedback.textContent = `👍 Gut gemacht! ${correct} von ${total} richtig. Versuchen Sie es nochmal!`;
+            } else {
+                feedback.className = 'feedback show partial';
+                feedback.textContent = `📚 ${correct} von ${total} richtig. Lesen Sie die Fälle nochmal genau durch!`;
+            }
+
+            // Scroll zum Feedback
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetTask(taskType) {
+            // Reset assignments
+            assignments[taskType] = {};
+
+            // Reset alle Karten
+            document.querySelectorAll(`#${taskType}-cases .case-card`).forEach(card => {
+                card.classList.remove('correct', 'incorrect', 'answered');
+                
+                // Entferne alle Auswahlmarkierungen
+                const buttons = card.querySelectorAll('.category-btn');
+                buttons.forEach(btn => btn.classList.remove('selected'));
+            });
+
+            // Hide feedback
+            document.getElementById(`${taskType}-feedback`).classList.remove('show');
+        }
+
+        // Toggle Expandable
+        function toggleExpand() {
+            const content = document.getElementById('expandable-content');
+            const header = document.querySelector('.expandable-header');
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand2() {
+            const content = document.getElementById('expandable-content2');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[1];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand3() {
+            const content = document.getElementById('expandable-content3');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[2];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand4() {
+            const content = document.getElementById('expandable-content4');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[3];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        // Progress Tracking
+        let isModuleCompleted = false;
+
+        function initProgressTracking() {
+            // Prüfe beide Systeme
+            const completedOld = localStorage.getItem('globalisierung_module4_completed');
+            const progress = JSON.parse(localStorage.getItem('globalisierungProgress') || '[]');
+            
+            // Wenn im neuen System (Index-Seite) als abgeschlossen markiert
+            if (progress.includes(4)) {
+                isModuleCompleted = true;
+                updateCompletionButton(true);
+                // Synchronisiere mit altem System
+                if (completedOld !== 'true') {
+                    localStorage.setItem('globalisierung_module4_completed', 'true');
+                }
+            }
+            // Wenn im alten System als abgeschlossen markiert
+            else if (completedOld === 'true') {
+                isModuleCompleted = true;
+                updateCompletionButton(true);
+                // Synchronisiere mit neuem System
+                if (!progress.includes(4)) {
+                    progress.push(4);
+                    localStorage.setItem('globalisierungProgress', JSON.stringify(progress));
+                }
+            }
+        }
+
+        function markAsComplete() {
+            if (isModuleCompleted) return;
+
+            // Altes System (für Kompatibilität)
+            localStorage.setItem('globalisierung_module4_completed', 'true');
+            localStorage.setItem('globalisierung_module4_completedAt', new Date().toISOString());
+            
+            // Neues System (für Index-Seite)
+            let progress = JSON.parse(localStorage.getItem('globalisierungProgress') || '[]');
+            if (!progress.includes(4)) {
+                progress.push(4);
+                localStorage.setItem('globalisierungProgress', JSON.stringify(progress));
+            }
+            
+            isModuleCompleted = true;
+            updateCompletionButton(true);
+
+            alert('✓ Modul 4 erfolgreich abgeschlossen!\n\nIhr Fortschritt wurde gespeichert.');
+        }
+
+        function updateCompletionButton(completed) {
+            const button = document.getElementById('completion-button');
+            const buttonText = document.getElementById('button-text');
+            
+            if (button && buttonText) {
+                if (completed) {
+                    button.classList.add('completed');
+                    buttonText.textContent = 'Modul abgeschlossen ✓';
+                    button.disabled = true;
+                } else {
+                    button.classList.remove('completed');
+                    buttonText.textContent = 'Modul als abgeschlossen markieren';
+                    button.disabled = false;
+                }
+            }
+        }
+
+        // Initialisierung
+        window.onload = () => {
+            initProgressTracking();
+            
+            // Event Listener für Completion Button
+            const completionButton = document.getElementById('completion-button');
+            if (completionButton) {
+                completionButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    markAsComplete();
+                });
+            }
+        };
+    </script>
+</body>
+</html>
