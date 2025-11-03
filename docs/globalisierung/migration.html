@@ -972,28 +972,23 @@
             </div>
         </div>
 
-    <div class="expandable-section">
-    <div class="expandable-header" onclick="toggleExpand(this)">
-        <span>⁉️ Die Schweiz als Ein- oder Auswanderungsland?</span>
-        <span class="arrow">▼</span>
-    </div>
-    <div class="expandable-content">
-        <div class="expandable-inner">
-            <div class="task-box task-box-blue">
-                <h3>📚 Auftrag c:</h3>
-                <p>Ist die Schweiz eher ein Ein- oder ein Auswanderungsland? ...</p>
+       
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand()">
+                <span>⁉️ Die Schweiz als Ein- oder Auswanderungsland?</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content">
+                <div class="expandable-inner">
+                    <div class="task-box task-box-blue">
+                        <h3>📚 Auftrag c:</h3>
+                        <p>Ist die Schweiz eher ein Ein- oder ein Auswanderungsland? Lesen Sie dazu die entsprechenden Kapitel in Ihrem Buch Gesellschaft und markieren Sie wichtige Infos. 
+            Vergleichen Sie anschliessend die Auswanderungsgründe von Schweizer und Schweizerinnen von früher mit Einwanderungsgründen ausländischer Personen in die Schweiz heute. 
+            Vergleichen Sie die Aspekte 'Überleben', 'Wohlstand', 'Arbeiten' und 'Einfachheit des Einwanderungprozesses'. Notieren Sie Ihre Vermutungen dort, wozu Sie keine Expliziten Infos im Buch finden.
+               </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<script>
-function toggleExpand(header) {
-    const content = header.nextElementSibling;
-    content.style.display = content.style.display === "block" ? "none" : "block";
-    const arrow = header.querySelector(".arrow");
-    arrow.textContent = content.style.display === "block" ? "▲" : "▼";
-}
 
 
         <!-- Abschluss-Button -->
