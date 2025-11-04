@@ -18,10 +18,17 @@
             flex-direction: column;
             color: #333;
             position: relative;
-            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+            /* Hintergrundbild */
+            background-image: url('bilder/hintergrund.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* Fallback-Farbe falls Bild nicht geladen wird */
+            background-color: #1e3a8a;
         }
 
-        /* Weltkugel-Hintergrundbild */
+        /* Weltkugel-Overlay (optional - kann entfernt werden wenn eigenes Bild verwendet wird) */
         body::before {
             content: '';
             position: fixed;
@@ -33,8 +40,9 @@
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.25;
+            opacity: 0.15;
             z-index: -1;
+            /* Tipp: Kommentieren Sie diesen gesamten body::before Block aus, wenn Sie kein Overlay möchten */
         }
 
         header {
@@ -83,10 +91,13 @@
         }
 
         .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
             margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .topic-card {
@@ -143,21 +154,18 @@
             margin-top: auto;
         }
 
-        /* Tablet: 2 Spalten nebeneinander */
-        @media (max-width: 1024px) {
-            .topics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Mobile: 1 Spalte untereinander */
+        /* Mobile Optimierung */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
             }
 
-            .topics-grid {
-                grid-template-columns: 1fr;
+            .topic-card {
+                padding: 1.5rem;
+            }
+
+            .topic-icon {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -178,7 +186,7 @@
         </section>
 
         <section class="topics-grid">
-            <a href="globalisierung/" class="topic-card">
+            <a href="globalisierung/index.html" class="topic-card">
                 <span class="topic-icon">🌐</span>
                 <h3>1. Globalisierung</h3>
                 <p>
@@ -188,8 +196,8 @@
                 <span class="read-more">Mehr erfahren →</span>
             </a>
             
- <a href="migration/" class="topic-card">
-                <span class="topic-icon">🛒</span>
+            <a href="migration/index.html" class="topic-card">
+                <span class="topic-icon">✈️</span>
                 <h3>2. Migration</h3>
                 <p>
                     Menschen sind und waren schon immer in Bewegung. Erfahren Sie mehr über Gründe und Auswirkungen davon.
@@ -197,7 +205,7 @@
                 <span class="read-more">Mehr erfahren →</span>
             </a>
             
-            <a href="oekonomie-und-oekologie/" class="topic-card">
+            <a href="oekonomie-und-oekologie/index.html" class="topic-card">
                 <span class="topic-icon">⚖️</span>
                 <h3>3. Ökonomie und Ökologie</h3>
                 <p>
@@ -207,7 +215,7 @@
                 <span class="read-more">Mehr erfahren →</span>
             </a>
 
-            <a href="konsumverhalten/" class="topic-card">
+            <a href="konsumverhalten/index.html" class="topic-card">
                 <span class="topic-icon">🛒</span>
                 <h3>4. Konsumverhalten</h3>
                 <p>
@@ -217,7 +225,7 @@
                 <span class="read-more">Mehr erfahren →</span>
             </a>
 
-            <a href="energie/" class="topic-card">
+            <a href="energie/index.html" class="topic-card">
                 <span class="topic-icon">⚡</span>
                 <h3>5. Energie</h3>
                 <p>
