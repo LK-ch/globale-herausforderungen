@@ -91,42 +91,6 @@
             color: #555;
         }
 
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .progress-bar h3 {
-            color: #1e3a8a;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .progress-track {
-            background: #e5e7eb;
-            height: 8px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #10b981, #059669);
-            height: 100%;
-            width: 0%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 0.5rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
         .learning-path {
             display: flex;
             flex-direction: column;
@@ -149,16 +113,6 @@
         .step-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .step-card.completed::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: #10b981;
         }
 
         .step-number {
@@ -213,42 +167,6 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
-        .step-status {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #10b981;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: none;
-        }
-
-        .step-card.completed .step-status {
-            display: block;
-        }
-
-        .completion-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            margin-top: 2rem;
-        }
-
-        .completion-card h2 {
-            color: #10b981;
-            margin-bottom: 1rem;
-        }
-
-        .completion-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
@@ -276,7 +194,7 @@
     <header>
         <h1>🌍 Lernpfad: Globalisierung</h1>
         <p>Schritt für Schritt die Welt der Globalisierung verstehen</p>
-        <a href="../" class="back-link">← Zurück zur Hauptseite</a>
+        <a href="../index.html" class="back-link">← Zurück zur Hauptseite</a>
     </header>
 
     <main>
@@ -285,110 +203,37 @@
             <p>In diesem Lernpfad lernen Sie Schritt für Schritt die wichtigsten Aspekte der Globalisierung kennen. Arbeiten Sie die Themen in der vorgegebenen Reihenfolge durch, um ein umfassendes Verständnis zu entwickeln. Viel Erfolg!</p>
         </div>
 
-        <div class="progress-bar">
-            <h3>Ihr Fortschritt</h3>
-            <div class="progress-track">
-                <div class="progress-fill" id="progressBar"></div>
-            </div>
-            <div class="progress-text" id="progressText">0 von 5 Schritten abgeschlossen</div>
-        </div>
-
         <div class="learning-path">
             <!-- Schritt 1 -->
-            <div class="step-card" data-step="1">
+            <div class="step-card">
                 <div class="step-number">1</div>
                 <div class="step-content">
                     <h3 class="step-title"><span class="step-icon">🌐</span>Die globalisierte Welt</h3>
                     <p class="step-description">Entdecken und beschreiben Sie Globalisierung in Ihrem Alltag.</p>
                     <a href="globalisierte-welt.html" class="step-button">Zum Thema →</a>
                 </div>
-                <div class="step-status">✓ Abgeschlossen</div>
             </div>
 
             <!-- Schritt 2 -->
-            <div class="step-card" data-step="2">
+            <div class="step-card">
                 <div class="step-number">2</div>
                 <div class="step-content">
                     <h3 class="step-title"><span class="step-icon">📖</span>Definition Globalisierung</h3>
                     <p class="step-description">Setzen Sie sich damit auseinander, was mit Globalisierung gemeint ist.</p>
                     <a href="globalisierung-definition.html" class="step-button">Zum Thema →</a>
                 </div>
-                <div class="step-status">✓ Abgeschlossen</div>
             </div>
 
             <!-- Schritt 3 -->
-            <div class="step-card" data-step="3">
+            <div class="step-card">
                 <div class="step-number">3</div>
                 <div class="step-content">
                     <h3 class="step-title"><span class="step-icon">📊</span>Grafiken zur Globalisierung</h3>
                     <p class="step-description">Analysieren Sie aussagekräftige Grafiken und Diagramme, die globale Entwicklungen und Zusammenhänge deutlich machen.</p>
                     <a href="grafiken-globalisierung.html" class="step-button">Zum Thema →</a>
                 </div>
-                <div class="step-status">✓ Abgeschlossen</div>
             </div>
-
-            <!-- Schritt 4 -->
-            <div class="step-card" data-step="4">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3 class="step-title"><span class="step-icon">✈️</span>Migration</h3>
-                    <p class="step-description">Migration ist ein zentraler Aspekt der Globalisierung. Verstehen Sie die Ursachen, Formen und Folgen weltweiter Wanderungsbewegungen.</p>
-                    <a href="migration.html" class="step-button">Zum Thema →</a>
-                </div>
-                <div class="step-status">✓ Abgeschlossen</div>
-            </div>
-
-            <!-- Schritt 5 -->
-            <div class="step-card" data-step="5">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <h3 class="step-title"><span class="step-icon">🎯</span>Abschluss-Quiz</h3>
-                    <p class="step-description">Testen Sie Ihr Wissen! Überprüfen Sie, was Sie gelernt haben und festigen Sie Ihr Verständnis der Globalisierung.</p>
-                    <a href="quiz.html" class="step-button">Zum Quiz →</a>
-                </div>
-                <div class="step-status">✓ Abgeschlossen</div>
-            </div>
-        </div>
-
-        <div class="completion-card" id="completionCard" style="display: none;">
-            <h2>🎉 Glückwunsch!</h2>
-            <p>Sie haben alle Schritte des Lernpfads abgeschlossen. Sie haben nun ein umfassendes Verständnis der Globalisierung entwickelt!</p>
         </div>
     </main>
-
-    <script>
-        // Fortschritt aus localStorage laden
-        function loadProgress() {
-            const completed = JSON.parse(localStorage.getItem('globalisierungProgress') || '[]');
-            const totalSteps = 5;
-            const completedCount = completed.length;
-
-            // Fortschrittsbalken aktualisieren
-            const percentage = (completedCount / totalSteps) * 100;
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completedCount} von ${totalSteps} Schritten abgeschlossen`;
-
-            // Abgeschlossene Schritte markieren
-            completed.forEach(step => {
-                const card = document.querySelector(`[data-step="${step}"]`);
-                if (card) {
-                    card.classList.add('completed');
-                }
-            });
-
-            // Completion Card anzeigen wenn alles fertig
-            if (completedCount === totalSteps) {
-                document.getElementById('completionCard').style.display = 'block';
-            }
-        }
-
-        // Reset-Funktion (für Testzwecke - kann später entfernt werden)
-        // localStorage.removeItem('globalisierungProgress');
-
-        // Beim Laden der Seite Fortschritt anzeigen
-        loadProgress();
-        
-        // Fortschritt wird jetzt auf den einzelnen Modul-Seiten getrackt, nicht beim Klick
-    </script>
 </body>
 </html>
