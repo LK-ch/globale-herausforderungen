@@ -210,47 +210,6 @@
             transform: translateX(5px);
         }
 
-        .completion-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .completion-button {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 1.5rem 3rem;
-            border-radius: 25px;
-            border: none;
-            font-weight: bold;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .completion-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
-        }
-
-        .completion-button.completed {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            cursor: default;
-        }
-
-        .completion-button:disabled {
-            cursor: not-allowed;
-        }
-
         .expandable-header.white {
             background: rgba(255, 255, 255, 0.95);
             color: #1e3a8a;
@@ -528,18 +487,13 @@
             .iframe-wrapper {
                 height: 400px;
             }
-
-            .completion-button {
-                font-size: 1.1rem;
-                padding: 1.25rem 2rem;
-            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>✈️ Migration</h1>
-        <a href="index.html" class="back-link">← Zurück zum Lernpfad</a>
+        <a href="../index.html" class="back-link">← Zurück zum Lernpfad</a>
     </header>
 
     <main>
@@ -972,33 +926,22 @@
             </div>
         </div>
 
-       
+        <!-- Schweiz als Ein- oder Auswanderungsland -->
         <div class="expandable-section">
-            <div class="expandable-header" onclick="toggleExpand()">
+            <div class="expandable-header" onclick="toggleExpand4()">
                 <span>⁉️ Die Schweiz als Ein- oder Auswanderungsland?</span>
                 <span class="arrow">▼</span>
             </div>
-            <div class="expandable-content" id="expandable-content">
+            <div class="expandable-content" id="expandable-content4">
                 <div class="expandable-inner">
                     <div class="task-box task-box-blue">
                         <h3>📚 Auftrag c:</h3>
                         <p>Ist die Schweiz eher ein Ein- oder ein Auswanderungsland? Lesen Sie dazu die entsprechenden Kapitel in Ihrem Buch Gesellschaft und markieren Sie wichtige Infos. 
             Vergleichen Sie anschliessend die Auswanderungsgründe von Schweizer und Schweizerinnen von früher mit Einwanderungsgründen ausländischer Personen in die Schweiz heute. 
-            Vergleichen Sie die Aspekte 'Überleben', 'Wohlstand', 'Arbeiten' und 'Einfachheit des Einwanderungprozesses'. Notieren Sie Ihre Vermutungen dort, wozu Sie keine Expliziten Infos im Buch finden.
-               </div>
+            Vergleichen Sie die Aspekte 'Überleben', 'Wohlstand', 'Arbeiten' und 'Einfachheit des Einwanderungprozesses'. Notieren Sie Ihre Vermutungen dort, wozu Sie keine Expliziten Infos im Buch finden.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-        <!-- Abschluss-Button -->
-        <div class="completion-section" id="completion-section">
-            <h3 style="color: #1e3a8a; margin-bottom: 1rem;">Modul abschließen</h3>
-            <p style="color: #666; margin-bottom: 1.5rem;">Haben Sie die Inhalte durchgearbeitet?</p>
-            <button id="completion-button" class="completion-button">
-                <span>✓</span>
-                <span id="button-text">Modul als abgeschlossen markieren</span>
-            </button>
         </div>
     </main>
 
@@ -1129,86 +1072,6 @@
             content.classList.toggle('open');
             header.classList.toggle('open');
         }
-
-        // Progress Tracking
-        let isModuleCompleted = false;
-
-        function initProgressTracking() {
-            // Prüfe beide Systeme
-            const completedOld = localStorage.getItem('globalisierung_module4_completed');
-            const progress = JSON.parse(localStorage.getItem('globalisierungProgress') || '[]');
-            
-            // Wenn im neuen System (Index-Seite) als abgeschlossen markiert
-            if (progress.includes(4)) {
-                isModuleCompleted = true;
-                updateCompletionButton(true);
-                // Synchronisiere mit altem System
-                if (completedOld !== 'true') {
-                    localStorage.setItem('globalisierung_module4_completed', 'true');
-                }
-            }
-            // Wenn im alten System als abgeschlossen markiert
-            else if (completedOld === 'true') {
-                isModuleCompleted = true;
-                updateCompletionButton(true);
-                // Synchronisiere mit neuem System
-                if (!progress.includes(4)) {
-                    progress.push(4);
-                    localStorage.setItem('globalisierungProgress', JSON.stringify(progress));
-                }
-            }
-        }
-
-        function markAsComplete() {
-            if (isModuleCompleted) return;
-
-            // Altes System (für Kompatibilität)
-            localStorage.setItem('globalisierung_module4_completed', 'true');
-            localStorage.setItem('globalisierung_module4_completedAt', new Date().toISOString());
-            
-            // Neues System (für Index-Seite)
-            let progress = JSON.parse(localStorage.getItem('globalisierungProgress') || '[]');
-            if (!progress.includes(4)) {
-                progress.push(4);
-                localStorage.setItem('globalisierungProgress', JSON.stringify(progress));
-            }
-            
-            isModuleCompleted = true;
-            updateCompletionButton(true);
-
-            alert('✓ Modul 4 erfolgreich abgeschlossen!\n\nIhr Fortschritt wurde gespeichert.');
-        }
-
-        function updateCompletionButton(completed) {
-            const button = document.getElementById('completion-button');
-            const buttonText = document.getElementById('button-text');
-            
-            if (button && buttonText) {
-                if (completed) {
-                    button.classList.add('completed');
-                    buttonText.textContent = 'Modul abgeschlossen ✓';
-                    button.disabled = true;
-                } else {
-                    button.classList.remove('completed');
-                    buttonText.textContent = 'Modul als abgeschlossen markieren';
-                    button.disabled = false;
-                }
-            }
-        }
-
-        // Initialisierung
-        window.onload = () => {
-            initProgressTracking();
-            
-            // Event Listener für Completion Button
-            const completionButton = document.getElementById('completion-button');
-            if (completionButton) {
-                completionButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    markAsComplete();
-                });
-            }
-        };
     </script>
 </body>
-</html>
+</html
