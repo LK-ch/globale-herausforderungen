@@ -17,7 +17,6 @@
             display: flex;
             flex-direction: column;
             color: #333;
-            position: relative;
             background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
         }
 
@@ -32,7 +31,7 @@
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.25;
+            opacity: 0.15;
             z-index: -1;
         }
 
@@ -45,7 +44,7 @@
 
         header h1 {
             font-size: 2.5rem;
-            color: #667eea;
+            color: #1e3a8a;
             margin-bottom: 0.5rem;
         }
 
@@ -70,117 +69,36 @@
             flex: 1;
             max-width: 1200px;
             width: 100%;
-            margin: 3rem auto;
-            padding: 0 1rem;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem 1rem;
         }
 
-        .intro {
+        .intro-card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
             border-radius: 15px;
-            margin-bottom: 3rem;
+            padding: 2rem;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .intro h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .intro p {
-            line-height: 1.6;
-            color: #555;
-            font-size: 1.1rem;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
             margin-bottom: 2rem;
         }
 
-        .tool-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .tool-icon {
-            font-size: 4rem;
+        .intro-card h2 {
+            color: #1e3a8a;
             margin-bottom: 1rem;
-            display: block;
-        }
-
-        .tool-card h3 {
-            color: #667eea;
             font-size: 1.8rem;
-            margin-bottom: 1rem;
         }
 
-        .tool-card p {
+        .intro-card p {
             color: #666;
             line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .tool-card .features {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .tool-card .features ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .tool-card .features li {
-            padding: 0.5rem 0;
-            color: #555;
-        }
-
-        .tool-card .features li:before {
-            content: "✓ ";
-            color: #10b981;
-            font-weight: bold;
-            margin-right: 0.5rem;
-        }
-
-        .tool-card .start-btn {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: transform 0.2s;
-        }
-
-        .tool-card:hover .start-btn {
-            transform: scale(1.05);
+            font-size: 1.1rem;
         }
 
         .info-box {
-            background: rgba(254, 243, 199, 0.95);
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
             border-left: 4px solid #f59e0b;
             padding: 1.5rem;
             border-radius: 15px;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
@@ -194,8 +112,144 @@
             line-height: 1.6;
         }
 
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .module-content {
+            padding: 1.5rem;
+        }
+
+        .module-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .module-features {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .module-features h4 {
+            color: #1e3a8a;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.4rem 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .module-footer {
+            padding: 1rem 1.5rem;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .module-card {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .module-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .module-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
         footer {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
             color: white;
             text-align: center;
             padding: 1.5rem;
@@ -207,8 +261,12 @@
                 font-size: 2rem;
             }
 
-            .tools-grid {
+            .modules-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .module-card {
+                animation: none;
             }
         }
     </style>
@@ -217,20 +275,20 @@
     <header>
         <h1>🛒 Konsumverhalten</h1>
         <p>Wie beeinflusst unser Konsum die Welt?</p>
-        <a href="../" class="back-link">← Zurück zur Startseite</a>
+        <a href="../index.html" class="back-link">← Zurück zur Startseite</a>
     </header>
 
     <main>
-        <section class="intro">
+        <div class="intro-card">
             <h2>Unser Konsum hat globale Auswirkungen</h2>
             <p>
                 Unsere Kaufentscheidungen beeinflussen das Klima, die Umwelt und Menschen weltweit. 
                 In der Schweiz verbrauchen wir 2,8 Mal so viele Ressourcen, wie uns für ein ganzes Jahr 
                 zur Verfügung stehen. Hier kannst du mehr über deinen eigenen Fussabdruck erfahren!
             </p>
-        </section>
+        </div>
 
-        <section class="info-box">
+        <div class="info-box">
             <h3>💡 Wusstest du?</h3>
             <p>
                 <strong>Die drei grössten Hebel</strong> für deinen CO₂-Fussabdruck sind: 
@@ -238,45 +296,63 @@
                 an Verpackungen denken – viel wichtiger ist, <em>was</em> wir kaufen und 
                 <em>wie oft</em> wir etwas Neues brauchen!
             </p>
-        </section>
+        </div>
 
-        <section class="tools-grid">
-            <a href="quiz-fussabdruck.html" class="tool-card">
-                <span class="tool-icon">🎮</span>
-                <h3>Klimaschutz-Quiz</h3>
-                <p>
-                    Teste dein Wissen über CO₂, Klimaschutz und nachhaltiges Leben in der Schweiz! 
-                    Mit 10 spannenden Fragen und vielen lehrreichen Erklärungen.
-                </p>
-                <div class="features">
-                    <ul>
-                        <li>10 interaktive Fragen</li>
-                        <li>Sofortiges Feedback</li>
-                        <li>Basiert auf WWF & BAFU Daten</li>
-                        <li>Lerne spielerisch!</li>
-                    </ul>
+        <div class="modules-grid">
+            <!-- Modul 1: Klimaschutz-Quiz -->
+            <a href="quiz-fussabdruck.html" class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🎮</div>
+                    <h3 class="module-title">Klimaschutz-Quiz</h3>
                 </div>
-                <span class="start-btn">Quiz starten →</span>
+                <div class="module-content">
+                    <p class="module-description">
+                        Teste dein Wissen über CO₂, Klimaschutz und nachhaltiges Leben in der Schweiz! 
+                        Mit 10 spannenden Fragen und vielen lehrreichen Erklärungen.
+                    </p>
+                    <div class="module-features">
+                        <h4>Was dich erwartet</h4>
+                        <ul class="feature-list">
+                            <li>10 interaktive Fragen</li>
+                            <li>Sofortiges Feedback</li>
+                            <li>Basiert auf WWF & BAFU Daten</li>
+                            <li>Lerne spielerisch!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-footer">
+                    <span style="color: #666; font-size: 0.9rem;">⏱️ ca. 10 Minuten</span>
+                    <span class="start-button">Quiz starten →</span>
+                </div>
             </a>
 
-            <a href="CO2-rechner.html" class="tool-card">
-                <span class="tool-icon">🧮</span>
-                <h3>CO₂-Rechner</h3>
-                <p>
-                    Berechne deinen persönlichen CO₂-Fussabdruck! Finde heraus, wie deine 
-                    Mobilität, Ernährung und Wohnsituation das Klima beeinflussen.
-                </p>
-                <div class="features">
-                    <ul>
-                        <li>Bereiche: Mobilität, Ernährung, Wohnen</li>
-                        <li>Offizielle Schweizer Daten (BAFU, BFE)</li>
-                        <li>Vergleich mit CH-Durchschnitt</li>
-                        <li>PDF-Export der Ergebnisse</li>
-                    </ul>
+            <!-- Modul 2: CO₂-Rechner -->
+            <a href="CO2-rechner.html" class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🧮</div>
+                    <h3 class="module-title">CO₂-Rechner</h3>
                 </div>
-                <span class="start-btn">Rechner öffnen →</span>
+                <div class="module-content">
+                    <p class="module-description">
+                        Berechne deinen persönlichen CO₂-Fussabdruck! Finde heraus, wie deine 
+                        Mobilität, Ernährung und Wohnsituation das Klima beeinflussen.
+                    </p>
+                    <div class="module-features">
+                        <h4>Was dich erwartet</h4>
+                        <ul class="feature-list">
+                            <li>Bereiche: Mobilität, Ernährung, Wohnen</li>
+                            <li>Offizielle Schweizer Daten (BAFU, BFE)</li>
+                            <li>Vergleich mit CH-Durchschnitt</li>
+                            <li>PDF-Export der Ergebnisse</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-footer">
+                    <span style="color: #666; font-size: 0.9rem;">⏱️ ca. 15 Minuten</span>
+                    <span class="start-button">Rechner öffnen →</span>
+                </div>
             </a>
-        </section>
+        </div>
     </main>
 
     <footer>
