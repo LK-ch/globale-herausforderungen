@@ -1,1 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ökologie und Ökonomie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            background-image: url('images/oekologie.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 58, 138, 0.7);
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0 0 0;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem 1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .expandable-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .expandable-header:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .expandable-header .arrow {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .expandable-header.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .expandable-content.open {
+            max-height: 10000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .expandable-inner {
+            padding: 2rem;
+        }
+
+        .task-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .task-box h3 {
+            color: #92400e;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .task-box-blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .task-box-blue h3 {
+            color: #1e3a8a;
+        }
+
+        .task-box-blue p {
+            color: #1e40af;
+        }
+
+        .task-box-green {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-left: 4px solid #10b981;
+        }
+
+        .task-box-green h3 {
+            color: #065f46;
+        }
+
+        .task-box-green p {
+            color: #047857;
+        }
+
+        .iframe-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .iframe-container h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f3f4f6;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .external-link:hover {
+            background: rgba(14, 165, 233, 0.2);
+            transform: translateX(5px);
+        }
+
+        .expandable-header.white {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e3a8a;
+            border: 2px solid #e5e7eb;
+        }
+
+        .expandable-header.white:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: #cbd5e1;
+        }
+
+        .expandable-header.white .arrow {
+            color: #1e3a8a;
+        }
+
+        .expandable-header.green {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .expandable-header.green:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .iframe-wrapper {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌱💼 Ökologie und Ökonomie</h1>
+        <a href="../index.html" class="back-link">← Zurück zum Lernpfad</a>
+    </header>
+
+    <main>
+        <!-- Aufklappbarer Aufgaben-Bereich 1 -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand1()">
+                <span>📋 Aufgabenbereich 1</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content1">
+                <div class="expandable-inner">
+                    <div class="task-box task-box-blue">
+                        <h3>📚 Auftrag:</h3>
+                        <p>Hier kommt der Inhalt des ersten Auftrags...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aufklappbarer Aufgaben-Bereich 2 -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand2()">
+                <span>📋 Aufgabenbereich 2</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content2">
+                <div class="expandable-inner">
+                    <div class="task-box">
+                        <h3>📚 Auftrag:</h3>
+                        <p>Hier kommt der Inhalt des zweiten Auftrags...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aufklappbarer Aufgaben-Bereich 3 -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand3()">
+                <span>📋 Aufgabenbereich 3</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content3">
+                <div class="expandable-inner">
+                    <div class="task-box task-box-green">
+                        <h3>📚 Auftrag:</h3>
+                        <p>Hier kommt der Inhalt des dritten Auftrags...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle Expandable Functions
+        function toggleExpand1() {
+            const content = document.getElementById('expandable-content1');
+            const header = document.querySelector('.expandable-header');
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand2() {
+            const content = document.getElementById('expandable-content2');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[1];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand3() {
+            const content = document.getElementById('expandable-content3');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[2];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
