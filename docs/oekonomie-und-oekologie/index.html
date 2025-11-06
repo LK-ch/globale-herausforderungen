@@ -220,7 +220,7 @@
             background: white;
             border: 2px solid #e5e7eb;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 1.25rem;
             cursor: pointer;
             transition: all 0.3s;
             text-align: left;
@@ -233,18 +233,8 @@
 
         .option-btn strong {
             display: block;
-            margin-bottom: 0.5rem;
             color: #1f2937;
         }
-
-        .option-impacts {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .impact-positive { color: #10b981; }
-        .impact-negative { color: #ef4444; }
 
         .results-grid {
             display: grid;
@@ -567,39 +557,39 @@
 
         const scenarios = [
             {
-                title: 'Neues Industriegebiet',
-                description: 'Ein großer Investor möchte in eurer Stadt ein neues Industriegebiet errichten. Das würde 500 neue Arbeitsplätze schaffen, aber einen wichtigen Grünstreifen zerstören.',
+                title: 'Neues Industriegebiet für Elektronikproduktion',
+                description: 'Die Firma "TechVision AG" möchte am Stadtrand ein 50.000 m² großes Produktionswerk für Computerchips errichten. Das Projekt würde 500 neue Arbeitsplätze schaffen und jährlich 5 Millionen Euro Gewerbesteuer einbringen. Allerdings müsste dafür ein Waldgebiet mit altem Baumbestand gerodet werden, das als wichtiger Lebensraum für Wildtiere und als natürlicher CO₂-Speicher dient. Zudem würde der tägliche LKW-Verkehr stark zunehmen.',
                 options: [
-                    { text: 'Projekt vollständig genehmigen', oekonomie: 15, oekologie: -20, explanation: 'Wirtschaftswachstum und Jobs, aber Verlust von Grünfläche und Biodiversität' },
-                    { text: 'Projekt mit strengen Umweltauflagen genehmigen', oekonomie: 8, oekologie: -8, explanation: 'Kompromiss: Weniger Profit für Investor, aber besserer Umweltschutz' },
-                    { text: 'Projekt ablehnen', oekonomie: -10, oekologie: 15, explanation: 'Schutz der Natur, aber verpasste wirtschaftliche Chance' }
+                    { text: 'Projekt vollständig genehmigen ohne zusätzliche Auflagen', oekonomie: 15, oekologie: -20, explanation: 'Maximales Wirtschaftswachstum und schnelle Umsetzung, aber vollständiger Verlust des Waldgebiets, keine Ausgleichsmaßnahmen für Natur und Umwelt' },
+                    { text: 'Genehmigung mit strengen Umweltauflagen (Ausgleichsflächen, Lärmschutz, Filteranlagen, Grünbrücke für Wildtiere)', oekonomie: 8, oekologie: -8, explanation: 'Kompromisslösung: Höhere Baukosten für das Unternehmen (ca. 20% Mehrkosten), aber deutlich besserer Schutz von Natur und Anwohnern durch konkrete Maßnahmen' },
+                    { text: 'Projekt komplett ablehnen und alternative Standorte vorschlagen', oekonomie: -10, oekologie: 15, explanation: 'Waldgebiet bleibt vollständig erhalten, aber der Investor könnte sich für einen anderen Standort außerhalb der Stadt entscheiden – Verlust von Arbeitsplätzen und Steuereinnahmen' }
                 ]
             },
             {
-                title: 'Produktionsumstellung',
-                description: 'Dein Unternehmen könnte auf nachhaltige, aber teurere Rohstoffe umstellen. Die Produkte würden 20% mehr kosten.',
+                title: 'Umstellung auf nachhaltige Rohstoffe in der Textilproduktion',
+                description: 'Dein Textilunternehmen produziert derzeit mit konventioneller Baumwolle aus Indien (günstig, aber hoher Pestizideinsatz und Wasserverbrauch) und synthetischen Fasern aus Erdöl. Du könntest auf Bio-Baumwolle, Hanf und recycelte Materialien umstellen. Die nachhaltigen Rohstoffe kosten 30% mehr, würden die Produktionskosten erhöhen und könnten zu einem Preisanstieg von 20% führen. Gleichzeitig würde der Wasserverbrauch um 60% sinken und keine Pestizide mehr eingesetzt.',
                 options: [
-                    { text: 'Umstellung auf nachhaltige Produktion', oekonomie: -10, oekologie: 20, explanation: 'Kurzfristig teurer, aber langfristig zukunftssicher und umweltfreundlich' },
-                    { text: 'Teilweise umstellen (50% nachhaltig)', oekonomie: -3, oekologie: 10, explanation: 'Schrittweise Veränderung mit moderaten Kosten und Umweltnutzen' },
-                    { text: 'Bei bisherigen Rohstoffen bleiben', oekonomie: 8, oekologie: -15, explanation: 'Kurzfristig profitabel, aber nicht nachhaltig und Imageverlust' }
+                    { text: 'Komplette Umstellung auf nachhaltige Rohstoffe (Bio-Baumwolle, Hanf, Recycling-Fasern)', oekonomie: -10, oekologie: 20, explanation: 'Kurzfristig deutlich höhere Kosten und eventuell weniger Absatz wegen höherer Preise, aber langfristig zukunftssicher mit wachsender umweltbewusster Kundschaft, positives Markenimage und unabhängiger von Erdölpreisen' },
+                    { text: 'Schrittweise Umstellung: 50% nachhaltige Materialien, neue Produktlinie "Eco"', oekonomie: -3, oekologie: 10, explanation: 'Moderater Ansatz mit überschaubaren Zusatzkosten, ermöglicht Markttest für nachhaltige Produkte, spricht beide Zielgruppen an (preisbewusst und umweltbewusst)' },
+                    { text: 'Bei bisherigen günstigen Rohstoffen bleiben (konventionelle Baumwolle und Synthetik)', oekonomie: 8, oekologie: -15, explanation: 'Kurzfristig weiterhin günstige Produktion und konkurrenzfähige Preise, aber langfristig Reputationsverlust bei umweltbewussten Kunden, Abhängigkeit von Erdöl und mögliche künftige Strafsteuern auf nicht-nachhaltige Produktion' }
                 ]
             },
             {
-                title: 'Verkehrskonzept',
-                description: 'Die Stadt plant ein neues Verkehrskonzept. Soll eine autofreie Innenstadt eingerichtet werden?',
+                title: 'Verkehrskonzept: Autofreie Innenstadt',
+                description: 'Die Stadtverwaltung plant eine autofreie Zone im historischen Stadtkern (1,5 km²). Vorgesehen sind: Ausbau von 3 neuen Straßenbahnlinien, Bau von 2 Park&Ride-Parkplätzen am Stadtrand mit je 800 Stellplätzen, Einrichtung von breiten Fußgängerzonen und Radwegen. Die Investitionskosten betragen 80 Millionen Euro. Studien zeigen: Die Luftqualität würde sich um 40% verbessern, aber Einzelhändler befürchten Umsatzeinbußen. Die Bauzeit beträgt 4 Jahre.',
                 options: [
-                    { text: 'Autofreie Zone mit ÖPNV-Ausbau', oekonomie: -12, oekologie: 18, explanation: 'Hohe Investition, aber bessere Luftqualität und Lebensqualität' },
-                    { text: 'Verkehrsberuhigung mit Parkgebühren', oekonomie: 5, oekologie: 8, explanation: 'Einnahmen durch Gebühren, moderate Umweltverbesserung' },
-                    { text: 'Alles beim Alten lassen', oekonomie: 3, oekologie: -12, explanation: 'Keine Kosten, aber steigende Umweltbelastung und Verkehrsprobleme' }
+                    { text: 'Vollständige Umsetzung: Autofreie Zone plus massiver ÖPNV-Ausbau', oekonomie: -12, oekologie: 18, explanation: 'Hohe Investition von 80 Mio. Euro, mehrjährige Bauphase mit Störungen, aber nach Fertigstellung deutlich bessere Luftqualität (weniger Asthma-Erkrankungen), mehr Lebensqualität, attraktivere Innenstadt und Vorbildfunktion für andere Städte' },
+                    { text: 'Verkehrsberuhigung mit City-Maut (5 Euro/Tag) und höheren Parkgebühren (4 Euro/Stunde)', oekonomie: 5, oekologie: 8, explanation: 'Keine großen Investitionen nötig, Stadt generiert zusätzliche Einnahmen von ca. 3 Mio. Euro jährlich durch Maut, moderate Verkehrsreduzierung um 25%, aber keine grundlegende Verbesserung der Situation' },
+                    { text: 'Keine Änderungen am aktuellen Verkehrssystem', oekonomie: 3, oekologie: -12, explanation: 'Keine Kosten und keine Baustellen, aber weiterhin hohe Feinstaubbelastung (über EU-Grenzwerten), zunehmende Verkehrsprobleme durch Bevölkerungswachstum, drohende EU-Strafzahlungen wegen schlechter Luftqualität' }
                 ]
             },
             {
-                title: 'Energieversorgung',
-                description: 'Die lokale Energieversorgung muss erneuert werden. Wie soll die Zukunft aussehen?',
+                title: 'Energieversorgung für die Stadt erneuern',
+                description: 'Das alte Kohlekraftwerk (Baujahr 1985) muss erneuert werden. Drei Optionen stehen zur Wahl: 1) Windpark mit 50 Anlagen + Solarpark (20 Hektar) + Batteriespeicher = 150 Mio. Euro Investition, 2) Modernes Gaskraftwerk = 60 Mio. Euro + Erdgasabhängigkeit, 3) Kohlekraftwerk sanieren = 30 Mio. Euro. Die Entscheidung betrifft die Energieversorgung von 80.000 Haushalten für die nächsten 30 Jahre und beeinflusst die städtischen CO₂-Emissionen erheblich (Kohle: 12.000t CO₂/Jahr, Gas: 5.000t, Erneuerbare: 500t).',
                 options: [
-                    { text: 'Vollständig auf Erneuerbare setzen', oekonomie: -15, oekologie: 25, explanation: 'Hohe Anfangsinvestition, aber langfristig nachhaltig und unabhängig' },
-                    { text: 'Mix aus Erneuerbaren und Gas', oekonomie: -5, oekologie: 10, explanation: 'Ausgewogener Ansatz mit moderaten Kosten und Umweltnutzen' },
-                    { text: 'Günstige Kohlekraft verlängern', oekonomie: 10, oekologie: -20, explanation: 'Kurzfristig billig, aber klimaschädlich und nicht zukunftsfähig' }
+                    { text: 'Vollständig auf Erneuerbare setzen: Windpark, Solarpark und Batteriespeicher', oekonomie: -15, oekologie: 25, explanation: 'Sehr hohe Anfangsinvestition von 150 Mio. Euro, aber nach 10 Jahren durch eingesparte Brennstoffkosten amortisiert, langfristig günstige Strompreise (keine Brennstoffkosten), vollständige Energieunabhängigkeit, 95% weniger CO₂-Emissionen und Vorbildfunktion' },
+                    { text: 'Kombination: 60% Erneuerbare + 40% modernes Gaskraftwerk als Backup', oekonomie: -5, oekologie: 10, explanation: 'Ausgewogener Ansatz mit Gesamtkosten von 100 Mio. Euro, Versorgungssicherheit durch Gas-Backup in windarmen Zeiten, 60% CO₂-Reduktion, aber weiterhin Abhängigkeit von Gaslieferungen und schwankenden Preisen' },
+                    { text: 'Kohlekraftwerk sanieren und weiterbetreiben (günstigste Sofortlösung)', oekonomie: 10, oekologie: -20, explanation: 'Nur 30 Mio. Euro Investition, kurzfristig günstigster Strom für Bürger und Industrie, aber langfristig teuer durch CO₂-Steuern (zusätzlich 2 Mio. Euro/Jahr), stark klimaschädlich, drohende Schließung durch verschärfte EU-Klimagesetze in 10 Jahren' }
                 ]
             }
         ];
@@ -630,14 +620,6 @@
                 optionsHtml += `
                     <button class="option-btn" onclick="makeDecision(${index})">
                         <strong>${option.text}</strong>
-                        <div class="option-impacts">
-                            <span class="${option.oekonomie > 0 ? 'impact-positive' : 'impact-negative'}">
-                                Ökonomie: ${option.oekonomie > 0 ? '+' : ''}${option.oekonomie}
-                            </span>
-                            <span class="${option.oekologie > 0 ? 'impact-positive' : 'impact-negative'}">
-                                Ökologie: ${option.oekologie > 0 ? '+' : ''}${option.oekologie}
-                            </span>
-                        </div>
                     </button>
                 `;
             });
