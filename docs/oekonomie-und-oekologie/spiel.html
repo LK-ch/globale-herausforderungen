@@ -1,418 +1,442 @@
-import React, { useState } from 'react';
-import { Users, Leaf, TrendingUp, Brain, RotateCcw } from 'lucide-react';
-
-const OekonomieOekologieSpiel = () => {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [currentScenario, setCurrentScenario] = useState(0);
-  const [scores, setScores] = useState({ oekonomie: 50, oekologie: 50 });
-  const [decisions, setDecisions] = useState([]);
-  const [gameEnded, setGameEnded] = useState(false);
-
-  const roles = [
-    {
-      id: 'unternehmer',
-      name: 'Unternehmerin',
-      icon: TrendingUp,
-      description: 'Du leitest ein mittelständisches Produktionsunternehmen mit 200 Mitarbeitenden.',
-      color: 'bg-blue-500'
-    },
-    {
-      id: 'umweltschuetzer',
-      name: 'Umweltaktivist',
-      icon: Leaf,
-      description: 'Du arbeitest für eine NGO und setzt dich für nachhaltige Entwicklung ein.',
-      color: 'bg-green-500'
-    },
-    {
-      id: 'politiker',
-      name: 'Bürgermeisterin',
-      icon: Users,
-      description: 'Du musst die Interessen der Stadt und ihrer Bürger*innen ausbalancieren.',
-      color: 'bg-purple-500'
-    }
-  ];
-
-  const scenarios = [
-    {
-      title: 'Neues Industriegebiet',
-      description: 'Ein großer Investor möchte in eurer Stadt ein neues Industriegebiet errichten. Das würde 500 neue Arbeitsplätze schaffen, aber einen wichtigen Grünstreifen zerstören.',
-      options: [
-        {
-          text: 'Projekt vollständig genehmigen',
-          oekonomie: +15,
-          oekologie: -20,
-          explanation: 'Wirtschaftswachstum und Jobs, aber Verlust von Grünfläche und Biodiversität'
-        },
-        {
-          text: 'Projekt mit strengen Umweltauflagen genehmigen',
-          oekonomie: +8,
-          oekologie: -8,
-          explanation: 'Kompromiss: Weniger Profit für Investor, aber besserer Umweltschutz'
-        },
-        {
-          text: 'Projekt ablehnen',
-          oekonomie: -10,
-          oekologie: +15,
-          explanation: 'Schutz der Natur, aber verpasste wirtschaftliche Chance'
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ökonomie vs. Ökologie - Lernspiel</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-      ]
-    },
-    {
-      title: 'Produktionsumstellung',
-      description: 'Dein Unternehmen könnte auf nachhaltige, aber teurere Rohstoffe umstellen. Die Produkte würden 20% mehr kosten.',
-      options: [
-        {
-          text: 'Umstellung auf nachhaltige Produktion',
-          oekonomie: -10,
-          oekologie: +20,
-          explanation: 'Kurzfristig teurer, aber langfristig zukunftssicher und umweltfreundlich'
-        },
-        {
-          text: 'Teilweise umstellen (50% nachhaltig)',
-          oekonomie: -3,
-          oekologie: +10,
-          explanation: 'Schrittweise Veränderung mit moderaten Kosten und Umweltnutzen'
-        },
-        {
-          text: 'Bei bisherigen Rohstoffen bleiben',
-          oekonomie: +8,
-          oekologie: -15,
-          explanation: 'Kurzfristig profitabel, aber nicht nachhaltig und Imageverlust'
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function OekonomieOekologieSpiel() {
+            const [gameStarted, setGameStarted] = useState(false);
+            const [selectedRole, setSelectedRole] = useState(null);
+            const [currentScenario, setCurrentScenario] = useState(0);
+            const [scores, setScores] = useState({ oekonomie: 50, oekologie: 50 });
+            const [decisions, setDecisions] = useState([]);
+            const [gameEnded, setGameEnded] = useState(false);
+
+            const roles = [
+                {
+                    id: 'unternehmer',
+                    name: 'Unternehmerin',
+                    description: 'Du leitest ein mittelständisches Produktionsunternehmen mit 200 Mitarbeitenden.',
+                    color: 'bg-blue-500',
+                    icon: '💼'
+                },
+                {
+                    id: 'umweltschuetzer',
+                    name: 'Umweltaktivist',
+                    description: 'Du arbeitest für eine NGO und setzt dich für nachhaltige Entwicklung ein.',
+                    color: 'bg-green-500',
+                    icon: '🌱'
+                },
+                {
+                    id: 'politiker',
+                    name: 'Bürgermeisterin',
+                    description: 'Du musst die Interessen der Stadt und ihrer Bürger*innen ausbalancieren.',
+                    color: 'bg-purple-500',
+                    icon: '🏛️'
+                }
+            ];
+
+            const scenarios = [
+                {
+                    title: 'Neues Industriegebiet',
+                    description: 'Ein großer Investor möchte in eurer Stadt ein neues Industriegebiet errichten. Das würde 500 neue Arbeitsplätze schaffen, aber einen wichtigen Grünstreifen zerstören.',
+                    options: [
+                        {
+                            text: 'Projekt vollständig genehmigen',
+                            oekonomie: +15,
+                            oekologie: -20,
+                            explanation: 'Wirtschaftswachstum und Jobs, aber Verlust von Grünfläche und Biodiversität'
+                        },
+                        {
+                            text: 'Projekt mit strengen Umweltauflagen genehmigen',
+                            oekonomie: +8,
+                            oekologie: -8,
+                            explanation: 'Kompromiss: Weniger Profit für Investor, aber besserer Umweltschutz'
+                        },
+                        {
+                            text: 'Projekt ablehnen',
+                            oekonomie: -10,
+                            oekologie: +15,
+                            explanation: 'Schutz der Natur, aber verpasste wirtschaftliche Chance'
+                        }
+                    ]
+                },
+                {
+                    title: 'Produktionsumstellung',
+                    description: 'Dein Unternehmen könnte auf nachhaltige, aber teurere Rohstoffe umstellen. Die Produkte würden 20% mehr kosten.',
+                    options: [
+                        {
+                            text: 'Umstellung auf nachhaltige Produktion',
+                            oekonomie: -10,
+                            oekologie: +20,
+                            explanation: 'Kurzfristig teurer, aber langfristig zukunftssicher und umweltfreundlich'
+                        },
+                        {
+                            text: 'Teilweise umstellen (50% nachhaltig)',
+                            oekonomie: -3,
+                            oekologie: +10,
+                            explanation: 'Schrittweise Veränderung mit moderaten Kosten und Umweltnutzen'
+                        },
+                        {
+                            text: 'Bei bisherigen Rohstoffen bleiben',
+                            oekonomie: +8,
+                            oekologie: -15,
+                            explanation: 'Kurzfristig profitabel, aber nicht nachhaltig und Imageverlust'
+                        }
+                    ]
+                },
+                {
+                    title: 'Verkehrskonzept',
+                    description: 'Die Stadt plant ein neues Verkehrskonzept. Soll eine autofreie Innenstadt eingerichtet werden?',
+                    options: [
+                        {
+                            text: 'Autofreie Zone mit ÖPNV-Ausbau',
+                            oekonomie: -12,
+                            oekologie: +18,
+                            explanation: 'Hohe Investition, aber bessere Luftqualität und Lebensqualität'
+                        },
+                        {
+                            text: 'Verkehrsberuhigung mit Parkgebühren',
+                            oekonomie: +5,
+                            oekologie: +8,
+                            explanation: 'Einnahmen durch Gebühren, moderate Umweltverbesserung'
+                        },
+                        {
+                            text: 'Alles beim Alten lassen',
+                            oekonomie: +3,
+                            oekologie: -12,
+                            explanation: 'Keine Kosten, aber steigende Umweltbelastung und Verkehrsprobleme'
+                        }
+                    ]
+                },
+                {
+                    title: 'Energieversorgung',
+                    description: 'Die lokale Energieversorgung muss erneuert werden. Wie soll die Zukunft aussehen?',
+                    options: [
+                        {
+                            text: 'Vollständig auf Erneuerbare setzen',
+                            oekonomie: -15,
+                            oekologie: +25,
+                            explanation: 'Hohe Anfangsinvestition, aber langfristig nachhaltig und unabhängig'
+                        },
+                        {
+                            text: 'Mix aus Erneuerbaren und Gas',
+                            oekonomie: -5,
+                            oekologie: +10,
+                            explanation: 'Ausgewogener Ansatz mit moderaten Kosten und Umweltnutzen'
+                        },
+                        {
+                            text: 'Günstige Kohlekraft verlängern',
+                            oekonomie: +10,
+                            oekologie: -20,
+                            explanation: 'Kurzfristig billig, aber klimaschädlich und nicht zukunftsfähig'
+                        }
+                    ]
+                }
+            ];
+
+            const handleRoleSelect = (role) => {
+                setSelectedRole(role);
+                setGameStarted(true);
+            };
+
+            const handleDecision = (option) => {
+                const newOekonomie = Math.max(0, Math.min(100, scores.oekonomie + option.oekonomie));
+                const newOekologie = Math.max(0, Math.min(100, scores.oekologie + option.oekologie));
+                
+                setScores({
+                    oekonomie: newOekonomie,
+                    oekologie: newOekologie
+                });
+
+                setDecisions([...decisions, {
+                    scenario: scenarios[currentScenario].title,
+                    choice: option.text,
+                    explanation: option.explanation
+                }]);
+
+                if (currentScenario < scenarios.length - 1) {
+                    setCurrentScenario(currentScenario + 1);
+                } else {
+                    setGameEnded(true);
+                }
+            };
+
+            const resetGame = () => {
+                setGameStarted(false);
+                setSelectedRole(null);
+                setCurrentScenario(0);
+                setScores({ oekonomie: 50, oekologie: 50 });
+                setDecisions([]);
+                setGameEnded(false);
+            };
+
+            const getBalanceAssessment = () => {
+                const diff = Math.abs(scores.oekonomie - scores.oekologie);
+                if (diff < 15) return { text: 'Ausgewogen', color: 'text-green-600', description: 'Du hast beide Aspekte gut balanciert!' };
+                if (scores.oekonomie > scores.oekologie + 15) return { text: 'Ökonomie-fokussiert', color: 'text-blue-600', description: 'Du hast wirtschaftliche Interessen priorisiert.' };
+                return { text: 'Ökologie-fokussiert', color: 'text-green-600', description: 'Du hast Umweltschutz priorisiert.' };
+            };
+
+            if (!gameStarted) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="text-center mb-12">
+                                <h1 className="text-4xl font-bold text-gray-800 mb-4">
+                                    Ökonomie vs. Ökologie
+                                </h1>
+                                <p className="text-xl text-gray-600">
+                                    Ein Lernspiel über unterschiedliche Perspektiven
+                                </p>
+                            </div>
+
+                            <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+                                <div className="flex items-start gap-4 mb-6">
+                                    <div className="text-4xl">🧠</div>
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Was lernst du?</h2>
+                                        <div className="space-y-3 text-gray-700">
+                                            <div className="flex items-start gap-2">
+                                                <span className="text-2xl">📈</span>
+                                                <p><strong>Ökonomie</strong> = Wirtschaft, Finanzen, Arbeitsplätze, kurzfristige Gewinne</p>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <span className="text-2xl">🌿</span>
+                                                <p><strong>Ökologie</strong> = Umwelt, Natur, Nachhaltigkeit, langfristige Folgen</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                                Wähle deine Perspektive
+                            </h2>
+
+                            <div className="grid md:grid-cols-3 gap-6">
+                                {roles.map((role) => (
+                                    <button
+                                        key={role.id}
+                                        onClick={() => handleRoleSelect(role)}
+                                        className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all transform hover:scale-105"
+                                    >
+                                        <div className={`w-16 h-16 ${role.color} rounded-full flex items-center justify-center mx-auto mb-4 text-3xl`}>
+                                            {role.icon}
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-800 mb-2">{role.name}</h3>
+                                        <p className="text-gray-600 text-sm">{role.description}</p>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameEnded) {
+                const assessment = getBalanceAssessment();
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white rounded-lg shadow-lg p-8">
+                                <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                                    Spielende - Deine Bilanz
+                                </h2>
+
+                                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                    <div className="bg-blue-50 rounded-lg p-6">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="text-3xl">📈</span>
+                                            <h3 className="text-xl font-bold text-gray-800">Ökonomie</h3>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-8 mb-2">
+                                            <div
+                                                className="bg-blue-600 h-8 rounded-full flex items-center justify-center text-white font-bold transition-all duration-500"
+                                                style={{ width: `${scores.oekonomie}%` }}
+                                            >
+                                                {scores.oekonomie}%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-green-50 rounded-lg p-6">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="text-3xl">🌿</span>
+                                            <h3 className="text-xl font-bold text-gray-800">Ökologie</h3>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-8 mb-2">
+                                            <div
+                                                className="bg-green-600 h-8 rounded-full flex items-center justify-center text-white font-bold transition-all duration-500"
+                                                style={{ width: `${scores.oekologie}%` }}
+                                            >
+                                                {scores.oekologie}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-purple-50 rounded-lg p-6 mb-8">
+                                    <h3 className={`text-2xl font-bold ${assessment.color} mb-2`}>
+                                        {assessment.text}
+                                    </h3>
+                                    <p className="text-gray-700 text-lg">{assessment.description}</p>
+                                </div>
+
+                                <div className="bg-gray-50 rounded-lg p-6 mb-8">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-4">Deine Entscheidungen:</h3>
+                                    <div className="space-y-4">
+                                        {decisions.map((decision, index) => (
+                                            <div key={index} className="border-l-4 border-purple-400 pl-4">
+                                                <p className="font-bold text-gray-800">{decision.scenario}</p>
+                                                <p className="text-gray-700">{decision.choice}</p>
+                                                <p className="text-sm text-gray-600 italic mt-1">{decision.explanation}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="bg-yellow-50 rounded-lg p-6 mb-6">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                        <span className="text-2xl">🧠</span>
+                                        Was hast du gelernt?
+                                    </h3>
+                                    <ul className="space-y-3 text-gray-700">
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-purple-600 font-bold">•</span>
+                                            <span><strong>Ökonomie</strong> fokussiert sich auf wirtschaftliche Effizienz, Gewinn und kurzfristige Rentabilität</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-purple-600 font-bold">•</span>
+                                            <span><strong>Ökologie</strong> betrachtet Umweltauswirkungen, Nachhaltigkeit und langfristige Folgen</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-purple-600 font-bold">•</span>
+                                            <span>Beide Perspektiven sind wichtig - die Herausforderung liegt in der Balance</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-purple-600 font-bold">•</span>
+                                            <span>Unterschiedliche Rollen (Wirtschaft, Umweltschutz, Politik) haben unterschiedliche Prioritäten</span>
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span className="text-purple-600 font-bold">•</span>
+                                            <span>Nachhaltige Lösungen erfordern oft höhere Anfangsinvestitionen, zahlen sich aber langfristig aus</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <button
+                                    onClick={resetGame}
+                                    className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <span className="text-xl">🔄</span>
+                                    Nochmal spielen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const scenario = scenarios[currentScenario];
+            const selectedRoleData = roles.find(r => r.id === selectedRole);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-lg p-8">
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-3xl">{selectedRoleData.icon}</span>
+                                    <span className="text-lg font-semibold text-gray-700">
+                                        {selectedRoleData.name}
+                                    </span>
+                                </div>
+                                <span className="text-sm text-gray-500">
+                                    Szenario {currentScenario + 1} von {scenarios.length}
+                                </span>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-4 mb-8">
+                                <div className="bg-blue-50 rounded-lg p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-xl">📈</span>
+                                        <span className="font-semibold text-gray-700">Ökonomie</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-4">
+                                        <div
+                                            className="bg-blue-600 h-4 rounded-full transition-all duration-500"
+                                            style={{ width: `${scores.oekonomie}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-sm text-gray-600">{scores.oekonomie}%</span>
+                                </div>
+
+                                <div className="bg-green-50 rounded-lg p-4">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-xl">🌿</span>
+                                        <span className="font-semibold text-gray-700">Ökologie</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-4">
+                                        <div
+                                            className="bg-green-600 h-4 rounded-full transition-all duration-500"
+                                            style={{ width: `${scores.oekologie}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-sm text-gray-600">{scores.oekologie}%</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-8">
+                                <h2 className="text-2xl font-bold text-gray-800 mb-4">{scenario.title}</h2>
+                                <p className="text-gray-700 text-lg leading-relaxed">{scenario.description}</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-gray-800">Was entscheidest du?</h3>
+                                {scenario.options.map((option, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleDecision(option)}
+                                        className="w-full text-left bg-gray-50 hover:bg-purple-50 border-2 border-gray-200 hover:border-purple-400 rounded-lg p-4 transition-all"
+                                    >
+                                        <p className="font-semibold text-gray-800 mb-2">{option.text}</p>
+                                        <div className="flex gap-4 text-sm">
+                                            <span className={option.oekonomie > 0 ? 'text-blue-600' : 'text-red-600'}>
+                                                Ökonomie: {option.oekonomie > 0 ? '+' : ''}{option.oekonomie}
+                                            </span>
+                                            <span className={option.oekologie > 0 ? 'text-green-600' : 'text-red-600'}>
+                                                Ökologie: {option.oekologie > 0 ? '+' : ''}{option.oekologie}
+                                            </span>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         }
-      ]
-    },
-    {
-      title: 'Verkehrskonzept',
-      description: 'Die Stadt plant ein neues Verkehrskonzept. Soll eine autofreie Innenstadt eingerichtet werden?',
-      options: [
-        {
-          text: 'Autofreie Zone mit ÖPNV-Ausbau',
-          oekonomie: -12,
-          oekologie: +18,
-          explanation: 'Hohe Investition, aber bessere Luftqualität und Lebensqualität'
-        },
-        {
-          text: 'Verkehrsberuhigung mit Parkgebühren',
-          oekonomie: +5,
-          oekologie: +8,
-          explanation: 'Einnahmen durch Gebühren, moderate Umweltverbesserung'
-        },
-        {
-          text: 'Alles beim Alten lassen',
-          oekonomie: +3,
-          oekologie: -12,
-          explanation: 'Keine Kosten, aber steigende Umweltbelastung und Verkehrsprobleme'
-        }
-      ]
-    },
-    {
-      title: 'Energieversorgung',
-      description: 'Die lokale Energieversorgung muss erneuert werden. Wie soll die Zukunft aussehen?',
-      options: [
-        {
-          text: 'Vollständig auf Erneuerbare setzen',
-          oekonomie: -15,
-          oekologie: +25,
-          explanation: 'Hohe Anfangsinvestition, aber langfristig nachhaltig und unabhängig'
-        },
-        {
-          text: 'Mix aus Erneuerbaren und Gas',
-          oekonomie: -5,
-          oekologie: +10,
-          explanation: 'Ausgewogener Ansatz mit moderaten Kosten und Umweltnutzen'
-        },
-        {
-          text: 'Günstige Kohlekraft verlängern',
-          oekonomie: +10,
-          oekologie: -20,
-          explanation: 'Kurzfristig billig, aber klimaschädlich und nicht zukunftsfähig'
-        }
-      ]
-    }
-  ];
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role);
-    setGameStarted(true);
-  };
-
-  const handleDecision = (option) => {
-    const newOekonomie = Math.max(0, Math.min(100, scores.oekonomie + option.oekonomie));
-    const newOekologie = Math.max(0, Math.min(100, scores.oekologie + option.oekologie));
-    
-    setScores({
-      oekonomie: newOekonomie,
-      oekologie: newOekologie
-    });
-
-    setDecisions([...decisions, {
-      scenario: scenarios[currentScenario].title,
-      choice: option.text,
-      explanation: option.explanation
-    }]);
-
-    if (currentScenario < scenarios.length - 1) {
-      setCurrentScenario(currentScenario + 1);
-    } else {
-      setGameEnded(true);
-    }
-  };
-
-  const resetGame = () => {
-    setGameStarted(false);
-    setSelectedRole(null);
-    setCurrentScenario(0);
-    setScores({ oekonomie: 50, oekologie: 50 });
-    setDecisions([]);
-    setGameEnded(false);
-  };
-
-  const getBalanceAssessment = () => {
-    const diff = Math.abs(scores.oekonomie - scores.oekologie);
-    if (diff < 15) return { text: 'Ausgewogen', color: 'text-green-600', description: 'Du hast beide Aspekte gut balanciert!' };
-    if (scores.oekonomie > scores.oekologie + 15) return { text: 'Ökonomie-fokussiert', color: 'text-blue-600', description: 'Du hast wirtschaftliche Interessen priorisiert.' };
-    return { text: 'Ökologie-fokussiert', color: 'text-green-600', description: 'Du hast Umweltschutz priorisiert.' };
-  };
-
-  if (!gameStarted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Ökonomie vs. Ökologie
-            </h1>
-            <p className="text-xl text-gray-600">
-              Ein Lernspiel über unterschiedliche Perspektiven
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div className="flex items-start gap-4 mb-6">
-              <Brain className="w-8 h-8 text-purple-600 flex-shrink-0 mt-1" />
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Was lernst du?</h2>
-                <div className="space-y-3 text-gray-700">
-                  <div className="flex items-start gap-2">
-                    <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p><strong>Ökonomie</strong> = Wirtschaft, Finanzen, Arbeitsplätze, kurzfristige Gewinne</p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Leaf className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <p><strong>Ökologie</strong> = Umwelt, Natur, Nachhaltigkeit, langfristige Folgen</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Wähle deine Perspektive
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {roles.map((role) => (
-              <button
-                key={role.id}
-                onClick={() => handleRoleSelect(role)}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all transform hover:scale-105"
-              >
-                <div className={`w-16 h-16 ${role.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <role.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{role.name}</h3>
-                <p className="text-gray-600 text-sm">{role.description}</p>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (gameEnded) {
-    const assessment = getBalanceAssessment();
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-              Spielende - Deine Bilanz
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-blue-50 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <TrendingUp className="w-8 h-8 text-blue-600" />
-                  <h3 className="text-xl font-bold text-gray-800">Ökonomie</h3>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-8 mb-2">
-                  <div
-                    className="bg-blue-600 h-8 rounded-full flex items-center justify-center text-white font-bold"
-                    style={{ width: `${scores.oekonomie}%` }}
-                  >
-                    {scores.oekonomie}%
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-green-50 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Leaf className="w-8 h-8 text-green-600" />
-                  <h3 className="text-xl font-bold text-gray-800">Ökologie</h3>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-8 mb-2">
-                  <div
-                    className="bg-green-600 h-8 rounded-full flex items-center justify-center text-white font-bold"
-                    style={{ width: `${scores.oekologie}%` }}
-                  >
-                    {scores.oekologie}%
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-purple-50 rounded-lg p-6 mb-8">
-              <h3 className={`text-2xl font-bold ${assessment.color} mb-2`}>
-                {assessment.text}
-              </h3>
-              <p className="text-gray-700 text-lg">{assessment.description}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 mb-8">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Deine Entscheidungen:</h3>
-              <div className="space-y-4">
-                {decisions.map((decision, index) => (
-                  <div key={index} className="border-l-4 border-purple-400 pl-4">
-                    <p className="font-bold text-gray-800">{decision.scenario}</p>
-                    <p className="text-gray-700">{decision.choice}</p>
-                    <p className="text-sm text-gray-600 italic mt-1">{decision.explanation}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 rounded-lg p-6 mb-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <Brain className="w-6 h-6 text-purple-600" />
-                Was hast du gelernt?
-              </h3>
-              <ul className="space-y-3 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
-                  <span><strong>Ökonomie</strong> fokussiert sich auf wirtschaftliche Effizienz, Gewinn und kurzfristige Rentabilität</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
-                  <span><strong>Ökologie</strong> betrachtet Umweltauswirkungen, Nachhaltigkeit und langfristige Folgen</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
-                  <span>Beide Perspektiven sind wichtig - die Herausforderung liegt in der Balance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
-                  <span>Unterschiedliche Rollen (Wirtschaft, Umweltschutz, Politik) haben unterschiedliche Prioritäten</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
-                  <span>Nachhaltige Lösungen erfordern oft höhere Anfangsinvestitionen, zahlen sich aber langfristig aus</span>
-                </li>
-              </ul>
-            </div>
-
-            <button
-              onClick={resetGame}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
-            >
-              <RotateCcw className="w-5 h-5" />
-              Nochmal spielen
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const scenario = scenarios[currentScenario];
-  const RoleIcon = roles.find(r => r.id === selectedRole).icon;
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <RoleIcon className="w-8 h-8 text-purple-600" />
-              <span className="text-lg font-semibold text-gray-700">
-                {roles.find(r => r.id === selectedRole).name}
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">
-              Szenario {currentScenario + 1} von {scenarios.length}
-            </span>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
-                <span className="font-semibold text-gray-700">Ökonomie</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className="bg-blue-600 h-4 rounded-full transition-all duration-500"
-                  style={{ width: `${scores.oekonomie}%` }}
-                />
-              </div>
-              <span className="text-sm text-gray-600">{scores.oekonomie}%</span>
-            </div>
-
-            <div className="bg-green-50 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Leaf className="w-5 h-5 text-green-600" />
-                <span className="font-semibold text-gray-700">Ökologie</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className="bg-green-600 h-4 rounded-full transition-all duration-500"
-                  style={{ width: `${scores.oekologie}%` }}
-                />
-              </div>
-              <span className="text-sm text-gray-600">{scores.oekologie}%</span>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">{scenario.title}</h2>
-            <p className="text-gray-700 text-lg leading-relaxed">{scenario.description}</p>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">Was entscheidest du?</h3>
-            {scenario.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleDecision(option)}
-                className="w-full text-left bg-gray-50 hover:bg-purple-50 border-2 border-gray-200 hover:border-purple-400 rounded-lg p-4 transition-all"
-              >
-                <p className="font-semibold text-gray-800 mb-2">{option.text}</p>
-                <div className="flex gap-4 text-sm">
-                  <span className={option.oekonomie > 0 ? 'text-blue-600' : 'text-red-600'}>
-                    Ökonomie: {option.oekonomie > 0 ? '+' : ''}{option.oekonomie}
-                  </span>
-                  <span className={option.oekologie > 0 ? 'text-green-600' : 'text-red-600'}>
-                    Ökologie: {option.oekologie > 0 ? '+' : ''}{option.oekologie}
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default OekonomieOekologieSpiel;
+        ReactDOM.render(<OekonomieOekologieSpiel />, document.getElementById('root'));
+    </script>
+</body>
+</html>
