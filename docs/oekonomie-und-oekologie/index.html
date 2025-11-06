@@ -185,16 +185,23 @@
 
         .iframe-container h2 {
             color: #1e3a8a;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .iframe-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
         .iframe-wrapper {
             position: relative;
             width: 100%;
-            height: 600px;
+            height: 900px;
             border-radius: 10px;
             overflow: hidden;
             background: #f3f4f6;
+            border: 2px solid #e5e7eb;
         }
 
         .iframe-wrapper iframe {
@@ -204,55 +211,13 @@
             border-radius: 10px;
         }
 
-        .external-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #0ea5e9;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(14, 165, 233, 0.1);
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .external-link:hover {
-            background: rgba(14, 165, 233, 0.2);
-            transform: translateX(5px);
-        }
-
-        .expandable-header.white {
-            background: rgba(255, 255, 255, 0.95);
-            color: #1e3a8a;
-            border: 2px solid #e5e7eb;
-        }
-
-        .expandable-header.white:hover {
-            background: rgba(255, 255, 255, 1);
-            border-color: #cbd5e1;
-        }
-
-        .expandable-header.white .arrow {
-            color: #1e3a8a;
-        }
-
-        .expandable-header.green {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .expandable-header.green:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-        }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
             }
 
             .iframe-wrapper {
-                height: 400px;
+                height: 700px;
             }
         }
     </style>
@@ -277,6 +242,15 @@
                         <p>Hier kommt der Inhalt des ersten Auftrags...</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Interaktives Lernspiel -->
+        <div class="iframe-container">
+            <h2>🎮 Interaktives Lernspiel: Ökonomie vs. Ökologie</h2>
+            <p class="iframe-description">Schlüpfe in verschiedene Rollen und triff Entscheidungen, die sowohl wirtschaftliche als auch ökologische Auswirkungen haben. Lerne dabei die Unterschiede zwischen ökonomischem und ökologischem Denken kennen!</p>
+            <div class="iframe-wrapper">
+                <iframe src="spiel.html" title="Ökonomie vs. Ökologie Lernspiel"></iframe>
             </div>
         </div>
 
