@@ -1,1 +1,862 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ökologie und Ökonomie - Lernspiel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            background-image: url('images/oekologie.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 58, 138, 0.7);
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0 0 0;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem 1rem;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .game-container h2 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .game-screen {
+            background: linear-gradient(135deg, #f0fdf4, #dbeafe);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-bars {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .score-item h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.3rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .progress-fill.blue { background: #3b82f6; }
+        .progress-fill.green { background: #10b981; }
+
+        .scenario-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .scenario-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #374151;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #f9fafb;
+            border-color: #a855f7;
+        }
+
+        .option-btn strong {
+            display: block;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-btn small {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .result-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-bar {
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+
+        .assessment {
+            background: #faf5ff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .assessment h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .decisions-list {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .decision-item {
+            border-left: 4px solid #a855f7;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .decision-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .learning-box {
+            background: #fefce8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .learning-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .learning-box ul {
+            list-style: none;
+        }
+
+        .learning-box li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .learning-box li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #a855f7;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #9333ea;
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box h3 {
+            font-size: 1.3rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: start;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .info-item span {
+            font-size: 2rem;
+        }
+
+        .expandable-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .expandable-header:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .expandable-header .arrow {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .expandable-header.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .expandable-content.open {
+            max-height: 10000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .expandable-inner {
+            padding: 2rem;
+        }
+
+        .task-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .task-box h3 {
+            color: #92400e;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .task-box-blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .task-box-blue h3 {
+            color: #1e3a8a;
+        }
+
+        .task-box-blue p {
+            color: #1e40af;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .results-grid, .score-bars, .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌱💼 Ökologie und Ökonomie</h1>
+        <a href="../index.html" class="back-link">← Zurück zum Lernpfad</a>
+    </header>
+
+    <main>
+        <!-- Interaktives Lernspiel -->
+        <div class="game-container">
+            <h2>🎮 Interaktives Lernspiel: Ökonomie vs. Ökologie</h2>
+            <p class="game-description">Triff Entscheidungen in verschiedenen Situationen und erlebe, wie sich wirtschaftliche und ökologische Überlegungen unterscheiden. Gibt es einen Weg, beides zu vereinen?</p>
+            
+            <div class="game-screen" id="game-root">
+                <!-- Startbildschirm -->
+                <div id="start-screen">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1 style="font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem;">
+                            Ökonomie vs. Ökologie
+                        </h1>
+                        <p style="font-size: 1.1rem; color: #6b7280;">
+                            Ein Lernspiel über unterschiedliche Perspektiven
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h3>🧠 Was lernst du?</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span>📈</span>
+                                <div>
+                                    <strong>Ökonomie</strong>
+                                    <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Wirtschaft, Profit, Arbeitsplätze, kurzfristige Gewinne</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span>🌿</span>
+                                <div>
+                                    <strong>Ökologie</strong>
+                                    <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Umwelt, Nachhaltigkeit, langfristige Folgen</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="startGame()">
+                        <span>🎮</span>
+                        Spiel starten
+                    </button>
+                </div>
+
+                <!-- Spiel-Bildschirm -->
+                <div id="game-screen" class="hidden"></div>
+
+                <!-- Ergebnis-Bildschirm -->
+                <div id="result-screen" class="hidden"></div>
+            </div>
+        </div>
+
+        <!-- Aufklappbarer Aufgaben-Bereich 1 -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand1()">
+                <span>📋 Aufgabenbereich 1</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content1">
+                <div class="expandable-inner">
+                    <div class="task-box">
+                        <h3>📚 Auftrag:</h3>
+                        <p>Notieren Sie nach dem Spielen Ihre Überlegungen zum Unterschied von Ökonomie und Ökologie in Ihr OneNote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aufklappbarer Aufgaben-Bereich 2 -->
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleExpand2()">
+                <span>📋 Aufgabenbereich 2</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="expandable-content" id="expandable-content2">
+                <div class="expandable-inner">
+                    <div class="task-box">
+                        <h3>📚 Auftrag:</h3>
+                        <p>Hier kommt der Inhalt des zweiten Auftrags...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vereinfachte Szenarien - kürzer und klarer
+        const scenarios = [
+            {
+                title: 'Neues Industriegebiet',
+                description: 'Eine Firma möchte ein großes Werk bauen. Es würde 500 Arbeitsplätze schaffen, aber ein Waldgebiet müsste gerodet werden.',
+                options: [
+                    { 
+                        text: 'Sofort genehmigen', 
+                        detail: 'Schneller Wirtschaftsaufschwung, Wald wird zerstört',
+                        oekonomie: 15, 
+                        oekologie: -20
+                    },
+                    { 
+                        text: 'Mit Umweltauflagen genehmigen', 
+                        detail: 'Kompromiss: Teurer für Firma, aber Naturschutz möglich',
+                        oekonomie: 8, 
+                        oekologie: -5
+                    },
+                    { 
+                        text: 'Ablehnen', 
+                        detail: 'Wald bleibt erhalten, Firma geht woanders hin',
+                        oekonomie: -10, 
+                        oekologie: 15
+                    }
+                ]
+            },
+            {
+                title: 'Nachhaltige Produktion',
+                description: 'Ein Textilunternehmen könnte auf Bio-Rohstoffe umstellen. Das wäre besser für die Umwelt, würde aber 20% mehr kosten.',
+                options: [
+                    { 
+                        text: 'Komplett auf Bio umstellen', 
+                        detail: 'Teurer, aber umweltfreundlich und zukunftssicher',
+                        oekonomie: -10, 
+                        oekologie: 20
+                    },
+                    { 
+                        text: 'Halb-halb: 50% Bio', 
+                        detail: 'Mittlerer Weg: Etwas teurer, etwas nachhaltiger',
+                        oekonomie: -3, 
+                        oekologie: 10
+                    },
+                    { 
+                        text: 'Alles beim Alten lassen', 
+                        detail: 'Günstig bleiben, aber umweltschädlich',
+                        oekonomie: 8, 
+                        oekologie: -15
+                    }
+                ]
+            },
+            {
+                title: 'Autofreie Innenstadt',
+                description: 'Die Stadt plant eine autofreie Zone mit neuen Straßenbahnen. Kosten: 80 Millionen Euro. Die Luft würde besser, aber Geschäfte befürchten weniger Kunden.',
+                options: [
+                    { 
+                        text: 'Vollständig umsetzen', 
+                        detail: 'Teuer und lange Bauzeit, aber viel bessere Lebensqualität',
+                        oekonomie: -12, 
+                        oekologie: 18
+                    },
+                    { 
+                        text: 'Höhere Parkgebühren einführen', 
+                        detail: 'Autofahren wird teurer, weniger Autos, Stadt verdient',
+                        oekonomie: 5, 
+                        oekologie: 8
+                    },
+                    { 
+                        text: 'Nichts ändern', 
+                        detail: 'Keine Kosten, aber Luftverschmutzung bleibt',
+                        oekonomie: 3, 
+                        oekologie: -12
+                    }
+                ]
+            },
+            {
+                title: 'Neue Energieversorgung',
+                description: 'Das alte Kraftwerk muss ersetzt werden. Wind und Solar kosten 150 Mio., ein Gaskraftwerk 60 Mio., Kohle sanieren 30 Mio.',
+                options: [
+                    { 
+                        text: 'Erneuerbare Energien', 
+                        detail: 'Sehr teuer am Anfang, aber später günstig und sauber',
+                        oekonomie: -15, 
+                        oekologie: 25
+                    },
+                    { 
+                        text: 'Mix: 60% Erneuerbare + Gas', 
+                        detail: 'Mittelweg: Etwas teurer, deutlich sauberer',
+                        oekonomie: -5, 
+                        oekologie: 10
+                    },
+                    { 
+                        text: 'Kohle weiter nutzen', 
+                        detail: 'Billigste Lösung jetzt, aber klimaschädlich',
+                        oekonomie: 10, 
+                        oekologie: -20
+                    }
+                ]
+            },
+            {
+                title: 'Plastikverpackungen',
+                description: 'Ein Supermarkt könnte Plastikverpackungen durch Papier und Mehrweg ersetzen. Das würde Müll reduzieren, kostet aber mehr.',
+                options: [
+                    { 
+                        text: 'Alles auf Mehrweg umstellen', 
+                        detail: 'Höhere Kosten, aber kaum noch Müll',
+                        oekonomie: -8, 
+                        oekologie: 18
+                    },
+                    { 
+                        text: 'Nur bei bestimmten Produkten', 
+                        detail: 'Kleiner Schritt: Etwas mehr Aufwand, weniger Müll',
+                        oekonomie: -3, 
+                        oekologie: 8
+                    },
+                    { 
+                        text: 'Plastik beibehalten', 
+                        detail: 'Billig und praktisch, aber viel Müll',
+                        oekonomie: 5, 
+                        oekologie: -12
+                    }
+                ]
+            }
+        ];
+
+        // Spiel-Status
+        let gameState = {
+            currentScenario: 0,
+            scores: { oekonomie: 50, oekologie: 50 },
+            decisions: []
+        };
+
+        // Spiel starten
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            showScenario();
+        }
+
+        // Szenario anzeigen
+        function showScenario() {
+            const scenario = scenarios[gameState.currentScenario];
+            const gameScreen = document.getElementById('game-screen');
+            
+            let optionsHtml = '';
+            scenario.options.forEach((option, index) => {
+                optionsHtml += `
+                    <button class="option-btn" onclick="makeDecision(${index})">
+                        <strong>${option.text}</strong>
+                        <small>${option.detail}</small>
+                    </button>
+                `;
+            });
+
+            gameScreen.innerHTML = `
+                <div class="scenario-header">
+                    <span style="font-size: 1.2rem; font-weight: bold; color: #1f2937;">
+                        Szenario ${gameState.currentScenario + 1} / ${scenarios.length}
+                    </span>
+                </div>
+
+                <div class="score-bars">
+                    <div class="score-item">
+                        <h4><span>📈</span> Ökonomie</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill blue" style="width: ${gameState.scores.oekonomie}%">
+                                ${gameState.scores.oekonomie}%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-item">
+                        <h4><span>🌿</span> Ökologie</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill green" style="width: ${gameState.scores.oekologie}%">
+                                ${gameState.scores.oekologie}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-content">
+                    <h2>${scenario.title}</h2>
+                    <p>${scenario.description}</p>
+                    <h3 style="margin-bottom: 1rem; font-weight: 600;">Was entscheidest du?</h3>
+                    <div class="options">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+            
+            gameScreen.classList.remove('hidden');
+        }
+
+        // Entscheidung treffen
+        function makeDecision(optionIndex) {
+            const scenario = scenarios[gameState.currentScenario];
+            const option = scenario.options[optionIndex];
+            
+            // Scores aktualisieren
+            gameState.scores.oekonomie = Math.max(0, Math.min(100, gameState.scores.oekonomie + option.oekonomie));
+            gameState.scores.oekologie = Math.max(0, Math.min(100, gameState.scores.oekologie + option.oekologie));
+            
+            // Entscheidung speichern
+            gameState.decisions.push({
+                scenario: scenario.title,
+                choice: option.text,
+                detail: option.detail
+            });
+            
+            // Nächstes Szenario oder Ergebnis
+            if (gameState.currentScenario < scenarios.length - 1) {
+                gameState.currentScenario++;
+                showScenario();
+            } else {
+                showResults();
+            }
+        }
+
+        // Ergebnisse anzeigen
+        function showResults() {
+            const diff = Math.abs(gameState.scores.oekonomie - gameState.scores.oekologie);
+            let assessment;
+            
+            if (diff < 15) {
+                assessment = { 
+                    text: '⚖️ Ausgewogen', 
+                    color: '#10b981', 
+                    description: 'Du hast wirtschaftliche und ökologische Interessen gut balanciert!' 
+                };
+            } else if (gameState.scores.oekonomie > gameState.scores.oekologie + 15) {
+                assessment = { 
+                    text: '📈 Wirtschafts-orientiert', 
+                    color: '#3b82f6', 
+                    description: 'Du hast vor allem auf Wirtschaft und Arbeitsplätze geachtet.' 
+                };
+            } else {
+                assessment = { 
+                    text: '🌿 Umwelt-orientiert', 
+                    color: '#10b981', 
+                    description: 'Du hast den Umweltschutz in den Vordergrund gestellt.' 
+                };
+            }
+
+            let decisionsHtml = '';
+            gameState.decisions.forEach(decision => {
+                decisionsHtml += `
+                    <div class="decision-item">
+                        <p style="font-weight: bold; margin-bottom: 0.25rem;">${decision.scenario}</p>
+                        <p style="margin-bottom: 0.25rem;">➜ ${decision.choice}</p>
+                        <p style="font-size: 0.85rem; color: #6b7280; font-style: italic;">${decision.detail}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('game-screen').classList.add('hidden');
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold; color: #1f2937;">
+                        Spielende - Deine Bilanz
+                    </h1>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3><span>📈</span> Ökonomie</h3>
+                        <div class="progress-bar result-bar">
+                            <div class="progress-fill blue" style="width: ${gameState.scores.oekonomie}%">
+                                ${gameState.scores.oekonomie}%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <h3><span>🌿</span> Ökologie</h3>
+                        <div class="progress-bar result-bar">
+                            <div class="progress-fill green" style="width: ${gameState.scores.oekologie}%">
+                                ${gameState.scores.oekologie}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="assessment">
+                    <h3 style="color: ${assessment.color}">${assessment.text}</h3>
+                    <p style="font-size: 1.1rem;">${assessment.description}</p>
+                </div>
+
+                <div class="decisions-list">
+                    <h3 style="margin-bottom: 1rem;">Deine Entscheidungen:</h3>
+                    ${decisionsHtml}
+                </div>
+
+                <div class="learning-box">
+                    <h3><span>🧠</span> Was hast du gelernt?</h3>
+                    <ul>
+                        <li><strong>Ökonomie</strong> denkt in Geld, Gewinn und kurzfristigen Vorteilen</li>
+                        <li><strong>Ökologie</strong> denkt in Umwelt, Nachhaltigkeit und langfristigen Folgen</li>
+                        <li>Beide Perspektiven sind wichtig und haben gute Gründe</li>
+                        <li>Die Herausforderung ist, <strong>beides zu vereinen</strong></li>
+                        <li>Nachhaltige Lösungen sind oft teurer am Anfang, sparen aber später Kosten</li>
+                    </ul>
+                </div>
+
+                <button class="btn-primary" onclick="resetGame()">
+                    <span>🔄</span>
+                    Nochmal spielen
+                </button>
+            `;
+            resultScreen.classList.remove('hidden');
+        }
+
+        // Spiel zurücksetzen
+        function resetGame() {
+            gameState = {
+                currentScenario: 0,
+                scores: { oekonomie: 50, oekologie: 50 },
+                decisions: []
+            };
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        // Toggle Expandable Functions
+        function toggleExpand1() {
+            const content = document.getElementById('expandable-content1');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[0];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+
+        function toggleExpand2() {
+            const content = document.getElementById('expandable-content2');
+            const headers = document.querySelectorAll('.expandable-header');
+            const header = headers[1];
+            content.classList.toggle('open');
+            header.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
 
