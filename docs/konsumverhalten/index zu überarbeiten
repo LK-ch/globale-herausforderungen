@@ -1,1 +1,363 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konsumverhalten - Globale Herausforderungen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3CradialGradient id='globe' cx='50%25' cy='40%25'%3E%3Cstop offset='0%25' style='stop-color:%234a90e2;stop-opacity:1' /%3E%3Cstop offset='70%25' style='stop-color:%232c5aa0;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%231a3a6b;stop-opacity:1' /%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='400' cy='400' r='300' fill='url(%23globe)' opacity='0.3'/%3E%3Cg fill='%2334d399' opacity='0.4'%3E%3Cpath d='M 400 300 Q 420 310 425 340 Q 430 370 420 400 Q 410 430 400 450 Q 390 430 385 400 Q 380 360 390 330 Q 395 310 400 300 Z'/%3E%3Cpath d='M 380 260 Q 390 255 400 260 Q 410 265 415 275 Q 410 285 400 285 Q 390 285 385 280 Q 378 272 380 260 Z'/%3E%3Cpath d='M 430 250 Q 470 260 500 280 Q 520 300 530 330 Q 535 360 525 390 Q 515 410 500 420 Q 480 410 465 395 Q 450 375 445 350 Q 440 320 445 290 Q 440 270 430 250 Z'/%3E%3Cpath d='M 280 250 Q 300 240 320 245 Q 340 255 350 275 Q 355 300 345 325 Q 335 345 320 355 Q 305 350 295 335 Q 285 315 280 290 Q 275 270 280 250 Z'/%3E%3Cpath d='M 320 370 Q 330 365 340 375 Q 345 395 340 420 Q 335 450 325 475 Q 315 485 310 475 Q 305 455 308 430 Q 312 400 315 385 Q 318 375 320 370 Z'/%3E%3Cpath d='M 520 480 Q 540 475 555 485 Q 565 500 560 515 Q 550 525 535 522 Q 520 515 515 500 Q 513 487 520 480 Z'/%3E%3C/g%3E%3Cg stroke='%23ffffff' stroke-width='1' fill='none' opacity='0.15'%3E%3Cellipse cx='400' cy='400' rx='300' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='240'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='180'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='120'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='60'/%3E%3Cellipse cx='400' cy='400' rx='240' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='180' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='120' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='60' ry='300'/%3E%3Cline x1='400' y1='100' x2='400' y2='700'/%3E%3Cline x1='100' y1='400' x2='700' y2='400'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0 0 0;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem 2rem 1rem;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .intro-card h2 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .intro-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-box h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .info-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .module-content {
+            padding: 1.5rem;
+        }
+
+        .module-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .module-features {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .module-features h4 {
+            color: #1e3a8a;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.4rem 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .module-footer {
+            padding: 1rem 1.5rem;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .module-card {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .module-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .module-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .module-card {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🛒 Konsumverhalten</h1>
+        <p>Wie beeinflusst unser Konsum die Welt?</p>
+        <a href="../index.html" class="back-link">← Zurück zur Startseite</a>
+    </header>
+
+    <main>
+        <div class="intro-card">
+            <h2>Unser Konsum hat globale Auswirkungen</h2>
+            <p>
+                Unsere Kaufentscheidungen beeinflussen das Klima, die Umwelt und Menschen weltweit. 
+                In der Schweiz verbrauchen wir 2,8 Mal so viele Ressourcen, wie uns für ein ganzes Jahr 
+                zur Verfügung stehen. Hier kannst du mehr über deinen eigenen Fussabdruck erfahren!
+            </p>
+        </div>
+
+        <div class="info-box">
+            <h3>💡 Wusstest du?</h3>
+            <p>
+                <strong>Die drei grössten Hebel</strong> für deinen CO₂-Fussabdruck sind: 
+                <strong>Mobilität, Heizen und Ernährung</strong>. Auch wenn wir beim Konsum 
+                an Verpackungen denken – viel wichtiger ist, <em>was</em> wir kaufen und 
+                <em>wie oft</em> wir etwas Neues brauchen!
+            </p>
+        </div>
+
+        <div class="modules-grid">
+            <!-- Modul 1: Klimaschutz-Quiz -->
+            <a href="quiz-fussabdruck.html" class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🎮</div>
+                    <h3 class="module-title">Klimaschutz-Quiz</h3>
+                </div>
+                <div class="module-content">
+                    <p class="module-description">
+                        Teste dein Wissen über CO₂, Klimaschutz und nachhaltiges Leben in der Schweiz! 
+                        Mit 10 spannenden Fragen und vielen lehrreichen Erklärungen.
+                    </p>
+                    <div class="module-features">
+                        <h4>Was dich erwartet</h4>
+                        <ul class="feature-list">
+                            <li>10 interaktive Fragen</li>
+                            <li>Sofortiges Feedback</li>
+                            <li>Basiert auf WWF & BAFU Daten</li>
+                            <li>Lerne spielerisch!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-footer">
+                    <span style="color: #666; font-size: 0.9rem;">⏱️ ca. 10 Minuten</span>
+                    <span class="start-button">Quiz starten →</span>
+                </div>
+            </a>
+
+            <!-- Modul 2: CO₂-Rechner -->
+            <a href="CO2-rechner.html" class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">🧮</div>
+                    <h3 class="module-title">CO₂-Rechner</h3>
+                </div>
+                <div class="module-content">
+                    <p class="module-description">
+                        Berechne deinen persönlichen CO₂-Fussabdruck! Finde heraus, wie deine 
+                        Mobilität, Ernährung und Wohnsituation das Klima beeinflussen.
+                    </p>
+                    <div class="module-features">
+                        <h4>Was dich erwartet</h4>
+                        <ul class="feature-list">
+                            <li>Bereiche: Mobilität, Ernährung, Wohnen</li>
+                            <li>Offizielle Schweizer Daten (BAFU, BFE)</li>
+                            <li>Vergleich mit CH-Durchschnitt</li>
+                            <li>PDF-Export der Ergebnisse</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-footer">
+                    <span style="color: #666; font-size: 0.9rem;">⏱️ ca. 15 Minuten</span>
+                    <span class="start-button">Rechner öffnen →</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Thema Globale Herausforderungen | Allgemeinbildung LK bfsl</p>
+    </footer>
+</body>
+</html>
 
