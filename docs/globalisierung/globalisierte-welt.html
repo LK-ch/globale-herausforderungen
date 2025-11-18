@@ -405,11 +405,6 @@
             transform: rotate(180deg);
         }
 
-        #fazit-arrow {
-            transition: transform 0.3s;
-            display: inline-block;
-        }
-
         .expandable-content {
             max-height: 0;
             overflow: hidden;
@@ -1339,13 +1334,13 @@
                 </header>
 
                 <main class="slide-in">
-                    <!-- Aufklappbare Aufgaben-Sektion -->
+                    <!-- Aufklappbare Aufgaben-Sektion 1 -->
                     <div class="expandable-section">
-                        <div class="expandable-header" onclick="toggleExpand()">
-                            <span>📋 Aufgaben zur Globalisierung im Alltag</span>
-                            <span class="arrow">▼</span>
+                        <div class="expandable-header" onclick="toggleExpand1()">
+                            <span>📋 Aufgabe zur Globalisierung im Alltag</span>
+                            <span class="arrow" id="arrow1">▼</span>
                         </div>
-                        <div class="expandable-content" id="expandable-content">
+                        <div class="expandable-content" id="expandable-content1">
                             <div class="expandable-inner">
                                 <div class="task-box">
                                     <h3>📚 Auftrag 1: Woher kommt Ihre Kleidung?</h3>
@@ -1357,7 +1352,18 @@
                                         <li>Notieren Sie Ihre Beobachtungen in Ihr OneNote.</li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Aufklappbare Aufgaben-Sektion 2 -->
+                    <div class="expandable-section">
+                        <div class="expandable-header" onclick="toggleExpand2()">
+                            <span>👖 Die Reise einer Jeans</span>
+                            <span class="arrow" id="arrow2">▼</span>
+                        </div>
+                        <div class="expandable-content" id="expandable-content2">
+                            <div class="expandable-inner">
                                 <div class="task-box">
                                     <h3>📚 Auftrag 2: Die Reise einer Jeans</h3>
                                     <p>Ihre Kleidung hat aber bereits mehr Länder gesehen, als dies die Etikette vermuten lässt. Schauen Sie sich das folgende Video zur Jeans an und beantworten Sie folgende Fragen:</p>
@@ -1765,12 +1771,30 @@
             render();
         }
 
-        function toggleExpand() {
-            const content = document.getElementById('expandable-content');
-            const header = document.querySelector('.expandable-header');
+        function toggleExpand1() {
+            const content = document.getElementById('expandable-content1');
+            const arrow = document.getElementById('arrow1');
             
             content.classList.toggle('open');
-            header.classList.toggle('open');
+            
+            if (content.classList.contains('open')) {
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleExpand2() {
+            const content = document.getElementById('expandable-content2');
+            const arrow = document.getElementById('arrow2');
+            
+            content.classList.toggle('open');
+            
+            if (content.classList.contains('open')) {
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                arrow.style.transform = 'rotate(0deg)';
+            }
         }
 
         function toggleFazit() {
@@ -1779,7 +1803,6 @@
             
             content.classList.toggle('open');
             
-            // Rotiere den Pfeil
             if (content.classList.contains('open')) {
                 arrow.style.transform = 'rotate(180deg)';
             } else {
