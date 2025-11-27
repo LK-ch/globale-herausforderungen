@@ -315,15 +315,13 @@
             // HINWEIS: Für echtes Microsoft Login muss die MSAL Library eingebunden werden
             // <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
             
-            alert('Microsoft Login wird initialisiert...\n\nFür die vollständige Integration benötigst du:\n1. Eine Azure App Registration\n2. Die MSAL JavaScript Library\n3. Client ID und Tenant ID\n\nSiehe README für Details.');
-            
             // Simulierter Login für Demo
-            const userName = prompt('Demo: Gib deinen Namen ein\n(In der echten Version erfolgt Microsoft-Login)');
-            if (userName) {
-                learningProgress.userId = userName;
+            const userName = prompt('Gib deinen Namen ein:\n\n(Dies ist eine Demo-Version. Für echtes Microsoft-Login siehe die Anleitung in der README-Datei)');
+            if (userName && userName.trim() !== '') {
+                learningProgress.userId = userName.trim();
                 document.getElementById('login-btn').style.display = 'none';
                 document.getElementById('user-profile').style.display = 'flex';
-                document.getElementById('user-name').textContent = userName;
+                document.getElementById('user-name').textContent = userName.trim();
                 updatePortfolio();
                 saveProgress();
             }
