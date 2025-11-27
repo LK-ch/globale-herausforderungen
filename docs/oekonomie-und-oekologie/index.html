@@ -1,1 +1,470 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernpfad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        header h1 {
+            font-size: 2em;
+        }
+
+        #user-info button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #user-info button:hover {
+            transform: scale(1.05);
+        }
+
+        #user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #user-name {
+            font-weight: bold;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        #learning-path {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 40px;
+        }
+
+        .learning-point {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .learning-point:hover:not(.locked) {
+            transform: scale(1.1);
+        }
+
+        .learning-point.active circle {
+            fill: #4CAF50;
+            filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.5));
+        }
+
+        .learning-point.completed circle {
+            fill: #2196F3;
+            filter: drop-shadow(0 0 10px rgba(33, 150, 243, 0.5));
+        }
+
+        .learning-point.locked circle {
+            fill: #cccccc;
+        }
+
+        .learning-point.locked {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .connection-line.active {
+            stroke: #4CAF50;
+            stroke-width: 4;
+            animation: dash 1s linear;
+        }
+
+        .connection-line.completed {
+            stroke: #2196F3;
+            stroke-width: 4;
+        }
+
+        @keyframes dash {
+            from {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        #portfolio-section {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        #portfolio-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        #portfolio-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 200px;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .achievement-icon {
+            font-size: 2em;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            #learning-path {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Mein Lernpfad</h1>
+            <div id="user-info">
+                <button id="login-btn" onclick="login()">Mit Microsoft anmelden</button>
+                <div id="user-profile" style="display: none;">
+                    <span id="user-name"></span>
+                    <button onclick="logout()">Abmelden</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <svg id="learning-path" viewBox="0 0 800 600">
+                <!-- Verbindungslinien -->
+                <path id="path-1-2" class="connection-line" d="M 150 100 Q 200 80 250 120" stroke="#ccc" stroke-width="3" fill="none"/>
+                <path id="path-2-3" class="connection-line" d="M 250 120 Q 350 50 450 100" stroke="#ccc" stroke-width="3" fill="none"/>
+                <path id="path-3-4" class="connection-line" d="M 450 100 Q 550 120 600 180" stroke="#ccc" stroke-width="3" fill="none"/>
+                <path id="path-4-5" class="connection-line" d="M 600 180 Q 550 250 450 280" stroke="#ccc" stroke-width="3" fill="none"/>
+                <path id="path-5-finish" class="connection-line" d="M 450 280 Q 350 320 300 380" stroke="#ccc" stroke-width="3" fill="none"/>
+
+                <!-- Lernpunkte -->
+                <g class="learning-point active" data-point="1" onclick="openPoint(1)">
+                    <circle cx="150" cy="100" r="40" fill="#4CAF50"/>
+                    <text x="150" y="110" text-anchor="middle" fill="white" font-size="24" font-weight="bold">1</text>
+                    <text x="150" y="160" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Start</text>
+                </g>
+
+                <g class="learning-point locked" data-point="2" onclick="openPoint(2)">
+                    <circle cx="250" cy="120" r="40" fill="#ccc"/>
+                    <text x="250" y="130" text-anchor="middle" fill="white" font-size="24" font-weight="bold">2</text>
+                    <text x="250" y="115" text-anchor="middle" fill="white" font-size="30">🔒</text>
+                    <text x="250" y="180" text-anchor="middle" fill="#999" font-size="14">Lektion 2</text>
+                </g>
+
+                <g class="learning-point locked" data-point="3" onclick="openPoint(3)">
+                    <circle cx="450" cy="100" r="40" fill="#ccc"/>
+                    <text x="450" y="110" text-anchor="middle" fill="white" font-size="24" font-weight="bold">3</text>
+                    <text x="450" y="105" text-anchor="middle" fill="white" font-size="30">🔒</text>
+                    <text x="450" y="160" text-anchor="middle" fill="#999" font-size="14">Lektion 3</text>
+                </g>
+
+                <g class="learning-point locked" data-point="4" onclick="openPoint(4)">
+                    <circle cx="600" cy="180" r="40" fill="#ccc"/>
+                    <text x="600" y="190" text-anchor="middle" fill="white" font-size="24" font-weight="bold">4</text>
+                    <text x="600" y="185" text-anchor="middle" fill="white" font-size="30">🔒</text>
+                    <text x="600" y="240" text-anchor="middle" fill="#999" font-size="14">Lektion 4</text>
+                </g>
+
+                <g class="learning-point locked" data-point="5" onclick="openPoint(5)">
+                    <circle cx="450" cy="280" r="40" fill="#ccc"/>
+                    <text x="450" y="290" text-anchor="middle" fill="white" font-size="24" font-weight="bold">5</text>
+                    <text x="450" y="285" text-anchor="middle" fill="white" font-size="30">🔒</text>
+                    <text x="450" y="340" text-anchor="middle" fill="#999" font-size="14">Lektion 5</text>
+                </g>
+
+                <g class="learning-point locked" data-point="finish" onclick="openPoint('finish')">
+                    <circle cx="300" cy="380" r="40" fill="#ccc"/>
+                    <text x="300" y="390" text-anchor="middle" fill="white" font-size="30">🏁</text>
+                    <text x="300" y="440" text-anchor="middle" fill="#999" font-size="14">Ziel</text>
+                </g>
+            </svg>
+
+            <div id="portfolio-section">
+                <h2>📊 Mein Portfolio</h2>
+                <div id="portfolio-content">
+                    <p style="text-align: center; color: #999; padding: 40px 0;">
+                        Melde dich an, um dein Portfolio zu sehen
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ============================================
+        // LERNPFAD LOGIK
+        // ============================================
+
+        // Microsoft Authentication Library (MSAL) Konfiguration
+        // WICHTIG: Diese Werte müssen in der Azure Portal konfiguriert werden
+        const msalConfig = {
+            auth: {
+                clientId: "DEINE_CLIENT_ID", // Ersetze mit deiner Azure App Client ID
+                authority: "https://login.microsoftonline.com/common",
+                redirectUri: window.location.origin
+            }
+        };
+
+        // Lernfortschritt-Daten
+        let learningProgress = {
+            completedPoints: [],
+            currentPoint: 1,
+            userId: null
+        };
+
+        // Lade gespeicherten Fortschritt aus localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                learningProgress = JSON.parse(saved);
+                updateUI();
+            }
+        }
+
+        // Speichere Fortschritt in localStorage
+        function saveProgress() {
+            localStorage.setItem('learningProgress', JSON.stringify(learningProgress));
+        }
+
+        // Microsoft Login (vereinfachte Demo-Version)
+        function login() {
+            // HINWEIS: Für echtes Microsoft Login muss die MSAL Library eingebunden werden
+            // <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
+            
+            alert('Microsoft Login wird initialisiert...\n\nFür die vollständige Integration benötigst du:\n1. Eine Azure App Registration\n2. Die MSAL JavaScript Library\n3. Client ID und Tenant ID\n\nSiehe README für Details.');
+            
+            // Simulierter Login für Demo
+            const userName = prompt('Demo: Gib deinen Namen ein\n(In der echten Version erfolgt Microsoft-Login)');
+            if (userName) {
+                learningProgress.userId = userName;
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('user-name').textContent = userName;
+                updatePortfolio();
+                saveProgress();
+            }
+        }
+
+        function logout() {
+            learningProgress.userId = null;
+            document.getElementById('login-btn').style.display = 'block';
+            document.getElementById('user-profile').style.display = 'none';
+            document.getElementById('portfolio-content').innerHTML = '<p style="text-align: center; color: #999; padding: 40px 0;">Melde dich an, um dein Portfolio zu sehen</p>';
+            saveProgress();
+        }
+
+        // Öffne einen Lernpunkt
+        function openPoint(pointNumber) {
+            const point = document.querySelector(`[data-point="${pointNumber}"]`);
+            
+            // Prüfe ob der Punkt freigeschaltet ist
+            if (point.classList.contains('locked')) {
+                alert('🔒 Dieser Punkt ist noch nicht freigeschaltet!\nSchließe zuerst die vorherigen Lektionen ab.');
+                return;
+            }
+            
+            // Öffne die entsprechende HTML-Seite
+            // Du kannst diese Dateien später hinzufügen
+            if (pointNumber === 'finish') {
+                window.location.href = 'finish.html';
+            } else {
+                window.location.href = `lektion${pointNumber}.html`;
+            }
+        }
+
+        // Markiere einen Punkt als abgeschlossen
+        // Diese Funktion wird von deinen Lektionsseiten aufgerufen
+        function completePoint(pointNumber) {
+            if (!learningProgress.completedPoints.includes(pointNumber)) {
+                learningProgress.completedPoints.push(pointNumber);
+                learningProgress.currentPoint = pointNumber + 1;
+                saveProgress();
+                
+                // Kehre zur Hauptseite zurück
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Aktualisiere die UI basierend auf dem Fortschritt
+        function updateUI() {
+            // Aktualisiere alle Punkte
+            for (let i = 1; i <= 5; i++) {
+                const point = document.querySelector(`[data-point="${i}"]`);
+                const line = document.getElementById(`path-${i}-${i < 5 ? i+1 : 'finish'}`);
+                
+                if (learningProgress.completedPoints.includes(i)) {
+                    // Punkt ist abgeschlossen
+                    point.classList.remove('locked', 'active');
+                    point.classList.add('completed');
+                    if (line) line.classList.add('completed');
+                    
+                    // Entferne Schloss und zeige Häkchen
+                    const texts = point.querySelectorAll('text');
+                    texts.forEach((text, index) => {
+                        if (index === 0) { // Nummer
+                            text.textContent = i + ' ✓';
+                        } else if (text.textContent === '🔒') {
+                            text.style.display = 'none';
+                        }
+                    });
+                } else if (i === learningProgress.currentPoint) {
+                    // Aktueller Punkt
+                    point.classList.remove('locked');
+                    point.classList.add('active');
+                    
+                    // Entferne Schloss
+                    const texts = point.querySelectorAll('text');
+                    texts.forEach(text => {
+                        if (text.textContent === '🔒') {
+                            text.style.display = 'none';
+                        }
+                    });
+                }
+            }
+            
+            // Aktualisiere Ziel-Punkt
+            const finishPoint = document.querySelector('[data-point="finish"]');
+            if (learningProgress.completedPoints.length === 5) {
+                finishPoint.classList.remove('locked');
+                finishPoint.classList.add('active');
+                
+                // Entferne Schloss beim Ziel
+                const texts = finishPoint.querySelectorAll('text');
+                texts.forEach(text => {
+                    if (text.textContent === '🔒') {
+                        text.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Aktualisiere Portfolio
+            if (learningProgress.userId) {
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('user-name').textContent = learningProgress.userId;
+                updatePortfolio();
+            }
+        }
+
+        // Aktualisiere Portfolio-Anzeige
+        function updatePortfolio() {
+            const portfolioContent = document.getElementById('portfolio-content');
+            const totalPoints = 5;
+            const completedPoints = learningProgress.completedPoints.length;
+            const progressPercent = (completedPoints / totalPoints) * 100;
+            
+            portfolioContent.innerHTML = `
+                <h3>Willkommen, ${learningProgress.userId}! 👋</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progressPercent}%">
+                        ${Math.round(progressPercent)}%
+                    </div>
+                </div>
+                <p><strong>Fortschritt:</strong> ${completedPoints} von ${totalPoints} Lektionen abgeschlossen</p>
+                
+                <div style="margin-top: 20px;">
+                    <h4>🏆 Errungenschaften:</h4>
+                    ${completedPoints >= 1 ? '<div class="achievement"><span class="achievement-icon">🌟</span><div><strong>Erste Schritte</strong><br>Erste Lektion abgeschlossen!</div></div>' : ''}
+                    ${completedPoints >= 3 ? '<div class="achievement"><span class="achievement-icon">🚀</span><div><strong>Auf dem Weg</strong><br>Hälfte geschafft!</div></div>' : ''}
+                    ${completedPoints >= 5 ? '<div class="achievement"><span class="achievement-icon">🏆</span><div><strong>Meister</strong><br>Alle Lektionen abgeschlossen!</div></div>' : ''}
+                </div>
+            `;
+        }
+
+        // Funktion für Lektionsseiten - zurück zur Hauptseite
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialisiere die Seite beim Laden
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            updateUI();
+        });
+    </script>
+</body>
+</html>
