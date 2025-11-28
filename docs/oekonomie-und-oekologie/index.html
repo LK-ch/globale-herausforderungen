@@ -46,7 +46,7 @@
         }
 
         main {
-            padding: 40px;
+            padding: 30px;
         }
 
         .info-box {
@@ -97,14 +97,14 @@
             top: 0;
             background: #1b5e20;
             color: white;
-            padding: 15px;
-            border-radius: 10px;
-            width: 320px;
+            padding: 12px;
+            border-radius: 8px;
+            width: 280px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             z-index: 1000;
             transition: all 0.3s ease;
-            line-height: 1.5;
-            font-size: 0.85em;
+            line-height: 1.4;
+            font-size: 0.75em;
         }
 
         .tooltip::before {
@@ -123,36 +123,69 @@
         }
 
         .flowchart-container {
-            max-width: 1000px;
-            margin: 0 auto 40px;
-            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            padding: 20px 10px;
         }
 
         .flow-row {
             display: flex;
             justify-content: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
-        .flow-row.two-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            max-width: 900px;
-            margin: 20px auto;
-        }
-
-        .flow-column {
+        .flow-row.horizontal {
             display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 15px;
+            flex-wrap: nowrap;
         }
 
-        .arrow-down {
-            text-align: center;
+        .flow-row.reverse {
+            flex-direction: row;
+        }
+
+        .arrow-right {
+            font-size: 3em;
+            color: #4CAF50;
+            font-weight: bold;
+            animation: slide-right 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .arrow-left {
+            font-size: 3em;
+            color: #4CAF50;
+            font-weight: bold;
+            animation: slide-left 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .arrow-turn-down {
+            text-align: right;
             font-size: 3em;
             color: #4CAF50;
             margin: 10px 0;
             animation: bounce-down 2s infinite;
+        }
+
+        @keyframes slide-right {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        @keyframes slide-left {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-10px);
+            }
         }
 
         @keyframes bounce-down {
@@ -160,57 +193,35 @@
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(10px);
-            }
-        }
-
-        .arrows-converge {
-            display: flex;
-            justify-content: center;
-            gap: 100px;
-            font-size: 3em;
-            color: #4CAF50;
-            margin: 10px 0;
-        }
-
-        .arrow-diagonal-left {
-            animation: pulse-arrow 2s infinite;
-        }
-
-        .arrow-diagonal-right {
-            animation: pulse-arrow 2s infinite;
-        }
-
-        @keyframes pulse-arrow {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
+                transform: translateY(8px);
             }
         }
 
         .flow-card {
-            max-width: 400px;
-            width: 100%;
+            max-width: 280px;
+            min-width: 240px;
+            flex-shrink: 0;
         }
 
         .card {
             background: white;
             border: 3px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 15px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            height: 180px;
+            justify-content: center;
         }
 
         .card:hover:not(.locked) {
-            transform: scale(1.05);
+            transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
@@ -218,13 +229,13 @@
             background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
             border-color: #2e7d32;
             border-width: 4px;
-            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
         }
 
         .card.completed {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-color: #2196F3;
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3);
         }
 
         .card.locked {
@@ -232,10 +243,6 @@
             border-color: #e0e0e0;
             cursor: not-allowed;
             opacity: 0.6;
-        }
-
-        .card.highlight-final {
-            position: relative;
         }
 
         .card.highlight-final::before {
@@ -257,17 +264,17 @@
         }
 
         .card-number {
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: #e0e0e0;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
+            font-size: 1.6em;
             font-weight: bold;
-            flex-shrink: 0;
+            margin-bottom: 10px;
         }
 
         .card.active .card-number {
@@ -284,52 +291,48 @@
                 box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
             }
             50% {
-                box-shadow: 0 0 0 15px rgba(76, 175, 80, 0);
+                box-shadow: 0 0 0 12px rgba(76, 175, 80, 0);
             }
         }
 
         .card-content {
-            flex: 1;
+            width: 100%;
         }
 
         .card-icon {
             font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .card-title {
-            font-size: 1.4em;
+            font-size: 1.05em;
             font-weight: bold;
             color: #1b5e20;
-            margin-bottom: 8px;
+            line-height: 1.3;
         }
 
         .card.locked .card-title {
             color: #999;
         }
 
-        .card-description {
-            color: #666;
-            font-size: 1em;
-            line-height: 1.4;
-        }
-
-        .card.locked .card-description {
-            color: #aaa;
-        }
-
-        @media (max-width: 768px) {
-            .flow-row.two-columns {
-                grid-template-columns: 1fr;
-                gap: 20px;
+        @media (max-width: 1024px) {
+            .flow-row.horizontal {
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
-            .arrows-converge {
-                gap: 50px;
+            .arrow-right, .arrow-left {
+                display: none;
+            }
+
+            .flow-card {
+                max-width: 250px;
+                min-width: 220px;
             }
 
             .card {
-                padding: 20px;
+                height: 160px;
+                padding: 12px;
             }
 
             .card-icon {
@@ -337,28 +340,29 @@
             }
 
             .card-title {
-                font-size: 1.2em;
+                font-size: 0.95em;
             }
         }
 
         .progress-section {
             background: #f5f5f5;
-            padding: 30px;
+            padding: 25px;
             border-radius: 10px;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .progress-section h2 {
             color: #2e7d32;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
         }
 
         .progress-bar {
             background: #e0e0e0;
-            height: 40px;
-            border-radius: 20px;
+            height: 35px;
+            border-radius: 18px;
             overflow: hidden;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .progress-fill {
@@ -370,21 +374,21 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
         }
 
         .button-group {
             display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         button {
-            padding: 15px 30px;
+            padding: 12px 24px;
             border: none;
             border-radius: 10px;
-            font-size: 1em;
+            font-size: 0.95em;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
@@ -458,90 +462,69 @@
             </div>
 
             <div class="flowchart-container">
-                <!-- Schritt 1 - Zentral oben -->
-                <div class="flow-row">
+                <!-- Erste Reihe: Schritte 1, 2, 3 -->
+                <div class="flow-row horizontal">
                     <div class="card active flow-card" onclick="openPoint(1)" data-step="1">
                         <div class="card-number">1</div>
                         <div class="card-content">
                             <div class="card-icon">🌱</div>
                             <div class="card-title">Ökologie & Ökonomie</div>
-                            <div class="card-description">Verstehe die Zusammenhänge zwischen Wirtschaft und Umwelt</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pfeil nach unten -->
-                <div class="arrow-down">↓</div>
-
-                <!-- Schritt 2 & 3 - Nebeneinander -->
-                <div class="flow-row two-columns">
-                    <div class="flow-column">
-                        <div class="card locked flow-card" onclick="openPoint(2)" data-step="2">
-                            <div class="card-number">2</div>
-                            <div class="card-content">
-                                <div class="card-icon">📊</div>
-                                <div class="card-title">Klimaveränderung</div>
-                                <div class="card-description">Grafikanalyse</div>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="flow-column">
-                        <div class="card locked flow-card" onclick="openPoint(3)" data-step="3">
-                            <div class="card-number">3</div>
-                            <div class="card-content">
-                                <div class="card-icon">🎧</div>
-                                <div class="card-title">Ursachen</div>
-                                <div class="card-description">Hörverstehen</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <div class="arrow-right">→</div>
 
-                <!-- Pfeile zusammenführend -->
-                <div class="arrows-converge">
-                    <div class="arrow-diagonal-left">↘</div>
-                    <div class="arrow-diagonal-right">↙</div>
-                </div>
-
-                <!-- Schritt 4 - Zentral -->
-                <div class="flow-row">
-                    <div class="card locked flow-card" onclick="openPoint(4)" data-step="4">
-                        <div class="card-number">4</div>
+                    <div class="card locked flow-card" onclick="openPoint(2)" data-step="2">
+                        <div class="card-number">2</div>
                         <div class="card-content">
-                            <div class="card-icon">🌡️</div>
-                            <div class="card-title">Folgen des Klimawandels</div>
-                            <div class="card-description">Erkenne die globalen und lokalen Auswirkungen</div>
+                            <div class="card-icon">📊</div>
+                            <div class="card-title">Klimaveränderung</div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Pfeil nach unten -->
-                <div class="arrow-down">↓</div>
+                    <div class="arrow-right">→</div>
 
-                <!-- Schritt 5 - Zentral -->
-                <div class="flow-row">
-                    <div class="card locked flow-card" onclick="openPoint(5)" data-step="5">
-                        <div class="card-number">5</div>
+                    <div class="card locked flow-card" onclick="openPoint(3)" data-step="3">
+                        <div class="card-number">3</div>
                         <div class="card-content">
-                            <div class="card-icon">🦋</div>
-                            <div class="card-title">Biodiversität</div>
-                            <div class="card-description">Entdecke die Bedeutung der Artenvielfalt</div>
+                            <div class="card-icon">🎧</div>
+                            <div class="card-title">Ursachen</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pfeil nach unten -->
-                <div class="arrow-down">↓</div>
+                <!-- Pfeil nach unten zur zweiten Reihe -->
+                <div class="arrow-turn-down">
+                    <span style="float: right; margin-right: 150px;">↓</span>
+                </div>
 
-                <!-- Schritt 6 - Zentral unten -->
-                <div class="flow-row">
+                <!-- Zweite Reihe: Schritte 6, 5, 4 (rückwärts) -->
+                <div class="flow-row horizontal reverse">
                     <div class="card locked flow-card highlight-final" onclick="openPoint(6)" data-step="6">
                         <div class="card-number">6</div>
                         <div class="card-content">
                             <div class="card-icon">💡</div>
                             <div class="card-title">Handlungsmöglichkeiten</div>
-                            <div class="card-description">Finde heraus, was du selbst tun kannst</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-left">←</div>
+
+                    <div class="card locked flow-card" onclick="openPoint(5)" data-step="5">
+                        <div class="card-number">5</div>
+                        <div class="card-content">
+                            <div class="card-icon">🦋</div>
+                            <div class="card-title">Biodiversität</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-left">←</div>
+
+                    <div class="card locked flow-card" onclick="openPoint(4)" data-step="4">
+                        <div class="card-number">4</div>
+                        <div class="card-content">
+                            <div class="card-icon">🌡️</div>
+                            <div class="card-title">Folgen</div>
                         </div>
                     </div>
                 </div>
