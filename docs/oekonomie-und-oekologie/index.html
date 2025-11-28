@@ -559,7 +559,8 @@
                 4: '',
                 5: '',
                 6: ''
-            }
+            },
+            images: {}
         };
 
         function loadProgress() {
@@ -663,6 +664,32 @@
                 doc.setFont(undefined, 'bold');
                 doc.text(step.title, margin, yPos);
                 yPos += lineHeight + 3;
+                
+                // Füge Bild ein, falls vorhanden (nur für Schritt 2)
+                if (step.key === '2' && learningProgress.images && learningProgress.images['2']) {
+                    try {
+                        const imgData = learningProgress.images['2'];
+                        const imgWidth = 170; // Breite in mm
+                        const imgHeight = 100; // Höhe in mm
+                        
+                        // Prüfe ob genug Platz auf der Seite ist
+                        if (yPos + imgHeight > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        
+                        doc.addImage(imgData, 'JPEG', margin, yPos, imgWidth, imgHeight);
+                        yPos += imgHeight + 10;
+                        
+                        // Neue Seite wenn nötig
+                        if (yPos > 250) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                    } catch (error) {
+                        console.error('Fehler beim Einfügen des Bildes:', error);
+                    }
+                }
                 
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
