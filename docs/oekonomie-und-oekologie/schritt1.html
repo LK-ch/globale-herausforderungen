@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schritt 1: Ökologie & Ökonomie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .lesson-content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+
+        .lesson-content h2 {
+            color: #2e7d32;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 15px;
+        }
+
+        .lesson-content ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        .lesson-content li {
+            margin-bottom: 10px;
+        }
+
+        .portfolio-box {
+            background: #e8f5e9;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .portfolio-box h3 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-box textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-box textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+        }
+
+        .saved-indicator {
+            color: #4CAF50;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header h1 {
+                font-size: 1.8em;
+            }
+
+            .lesson-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <h1>🌱 Schritt 1: Ökologie & Ökonomie</h1>
+            <p>Die Wechselwirkungen zwischen Umwelt und Wirtschaft</p>
+        </div>
+
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>💡 Tipp:</strong> Lies dir den Inhalt aufmerksam durch und notiere deine wichtigsten Erkenntnisse im Lernjournal am Ende der Seite.</p>
+            </div>
+
+            <h2>🎯 Lernziele</h2>
+            <p>In diesem Schritt wirst du:</p>
+            <ul>
+                <li>Den Unterschied zwischen Ökologie und Ökonomie verstehen</li>
+                <li>Die Wechselwirkungen zwischen Wirtschaft und Umwelt kennenlernen</li>
+                <li>Nachhaltige Wirtschaftsmodelle kennenlernen</li>
+            </ul>
+
+            <h2>📖 Was ist Ökologie?</h2>
+            <p>
+                Die Ökologie ist die Wissenschaft von den Beziehungen der Lebewesen untereinander 
+                und mit ihrer Umwelt. Sie untersucht, wie Organismen miteinander und mit ihrer 
+                natürlichen Umgebung interagieren.
+            </p>
+
+            <h2>💰 Was ist Ökonomie?</h2>
+            <p>
+                Die Ökonomie (Wirtschaftswissenschaft) beschäftigt sich damit, wie Menschen mit 
+                begrenzten Ressourcen umgehen, um ihre Bedürfnisse zu befriedigen. Sie untersucht 
+                die Produktion, Verteilung und den Konsum von Gütern und Dienstleistungen.
+            </p>
+
+            <h2>🔄 Wechselwirkungen</h2>
+            <p>
+                Ökologie und Ökonomie sind eng miteinander verbunden:
+            </p>
+            <ul>
+                <li><strong>Ressourcennutzung:</strong> Die Wirtschaft nutzt natürliche Ressourcen (Wasser, Holz, Mineralien)</li>
+                <li><strong>Umweltauswirkungen:</strong> Wirtschaftliche Aktivitäten beeinflussen Ökosysteme</li>
+                <li><strong>Nachhaltigkeit:</strong> Langfristiger wirtschaftlicher Erfolg hängt von gesunden Ökosystemen ab</li>
+            </ul>
+
+            <h2>🌍 Nachhaltiges Wirtschaften</h2>
+            <p>
+                Ein nachhaltiges Wirtschaftsmodell berücksichtigt:
+            </p>
+            <ul>
+                <li>Umweltschutz und Erhaltung der Biodiversität</li>
+                <li>Soziale Gerechtigkeit und faire Arbeitsbedingungen</li>
+                <li>Wirtschaftliche Stabilität und Wohlstand</li>
+            </ul>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Schritt 1</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Reflektiere über das Gelernte:
+                </p>
+                <textarea 
+                    id="portfolio-text" 
+                    placeholder="• Wie hängen Ökologie und Ökonomie zusammen?
+• Welche Beispiele für Wechselwirkungen fallen mir ein?
+• Was bedeutet nachhaltiges Wirtschaften für mich?
+• Welche Fragen sind offen geblieben?"
+                    oninput="savePortfolio()"></textarea>
+                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschließen und weiter →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadPortfolio() {
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const portfolioText = progress.texts && progress.texts['1'] ? progress.texts['1'] : '';
+                document.getElementById('portfolio-text').value = portfolioText;
+            }
+        }
+
+        function savePortfolio() {
+            const text = document.getElementById('portfolio-text').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['1'] = text;
+            
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function completeStep() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (portfolioText === '') {
+                const confirm = window.confirm('Du hast noch nichts in dein Lernjournal eingetragen. Möchtest du trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            savePortfolio();
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{}}');
+            
+            if (!progress.completedPoints.includes(1)) {
+                progress.completedPoints.push(1);
+                progress.currentPoint = 2;
+                localStorage.setItem('learningProgress', JSON.stringify(progress));
+            }
+            
+            alert('✓ Schritt 1 abgeschlossen!\n\nDein Lernjournal-Eintrag wurde gespeichert.');
+            window.location.href = 'index.html';
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPortfolio();
+        });
+    </script>
+</body>
+</html>
