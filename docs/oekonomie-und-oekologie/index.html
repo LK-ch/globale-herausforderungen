@@ -97,13 +97,14 @@
             top: 0;
             background: #1b5e20;
             color: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            width: 350px;
+            width: 320px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             z-index: 1000;
             transition: all 0.3s ease;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.85em;
         }
 
         .tooltip::before {
@@ -121,64 +122,222 @@
             opacity: 1;
         }
 
-        #learning-path {
-            width: 100%;
-            height: 550px;
-            margin-bottom: 40px;
+        .flowchart-container {
+            max-width: 1000px;
+            margin: 0 auto 40px;
+            padding: 20px;
         }
 
-        .learning-point {
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
-        .learning-point:hover:not(.locked) {
-            transform: scale(1.15);
+        .flow-row.two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 900px;
+            margin: 20px auto;
         }
 
-        .learning-point.active circle {
-            fill: #4CAF50;
-            filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.7));
-            animation: pulse 2s infinite;
+        .flow-column {
+            display: flex;
+            justify-content: center;
         }
 
-        .learning-point.completed circle {
-            fill: #2196F3;
-            filter: drop-shadow(0 0 12px rgba(33, 150, 243, 0.6));
+        .arrow-down {
+            text-align: center;
+            font-size: 3em;
+            color: #4CAF50;
+            margin: 10px 0;
+            animation: bounce-down 2s infinite;
         }
 
-        .learning-point.locked circle {
-            fill: #cccccc;
-        }
-
-        .learning-point.locked {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        @keyframes pulse {
+        @keyframes bounce-down {
             0%, 100% {
-                filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.7));
+                transform: translateY(0);
             }
             50% {
-                filter: drop-shadow(0 0 25px rgba(76, 175, 80, 0.9));
+                transform: translateY(10px);
             }
         }
 
-        .connection-line.active {
-            stroke: #4CAF50;
-            stroke-width: 5;
-            animation: dash 2s linear infinite;
+        .arrows-converge {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            font-size: 3em;
+            color: #4CAF50;
+            margin: 10px 0;
         }
 
-        .connection-line.completed {
-            stroke: #2196F3;
-            stroke-width: 5;
+        .arrow-diagonal-left {
+            animation: pulse-arrow 2s infinite;
         }
 
-        @keyframes dash {
-            to {
-                stroke-dashoffset: -20;
+        .arrow-diagonal-right {
+            animation: pulse-arrow 2s infinite;
+        }
+
+        @keyframes pulse-arrow {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .flow-card {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card:hover:not(.locked) {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card.active {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-color: #2e7d32;
+            border-width: 4px;
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+        }
+
+        .card.completed {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-color: #2196F3;
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+        }
+
+        .card.locked {
+            background: #f5f5f5;
+            border-color: #e0e0e0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .card.highlight-final {
+            position: relative;
+        }
+
+        .card.highlight-final::before {
+            content: '🎯';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 2.5em;
+            animation: rotate-trophy 3s infinite;
+        }
+
+        @keyframes rotate-trophy {
+            0%, 100% {
+                transform: rotate(-10deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .card-number {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .card.active .card-number {
+            background: linear-gradient(135deg, #4CAF50 0%, #2e7d32 100%);
+            animation: pulse-number 2s infinite;
+        }
+
+        .card.completed .card-number {
+            background: linear-gradient(135deg, #2196F3 0%, #1976d2 100%);
+        }
+
+        @keyframes pulse-number {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(76, 175, 80, 0);
+            }
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .card.locked .card-title {
+            color: #999;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .card.locked .card-description {
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .flow-row.two-columns {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .arrows-converge {
+                gap: 50px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card-icon {
+                font-size: 2em;
+            }
+
+            .card-title {
+                font-size: 1.2em;
             }
         }
 
@@ -212,70 +371,6 @@
             color: white;
             font-weight: bold;
             font-size: 1.1em;
-        }
-
-        .step-list {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .step-item {
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .step-item.completed {
-            background: #e3f2fd;
-            border-color: #2196F3;
-        }
-
-        .step-item.active {
-            background: #e8f5e9;
-            border-color: #4CAF50;
-        }
-
-        .step-number {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #e0e0e0;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .step-item.completed .step-number {
-            background: #2196F3;
-        }
-
-        .step-item.active .step-number {
-            background: #4CAF50;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-title {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-
-        .step-description {
-            color: #666;
-            font-size: 0.9em;
         }
 
         .button-group {
@@ -362,131 +457,101 @@
                 </div>
             </div>
 
-            <svg id="learning-path" viewBox="0 0 1000 800">
-                <!-- Verbindungslinien in schöner Zick-Zack Form -->
-                <path id="path-1-2" class="connection-line" d="M 250 100 Q 350 120 450 100" stroke="#ccc" stroke-width="4" fill="none"/>
-                <path id="path-2-3" class="connection-line" d="M 450 100 Q 550 120 650 100" stroke="#ccc" stroke-width="4" fill="none"/>
-                <path id="path-3-4" class="connection-line" d="M 650 100 Q 700 180 650 260" stroke="#ccc" stroke-width="4" fill="none"/>
-                <path id="path-4-5" class="connection-line" d="M 650 260 Q 550 280 450 260" stroke="#ccc" stroke-width="4" fill="none"/>
-                <path id="path-5-6" class="connection-line" d="M 450 260 Q 350 280 250 260" stroke="#ccc" stroke-width="4" fill="none"/>
-                <path id="path-6-finish" class="connection-line" d="M 250 260 Q 200 340 250 420" stroke="#ccc" stroke-width="4" fill="none"/>
+            <div class="flowchart-container">
+                <!-- Schritt 1 - Zentral oben -->
+                <div class="flow-row">
+                    <div class="card active flow-card" onclick="openPoint(1)" data-step="1">
+                        <div class="card-number">1</div>
+                        <div class="card-content">
+                            <div class="card-icon">🌱</div>
+                            <div class="card-title">Ökologie & Ökonomie</div>
+                            <div class="card-description">Verstehe die Zusammenhänge zwischen Wirtschaft und Umwelt</div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Lernpunkte mit schönerer Verteilung -->
-                <g class="learning-point active" data-point="1" onclick="openPoint(1)">
-                    <circle cx="250" cy="100" r="50" fill="#4CAF50"/>
-                    <text x="250" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">1</text>
-                    <text x="250" y="170" text-anchor="middle" fill="#1b5e20" font-size="15" font-weight="bold">Ökologie &amp;</text>
-                    <text x="250" y="188" text-anchor="middle" fill="#1b5e20" font-size="15" font-weight="bold">Ökonomie</text>
-                </g>
+                <!-- Pfeil nach unten -->
+                <div class="arrow-down">↓</div>
 
-                <g class="learning-point locked" data-point="2" onclick="openPoint(2)">
-                    <circle cx="450" cy="100" r="50" fill="#ccc"/>
-                    <text x="450" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">2</text>
-                    <text x="450" y="95" text-anchor="middle" fill="white" font-size="35">🔒</text>
-                    <text x="450" y="170" text-anchor="middle" fill="#999" font-size="14">Klimaveränderung</text>
-                    <text x="450" y="188" text-anchor="middle" fill="#999" font-size="14">(Grafikanalyse)</text>
-                </g>
+                <!-- Schritt 2 & 3 - Nebeneinander -->
+                <div class="flow-row two-columns">
+                    <div class="flow-column">
+                        <div class="card locked flow-card" onclick="openPoint(2)" data-step="2">
+                            <div class="card-number">2</div>
+                            <div class="card-content">
+                                <div class="card-icon">📊</div>
+                                <div class="card-title">Klimaveränderung</div>
+                                <div class="card-description">Grafikanalyse</div>
+                            </div>
+                        </div>
+                    </div>
 
-                <g class="learning-point locked" data-point="3" onclick="openPoint(3)">
-                    <circle cx="650" cy="100" r="50" fill="#ccc"/>
-                    <text x="650" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">3</text>
-                    <text x="650" y="95" text-anchor="middle" fill="white" font-size="35">🔒</text>
-                    <text x="650" y="170" text-anchor="middle" fill="#999" font-size="14">Ursachen des</text>
-                    <text x="650" y="188" text-anchor="middle" fill="#999" font-size="14">Klimawandels</text>
-                </g>
+                    <div class="flow-column">
+                        <div class="card locked flow-card" onclick="openPoint(3)" data-step="3">
+                            <div class="card-number">3</div>
+                            <div class="card-content">
+                                <div class="card-icon">🎧</div>
+                                <div class="card-title">Ursachen</div>
+                                <div class="card-description">Hörverstehen</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <g class="learning-point locked" data-point="4" onclick="openPoint(4)">
-                    <circle cx="650" cy="260" r="50" fill="#ccc"/>
-                    <text x="650" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">4</text>
-                    <text x="650" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
-                    <text x="650" y="330" text-anchor="middle" fill="#999" font-size="14">Folgen des</text>
-                    <text x="650" y="348" text-anchor="middle" fill="#999" font-size="14">Klimawandels</text>
-                </g>
+                <!-- Pfeile zusammenführend -->
+                <div class="arrows-converge">
+                    <div class="arrow-diagonal-left">↘</div>
+                    <div class="arrow-diagonal-right">↙</div>
+                </div>
 
-                <g class="learning-point locked" data-point="5" onclick="openPoint(5)">
-                    <circle cx="450" cy="260" r="50" fill="#ccc"/>
-                    <text x="450" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">5</text>
-                    <text x="450" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
-                    <text x="450" y="330" text-anchor="middle" fill="#999" font-size="14">Biodiversität</text>
-                </g>
+                <!-- Schritt 4 - Zentral -->
+                <div class="flow-row">
+                    <div class="card locked flow-card" onclick="openPoint(4)" data-step="4">
+                        <div class="card-number">4</div>
+                        <div class="card-content">
+                            <div class="card-icon">🌡️</div>
+                            <div class="card-title">Folgen des Klimawandels</div>
+                            <div class="card-description">Erkenne die globalen und lokalen Auswirkungen</div>
+                        </div>
+                    </div>
+                </div>
 
-                <g class="learning-point locked" data-point="6" onclick="openPoint(6)">
-                    <circle cx="250" cy="260" r="50" fill="#ccc"/>
-                    <text x="250" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">6</text>
-                    <text x="250" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
-                    <text x="250" y="330" text-anchor="middle" fill="#999" font-size="14">Handlungs-</text>
-                    <text x="250" y="348" text-anchor="middle" fill="#999" font-size="14">möglichkeiten</text>
-                </g>
+                <!-- Pfeil nach unten -->
+                <div class="arrow-down">↓</div>
 
-                <g class="learning-point locked" data-point="finish" onclick="openPoint('finish')">
-                    <circle cx="250" cy="420" r="50" fill="#ccc"/>
-                    <text x="250" y="435" text-anchor="middle" fill="white" font-size="40">🏁</text>
-                    <text x="250" y="490" text-anchor="middle" fill="#999" font-size="15" font-weight="bold">Ziel erreicht!</text>
-                </g>
+                <!-- Schritt 5 - Zentral -->
+                <div class="flow-row">
+                    <div class="card locked flow-card" onclick="openPoint(5)" data-step="5">
+                        <div class="card-number">5</div>
+                        <div class="card-content">
+                            <div class="card-icon">🦋</div>
+                            <div class="card-title">Biodiversität</div>
+                            <div class="card-description">Entdecke die Bedeutung der Artenvielfalt</div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Dekorative Elemente -->
-                <circle cx="100" cy="50" r="15" fill="#81c784" opacity="0.3"/>
-                <circle cx="800" cy="80" r="20" fill="#66bb6a" opacity="0.2"/>
-                <circle cx="150" cy="350" r="12" fill="#81c784" opacity="0.3"/>
-                <circle cx="800" cy="300" r="18" fill="#66bb6a" opacity="0.2"/>
-                <circle cx="500" cy="400" r="14" fill="#81c784" opacity="0.3"/>
-            </svg>
+                <!-- Pfeil nach unten -->
+                <div class="arrow-down">↓</div>
+
+                <!-- Schritt 6 - Zentral unten -->
+                <div class="flow-row">
+                    <div class="card locked flow-card highlight-final" onclick="openPoint(6)" data-step="6">
+                        <div class="card-number">6</div>
+                        <div class="card-content">
+                            <div class="card-icon">💡</div>
+                            <div class="card-title">Handlungsmöglichkeiten</div>
+                            <div class="card-description">Finde heraus, was du selbst tun kannst</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="progress-section">
                 <h2>📊 Dein Fortschritt</h2>
                 
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
-                </div>
-
-                <div class="step-list">
-                    <div class="step-item active" id="step-1">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <div class="step-title">🌱 Ökologie & Ökonomie</div>
-                            <div class="step-description">Verstehe die Zusammenhänge zwischen Wirtschaft und Umwelt</div>
-                        </div>
-                    </div>
-
-                    <div class="step-item" id="step-2">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <div class="step-title">📊 Klimaveränderung (Grafikanalyse)</div>
-                            <div class="step-description">Analysiere Daten und Grafiken zum Klimawandel</div>
-                        </div>
-                    </div>
-
-                    <div class="step-item" id="step-3">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <div class="step-title">🎧 Ursachen des Klimawandels (Hörverstehen)</div>
-                            <div class="step-description">Höre und verstehe die wissenschaftlichen Hintergründe</div>
-                        </div>
-                    </div>
-
-                    <div class="step-item" id="step-4">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <div class="step-title">🌡️ Folgen des Klimawandels</div>
-                            <div class="step-description">Erkenne die globalen und lokalen Auswirkungen</div>
-                        </div>
-                    </div>
-
-                    <div class="step-item" id="step-5">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <div class="step-title">🦋 Biodiversität</div>
-                            <div class="step-description">Entdecke die Bedeutung der Artenvielfalt</div>
-                        </div>
-                    </div>
-
-                    <div class="step-item" id="step-6">
-                        <div class="step-number">6</div>
-                        <div class="step-content">
-                            <div class="step-title">💡 Handlungsmöglichkeiten</div>
-                            <div class="step-description">Finde heraus, was du selbst tun kannst</div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="button-group">
@@ -534,16 +599,15 @@
         }
 
         function openPoint(pointNumber) {
-            const point = document.querySelector(`[data-point="${pointNumber}"]`);
+            const card = document.querySelector(`.card[data-step="${pointNumber}"]`);
             
-            if (point.classList.contains('locked')) {
+            if (card && card.classList.contains('locked')) {
                 alert('🔒 Dieser Schritt ist noch nicht freigeschaltet!\nSchließe zuerst die vorherigen Schritte ab.');
                 return;
             }
             
-            if (pointNumber === 'finish') {
-                window.location.href = 'finish.html';
-            } else {
+            // Erste Karte ist immer aktiv
+            if (pointNumber === 1 || !card || !card.classList.contains('locked')) {
                 window.location.href = `schritt${pointNumber}.html`;
             }
         }
@@ -559,47 +623,23 @@
 
         function updateUI() {
             for (let i = 1; i <= 6; i++) {
-                const point = document.querySelector(`[data-point="${i}"]`);
-                const line = document.getElementById(`path-${i}-${i < 6 ? i+1 : 'finish'}`);
-                const stepItem = document.getElementById(`step-${i}`);
+                const card = document.querySelector(`.card[data-step="${i}"]`);
+                if (!card) continue;
                 
                 if (learningProgress.completedPoints.includes(i)) {
-                    point.classList.remove('locked', 'active');
-                    point.classList.add('completed');
-                    if (line) line.classList.add('completed');
+                    card.classList.remove('locked', 'active');
+                    card.classList.add('completed');
                     
-                    stepItem.classList.remove('active');
-                    stepItem.classList.add('completed');
-                    
-                    const texts = point.querySelectorAll('text');
-                    texts.forEach((text, index) => {
-                        if (index === 0) {
-                            text.textContent = i + ' ✓';
-                        } else if (text.textContent === '🔒') {
-                            text.style.display = 'none';
-                        }
-                    });
+                    const number = card.querySelector('.card-number');
+                    if (number) number.textContent = '✓';
                 } else if (i === learningProgress.currentPoint) {
-                    point.classList.remove('locked');
-                    point.classList.add('active');
-                    
-                    stepItem.classList.add('active');
-                    
-                    const texts = point.querySelectorAll('text');
-                    texts.forEach(text => {
-                        if (text.textContent === '🔒') {
-                            text.style.display = 'none';
-                        }
-                    });
+                    card.classList.remove('locked');
+                    card.classList.add('active');
+                } else if (i < learningProgress.currentPoint) {
+                    card.classList.remove('locked');
                 } else {
-                    stepItem.classList.remove('active', 'completed');
+                    card.classList.add('locked');
                 }
-            }
-            
-            const finishPoint = document.querySelector('[data-point="finish"]');
-            if (learningProgress.completedPoints.length === 6) {
-                finishPoint.classList.remove('locked');
-                finishPoint.classList.add('active');
             }
             
             const totalPoints = 6;
