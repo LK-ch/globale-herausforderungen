@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernpfad</title>
+    <title>Lernpfad Klimawandel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -29,43 +29,122 @@
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 2em;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
         }
 
         main {
             padding: 40px;
         }
 
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            color: #1b5e20;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #2e7d32;
+            line-height: 1.6;
+        }
+
+        .info-icon {
+            position: relative;
+            display: inline-block;
+            font-size: 1.5em;
+            cursor: help;
+            background: #e8f5e9;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background: #c8e6c9;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            left: 55px;
+            top: 0;
+            background: #1b5e20;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .tooltip::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #1b5e20 transparent transparent;
+        }
+
+        .info-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
         #learning-path {
             width: 100%;
-            height: 500px;
+            height: 550px;
             margin-bottom: 40px;
         }
 
         .learning-point {
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
         }
 
         .learning-point:hover:not(.locked) {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .learning-point.active circle {
             fill: #4CAF50;
-            filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.5));
+            filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.7));
+            animation: pulse 2s infinite;
         }
 
         .learning-point.completed circle {
             fill: #2196F3;
-            filter: drop-shadow(0 0 10px rgba(33, 150, 243, 0.5));
+            filter: drop-shadow(0 0 12px rgba(33, 150, 243, 0.6));
         }
 
         .learning-point.locked circle {
@@ -74,70 +153,142 @@
 
         .learning-point.locked {
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.5;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 15px rgba(76, 175, 80, 0.7));
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(76, 175, 80, 0.9));
+            }
         }
 
         .connection-line.active {
             stroke: #4CAF50;
-            stroke-width: 4;
+            stroke-width: 5;
+            animation: dash 2s linear infinite;
         }
 
         .connection-line.completed {
             stroke: #2196F3;
-            stroke-width: 4;
+            stroke-width: 5;
         }
 
-        #portfolio-section {
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .progress-section {
             background: #f5f5f5;
             padding: 30px;
             border-radius: 10px;
             margin-top: 40px;
         }
 
-        #portfolio-section h2 {
-            color: #667eea;
+        .progress-section h2 {
+            color: #2e7d32;
             margin-bottom: 20px;
         }
 
-        .portfolio-item {
+        .progress-bar {
+            background: #e0e0e0;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .step-list {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
-        .portfolio-item h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .portfolio-item textarea {
-            width: 100%;
-            min-height: 150px;
+        .step-item {
             padding: 15px;
-            border: 2px solid #e0e0e0;
+            margin: 10px 0;
             border-radius: 8px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1em;
-            resize: vertical;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid #e0e0e0;
         }
 
-        .portfolio-item textarea:focus {
-            outline: none;
-            border-color: #667eea;
+        .step-item.completed {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+
+        .step-item.active {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-item.completed .step-number {
+            background: #2196F3;
+        }
+
+        .step-item.active .step-number {
+            background: #4CAF50;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 0.9em;
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
 
         button {
-            padding: 12px 24px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
@@ -149,12 +300,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-success {
-            background: #4CAF50;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
         }
 
@@ -163,48 +309,14 @@
             color: white;
         }
 
-        .saved-indicator {
-            color: #4CAF50;
-            font-size: 0.9em;
-            margin-left: 10px;
-            display: none;
-        }
-
-        .progress-bar {
-            background: #e0e0e0;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-success {
+            background: #4CAF50;
             color: white;
-            font-weight: bold;
-        }
-
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .info-box p {
-            color: #1976d2;
-            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
             header h1 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
 
             main {
@@ -212,7 +324,20 @@
             }
 
             #learning-path {
-                height: 400px;
+                height: 500px;
+            }
+
+            .tooltip {
+                left: auto;
+                right: 0;
+                top: 70px;
+                width: 280px;
+            }
+
+            .tooltip::before {
+                left: 20px;
+                top: -10px;
+                border-color: transparent transparent #1b5e20 transparent;
             }
         }
     </style>
@@ -220,110 +345,153 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Mein Lernpfad</h1>
-            <p>Dokumentiere deinen Lernfortschritt</p>
+            <h1>🌍 Lernpfad: Ökonomie und Ökologie</h1>
+            <p>Erkunde die Zusammenhänge zwischen Wirtschaft, Umwelt und Klimawandel</p>
         </header>
 
         <main>
-            <svg id="learning-path" viewBox="0 0 800 600">
-                <path id="path-1-2" class="connection-line" d="M 150 100 Q 200 80 250 120" stroke="#ccc" stroke-width="3" fill="none"/>
-                <path id="path-2-3" class="connection-line" d="M 250 120 Q 350 50 450 100" stroke="#ccc" stroke-width="3" fill="none"/>
-                <path id="path-3-4" class="connection-line" d="M 450 100 Q 550 120 600 180" stroke="#ccc" stroke-width="3" fill="none"/>
-                <path id="path-4-5" class="connection-line" d="M 600 180 Q 550 250 450 280" stroke="#ccc" stroke-width="3" fill="none"/>
-                <path id="path-5-finish" class="connection-line" d="M 450 280 Q 350 320 300 380" stroke="#ccc" stroke-width="3" fill="none"/>
+            <div style="position: relative; margin-bottom: 30px;">
+                <div class="info-icon" id="info-icon">
+                    ℹ️
+                    <div class="tooltip">
+                        <strong>Über diesen Lernpfad</strong><br><br>
+                        Dieser Lernpfad führt dich durch wichtige Themen rund um den Klimawandel und die Biodiversität. 
+                        In jedem Schritt findest du ein <strong>Lernjournal</strong>, in dem du deine Gedanken und Erkenntnisse festhalten kannst. 
+                        Am Ende kannst du dein komplettes Lernjournal als PDF herunterladen.
+                    </div>
+                </div>
+            </div>
 
+            <svg id="learning-path" viewBox="0 0 1000 800">
+                <!-- Verbindungslinien in schöner Zick-Zack Form -->
+                <path id="path-1-2" class="connection-line" d="M 250 100 Q 350 120 450 100" stroke="#ccc" stroke-width="4" fill="none"/>
+                <path id="path-2-3" class="connection-line" d="M 450 100 Q 550 120 650 100" stroke="#ccc" stroke-width="4" fill="none"/>
+                <path id="path-3-4" class="connection-line" d="M 650 100 Q 700 180 650 260" stroke="#ccc" stroke-width="4" fill="none"/>
+                <path id="path-4-5" class="connection-line" d="M 650 260 Q 550 280 450 260" stroke="#ccc" stroke-width="4" fill="none"/>
+                <path id="path-5-6" class="connection-line" d="M 450 260 Q 350 280 250 260" stroke="#ccc" stroke-width="4" fill="none"/>
+                <path id="path-6-finish" class="connection-line" d="M 250 260 Q 200 340 250 420" stroke="#ccc" stroke-width="4" fill="none"/>
+
+                <!-- Lernpunkte mit schönerer Verteilung -->
                 <g class="learning-point active" data-point="1" onclick="openPoint(1)">
-                    <circle cx="150" cy="100" r="40" fill="#4CAF50"/>
-                    <text x="150" y="110" text-anchor="middle" fill="white" font-size="24" font-weight="bold">1</text>
-                    <text x="150" y="160" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Start</text>
+                    <circle cx="250" cy="100" r="50" fill="#4CAF50"/>
+                    <text x="250" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">1</text>
+                    <text x="250" y="170" text-anchor="middle" fill="#1b5e20" font-size="15" font-weight="bold">Ökologie &amp;</text>
+                    <text x="250" y="188" text-anchor="middle" fill="#1b5e20" font-size="15" font-weight="bold">Ökonomie</text>
                 </g>
 
                 <g class="learning-point locked" data-point="2" onclick="openPoint(2)">
-                    <circle cx="250" cy="120" r="40" fill="#ccc"/>
-                    <text x="250" y="130" text-anchor="middle" fill="white" font-size="24" font-weight="bold">2</text>
-                    <text x="250" y="115" text-anchor="middle" fill="white" font-size="30">🔒</text>
-                    <text x="250" y="180" text-anchor="middle" fill="#999" font-size="14">Lektion 2</text>
+                    <circle cx="450" cy="100" r="50" fill="#ccc"/>
+                    <text x="450" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">2</text>
+                    <text x="450" y="95" text-anchor="middle" fill="white" font-size="35">🔒</text>
+                    <text x="450" y="170" text-anchor="middle" fill="#999" font-size="14">Klimaveränderung</text>
+                    <text x="450" y="188" text-anchor="middle" fill="#999" font-size="14">(Grafikanalyse)</text>
                 </g>
 
                 <g class="learning-point locked" data-point="3" onclick="openPoint(3)">
-                    <circle cx="450" cy="100" r="40" fill="#ccc"/>
-                    <text x="450" y="110" text-anchor="middle" fill="white" font-size="24" font-weight="bold">3</text>
-                    <text x="450" y="105" text-anchor="middle" fill="white" font-size="30">🔒</text>
-                    <text x="450" y="160" text-anchor="middle" fill="#999" font-size="14">Lektion 3</text>
+                    <circle cx="650" cy="100" r="50" fill="#ccc"/>
+                    <text x="650" y="112" text-anchor="middle" fill="white" font-size="28" font-weight="bold">3</text>
+                    <text x="650" y="95" text-anchor="middle" fill="white" font-size="35">🔒</text>
+                    <text x="650" y="170" text-anchor="middle" fill="#999" font-size="14">Ursachen des</text>
+                    <text x="650" y="188" text-anchor="middle" fill="#999" font-size="14">Klimawandels</text>
                 </g>
 
                 <g class="learning-point locked" data-point="4" onclick="openPoint(4)">
-                    <circle cx="600" cy="180" r="40" fill="#ccc"/>
-                    <text x="600" y="190" text-anchor="middle" fill="white" font-size="24" font-weight="bold">4</text>
-                    <text x="600" y="185" text-anchor="middle" fill="white" font-size="30">🔒</text>
-                    <text x="600" y="240" text-anchor="middle" fill="#999" font-size="14">Lektion 4</text>
+                    <circle cx="650" cy="260" r="50" fill="#ccc"/>
+                    <text x="650" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">4</text>
+                    <text x="650" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
+                    <text x="650" y="330" text-anchor="middle" fill="#999" font-size="14">Folgen des</text>
+                    <text x="650" y="348" text-anchor="middle" fill="#999" font-size="14">Klimawandels</text>
                 </g>
 
                 <g class="learning-point locked" data-point="5" onclick="openPoint(5)">
-                    <circle cx="450" cy="280" r="40" fill="#ccc"/>
-                    <text x="450" y="290" text-anchor="middle" fill="white" font-size="24" font-weight="bold">5</text>
-                    <text x="450" y="285" text-anchor="middle" fill="white" font-size="30">🔒</text>
-                    <text x="450" y="340" text-anchor="middle" fill="#999" font-size="14">Lektion 5</text>
+                    <circle cx="450" cy="260" r="50" fill="#ccc"/>
+                    <text x="450" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">5</text>
+                    <text x="450" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
+                    <text x="450" y="330" text-anchor="middle" fill="#999" font-size="14">Biodiversität</text>
+                </g>
+
+                <g class="learning-point locked" data-point="6" onclick="openPoint(6)">
+                    <circle cx="250" cy="260" r="50" fill="#ccc"/>
+                    <text x="250" y="272" text-anchor="middle" fill="white" font-size="28" font-weight="bold">6</text>
+                    <text x="250" y="255" text-anchor="middle" fill="white" font-size="35">🔒</text>
+                    <text x="250" y="330" text-anchor="middle" fill="#999" font-size="14">Handlungs-</text>
+                    <text x="250" y="348" text-anchor="middle" fill="#999" font-size="14">möglichkeiten</text>
                 </g>
 
                 <g class="learning-point locked" data-point="finish" onclick="openPoint('finish')">
-                    <circle cx="300" cy="380" r="40" fill="#ccc"/>
-                    <text x="300" y="390" text-anchor="middle" fill="white" font-size="30">🏁</text>
-                    <text x="300" y="440" text-anchor="middle" fill="#999" font-size="14">Ziel</text>
+                    <circle cx="250" cy="420" r="50" fill="#ccc"/>
+                    <text x="250" y="435" text-anchor="middle" fill="white" font-size="40">🏁</text>
+                    <text x="250" y="490" text-anchor="middle" fill="#999" font-size="15" font-weight="bold">Ziel erreicht!</text>
                 </g>
+
+                <!-- Dekorative Elemente -->
+                <circle cx="100" cy="50" r="15" fill="#81c784" opacity="0.3"/>
+                <circle cx="800" cy="80" r="20" fill="#66bb6a" opacity="0.2"/>
+                <circle cx="150" cy="350" r="12" fill="#81c784" opacity="0.3"/>
+                <circle cx="800" cy="300" r="18" fill="#66bb6a" opacity="0.2"/>
+                <circle cx="500" cy="400" r="14" fill="#81c784" opacity="0.3"/>
             </svg>
 
-            <div id="portfolio-section">
-                <h2>📝 Mein Lern-Portfolio</h2>
+            <div class="progress-section">
+                <h2>📊 Dein Fortschritt</h2>
                 
-                <div class="info-box">
-                    <p><strong>💡 So funktioniert's:</strong> Schreibe deine Gedanken, Notizen oder Reflexionen zu jeder Lektion. 
-                    Deine Texte werden automatisch gespeichert und du kannst am Ende alles als PDF herunterladen!</p>
-                </div>
-
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
 
-                <div class="portfolio-item">
-                    <h3>📚 Lektion 1: Start</h3>
-                    <textarea id="text-1" placeholder="Was habe ich in Lektion 1 gelernt? Welche Erkenntnisse hatte ich?" oninput="saveText(1)"></textarea>
-                    <span class="saved-indicator" id="saved-1">✓ Gespeichert</span>
+                <div class="step-list">
+                    <div class="step-item active" id="step-1">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">🌱 Ökologie & Ökonomie</div>
+                            <div class="step-description">Verstehe die Zusammenhänge zwischen Wirtschaft und Umwelt</div>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step-2">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">📊 Klimaveränderung (Grafikanalyse)</div>
+                            <div class="step-description">Analysiere Daten und Grafiken zum Klimawandel</div>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step-3">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">🎧 Ursachen des Klimawandels (Hörverstehen)</div>
+                            <div class="step-description">Höre und verstehe die wissenschaftlichen Hintergründe</div>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step-4">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">🌡️ Folgen des Klimawandels</div>
+                            <div class="step-description">Erkenne die globalen und lokalen Auswirkungen</div>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step-5">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">🦋 Biodiversität</div>
+                            <div class="step-description">Entdecke die Bedeutung der Artenvielfalt</div>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step-6">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <div class="step-title">💡 Handlungsmöglichkeiten</div>
+                            <div class="step-description">Finde heraus, was du selbst tun kannst</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="portfolio-item">
-                    <h3>📚 Lektion 2</h3>
-                    <textarea id="text-2" placeholder="Was habe ich in Lektion 2 gelernt?" oninput="saveText(2)"></textarea>
-                    <span class="saved-indicator" id="saved-2">✓ Gespeichert</span>
-                </div>
-
-                <div class="portfolio-item">
-                    <h3>📚 Lektion 3</h3>
-                    <textarea id="text-3" placeholder="Was habe ich in Lektion 3 gelernt?" oninput="saveText(3)"></textarea>
-                    <span class="saved-indicator" id="saved-3">✓ Gespeichert</span>
-                </div>
-
-                <div class="portfolio-item">
-                    <h3>📚 Lektion 4</h3>
-                    <textarea id="text-4" placeholder="Was habe ich in Lektion 4 gelernt?" oninput="saveText(4)"></textarea>
-                    <span class="saved-indicator" id="saved-4">✓ Gespeichert</span>
-                </div>
-
-                <div class="portfolio-item">
-                    <h3>📚 Lektion 5</h3>
-                    <textarea id="text-5" placeholder="Was habe ich in Lektion 5 gelernt?" oninput="saveText(5)"></textarea>
-                    <span class="saved-indicator" id="saved-5">✓ Gespeichert</span>
-                </div>
-
-                <div class="portfolio-item">
-                    <h3>🎯 Abschlussreflexion</h3>
-                    <textarea id="text-final" placeholder="Was nehme ich aus diesem Lernpfad mit? Wie kann ich das Gelernte anwenden?" oninput="saveText('final')"></textarea>
-                    <span class="saved-indicator" id="saved-final">✓ Gespeichert</span>
-                </div>
-
-                <div class="button-group" style="margin-top: 20px;">
-                    <button class="btn-primary" onclick="downloadPDF()">📄 Portfolio als PDF herunterladen</button>
-                    <button class="btn-info" onclick="downloadJSON()">💾 Backup herunterladen (JSON)</button>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="downloadPDF()">📄 Lernjournal als PDF herunterladen</button>
+                    <button class="btn-info" onclick="downloadJSON()">💾 Backup herunterladen</button>
                     <button class="btn-success" onclick="loadBackup()">📂 Backup laden</button>
                 </div>
             </div>
@@ -342,7 +510,7 @@
                 3: '',
                 4: '',
                 5: '',
-                final: ''
+                6: ''
             }
         };
 
@@ -351,12 +519,10 @@
             if (saved) {
                 learningProgress = JSON.parse(saved);
                 
-                // Lade Texte in Textfelder
-                for (let key in learningProgress.texts) {
-                    const textArea = document.getElementById(`text-${key}`);
-                    if (textArea) {
-                        textArea.value = learningProgress.texts[key];
-                    }
+                if (!learningProgress.texts) {
+                    learningProgress.texts = {
+                        1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
+                    };
                 }
                 
                 updateUI();
@@ -367,31 +533,18 @@
             localStorage.setItem('learningProgress', JSON.stringify(learningProgress));
         }
 
-        function saveText(lessonNumber) {
-            const textArea = document.getElementById(`text-${lessonNumber}`);
-            learningProgress.texts[lessonNumber] = textArea.value;
-            saveProgress();
-            
-            // Zeige "Gespeichert" Indikator
-            const indicator = document.getElementById(`saved-${lessonNumber}`);
-            indicator.style.display = 'inline';
-            setTimeout(() => {
-                indicator.style.display = 'none';
-            }, 2000);
-        }
-
         function openPoint(pointNumber) {
             const point = document.querySelector(`[data-point="${pointNumber}"]`);
             
             if (point.classList.contains('locked')) {
-                alert('🔒 Dieser Punkt ist noch nicht freigeschaltet!\nSchließe zuerst die vorherigen Lektionen ab.');
+                alert('🔒 Dieser Schritt ist noch nicht freigeschaltet!\nSchließe zuerst die vorherigen Schritte ab.');
                 return;
             }
             
             if (pointNumber === 'finish') {
                 window.location.href = 'finish.html';
             } else {
-                window.location.href = `lektion${pointNumber}.html`;
+                window.location.href = `schritt${pointNumber}.html`;
             }
         }
 
@@ -405,14 +558,18 @@
         }
 
         function updateUI() {
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const point = document.querySelector(`[data-point="${i}"]`);
-                const line = document.getElementById(`path-${i}-${i < 5 ? i+1 : 'finish'}`);
+                const line = document.getElementById(`path-${i}-${i < 6 ? i+1 : 'finish'}`);
+                const stepItem = document.getElementById(`step-${i}`);
                 
                 if (learningProgress.completedPoints.includes(i)) {
                     point.classList.remove('locked', 'active');
                     point.classList.add('completed');
                     if (line) line.classList.add('completed');
+                    
+                    stepItem.classList.remove('active');
+                    stepItem.classList.add('completed');
                     
                     const texts = point.querySelectorAll('text');
                     texts.forEach((text, index) => {
@@ -426,23 +583,26 @@
                     point.classList.remove('locked');
                     point.classList.add('active');
                     
+                    stepItem.classList.add('active');
+                    
                     const texts = point.querySelectorAll('text');
                     texts.forEach(text => {
                         if (text.textContent === '🔒') {
                             text.style.display = 'none';
                         }
                     });
+                } else {
+                    stepItem.classList.remove('active', 'completed');
                 }
             }
             
             const finishPoint = document.querySelector('[data-point="finish"]');
-            if (learningProgress.completedPoints.length === 5) {
+            if (learningProgress.completedPoints.length === 6) {
                 finishPoint.classList.remove('locked');
                 finishPoint.classList.add('active');
             }
             
-            // Update progress bar
-            const totalPoints = 5;
+            const totalPoints = 6;
             const completedPoints = learningProgress.completedPoints.length;
             const progressPercent = (completedPoints / totalPoints) * 100;
             document.getElementById('progress-fill').style.width = progressPercent + '%';
@@ -453,37 +613,34 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            // Titel
-            doc.setFontSize(20);
-            doc.text('Mein Lern-Portfolio', 20, 20);
+            doc.setFontSize(22);
+            doc.text('Lernjournal: Ökonomie und Ökologie', 20, 25);
             
-            doc.setFontSize(12);
-            doc.text('Datum: ' + new Date().toLocaleDateString('de-DE'), 20, 30);
+            doc.setFontSize(11);
+            doc.text('Datum: ' + new Date().toLocaleDateString('de-DE'), 20, 35);
             
-            let yPos = 45;
+            let yPos = 50;
             const lineHeight = 7;
             const margin = 20;
             const pageWidth = doc.internal.pageSize.width - 2 * margin;
             
-            const lessons = [
-                { key: '1', title: 'Lektion 1: Start' },
-                { key: '2', title: 'Lektion 2' },
-                { key: '3', title: 'Lektion 3' },
-                { key: '4', title: 'Lektion 4' },
-                { key: '5', title: 'Lektion 5' },
-                { key: 'final', title: 'Abschlussreflexion' }
+            const steps = [
+                { key: '1', title: 'Schritt 1: Ökologie & Ökonomie' },
+                { key: '2', title: 'Schritt 2: Klimaveränderung (Grafikanalyse)' },
+                { key: '3', title: 'Schritt 3: Ursachen des Klimawandels (Hörverstehen)' },
+                { key: '4', title: 'Schritt 4: Folgen des Klimawandels' },
+                { key: '5', title: 'Schritt 5: Biodiversität' },
+                { key: '6', title: 'Schritt 6: Handlungsmöglichkeiten' }
             ];
             
-            for (let lesson of lessons) {
-                const text = learningProgress.texts[lesson.key] || '(Keine Notizen vorhanden)';
+            for (let step of steps) {
+                const text = learningProgress.texts[step.key] || '(Keine Einträge vorhanden)';
                 
-                // Überschrift
                 doc.setFontSize(14);
                 doc.setFont(undefined, 'bold');
-                doc.text(lesson.title, margin, yPos);
-                yPos += lineHeight + 2;
+                doc.text(step.title, margin, yPos);
+                yPos += lineHeight + 3;
                 
-                // Text
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
                 const lines = doc.splitTextToSize(text, pageWidth);
@@ -497,7 +654,7 @@
                     yPos += lineHeight;
                 }
                 
-                yPos += 5;
+                yPos += 8;
                 
                 if (yPos > 250) {
                     doc.addPage();
@@ -505,7 +662,7 @@
                 }
             }
             
-            doc.save('Lernpfad-Portfolio.pdf');
+            doc.save('Lernjournal-Oekonomie-Oekologie.pdf');
         }
 
         function downloadJSON() {
