@@ -363,10 +363,10 @@ Argumente GEGEN den Fleischkonsum:
                 const portfolioText = progress.texts && progress.texts['1'] ? progress.texts['1'] : '';
                 document.getElementById('portfolio-text').value = portfolioText;
                 
-                const portfolioText3 = progress.texts && progress.texts['3'] ? progress.texts['3'] : '';
+                const portfolioText3 = progress.texts && progress.texts['1_task3'] ? progress.texts['1_task3'] : (progress.texts['3'] || '');  // Fallback für alte Struktur
                 document.getElementById('portfolio-text-3').value = portfolioText3;
                 
-                const portfolioText4 = progress.texts && progress.texts['4'] ? progress.texts['4'] : '';
+                const portfolioText4 = progress.texts && progress.texts['1_task4'] ? progress.texts['1_task4'] : (progress.texts['4'] || '');  // Fallback für alte Struktur
                 document.getElementById('portfolio-text-4').value = portfolioText4;
             }
         }
@@ -418,7 +418,7 @@ Argumente GEGEN den Fleischkonsum:
                 progress.texts = {};
             }
             
-            progress.texts['3'] = text;
+            progress.texts['1_task3'] = text;  // Geändert von '3' zu '1_task3'
             
             localStorage.setItem('learningProgress', JSON.stringify(progress));
             
@@ -447,7 +447,7 @@ Argumente GEGEN den Fleischkonsum:
                 progress.texts = {};
             }
             
-            progress.texts['4'] = text;
+            progress.texts['1_task4'] = text;  // Geändert von '4' zu '1_task4'
             
             localStorage.setItem('learningProgress', JSON.stringify(progress));
             
