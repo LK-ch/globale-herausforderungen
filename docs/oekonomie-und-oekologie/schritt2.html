@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schritt 2: Klimaveränderung</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); min-height: 100vh; padding: 20px; }
@@ -15,9 +16,10 @@
         .lesson-content p { margin-bottom: 15px; }
         .lesson-content ul { margin: 15px 0 15px 30px; }
         .lesson-content li { margin-bottom: 10px; }
+        .lesson-content ol { margin: 20px 0 20px 30px; line-height: 2; }
         .portfolio-box { background: #e8f5e9; border: 3px solid #2e7d32; border-radius: 15px; padding: 30px; margin: 30px 0; }
         .portfolio-box h3 { color: #1b5e20; margin-bottom: 15px; font-size: 1.5em; }
-        .portfolio-box textarea { width: 100%; min-height: 200px; padding: 15px; border: 2px solid #c8e6c9; border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1em; resize: vertical; margin-bottom: 15px; }
+        .portfolio-box textarea { width: 100%; min-height: 300px; padding: 15px; border: 2px solid #c8e6c9; border-radius: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1em; resize: vertical; margin-bottom: 15px; }
         .portfolio-box textarea:focus { outline: none; border-color: #2e7d32; box-shadow: 0 0 10px rgba(46, 125, 50, 0.2); }
         .saved-indicator { color: #4CAF50; font-weight: bold; display: none; margin-top: 10px; }
         .button-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
@@ -25,8 +27,16 @@
         button:hover { transform: scale(1.05); }
         .btn-back { background: #f5f5f5; color: #333; }
         .btn-complete { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; }
+        .btn-pdf { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: white; }
         .info-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 5px; margin: 20px 0; }
         .info-box p { color: #856404; }
+        .ovi-box { background: #e3f2fd; border-left: 4px solid #2196F3; padding: 20px; border-radius: 5px; margin: 25px 0; }
+        .ovi-box h3 { color: #1565c0; margin-bottom: 15px; font-size: 1.2em; }
+        .ovi-box ul { line-height: 1.8; color: #1565c0; }
+        @media (max-width: 768px) {
+            .lesson-header h1 { font-size: 1.8em; }
+            .lesson-content { padding: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -36,47 +46,103 @@
             <p>Verstehe die Daten und Fakten zum Klimawandel</p>
         </div>
         <div class="lesson-content">
-            <div class="info-box">
-                <p><strong>💡 Tipp:</strong> Analysiere Grafiken genau und notiere deine Beobachtungen im Lernjournal.</p>
-            </div>
-            <h2>🎯 Lernziele</h2>
-            <p>In diesem Schritt wirst du:</p>
-            <ul>
-                <li>Klimadaten in Grafiken verstehen und interpretieren</li>
-                <li>Langfristige Temperaturtrends erkennen</li>
-                <li>Den Zusammenhang zwischen CO₂ und Temperatur verstehen</li>
-            </ul>
-            <h2>📈 Temperaturanstieg</h2>
-            <p>Analysiere die folgende Grafik zur globalen Temperaturentwicklung:</p>
+            <h2>🎯 Auftrag: Grafikanalyse</h2>
+            <p>
+                Analysiere die folgende Grafik zur globalen Temperaturentwicklung mithilfe des <strong>O-V-I Systems</strong>:
+            </p>
             
-            <div class="image-box">
-                <img id="climate-image" src="" alt="Klimagrafik" style="display: none; max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                <div id="upload-area" style="border: 3px dashed #2e7d32; padding: 40px; text-align: center; border-radius: 10px; background: #f5f5f5; cursor: pointer;" onclick="document.getElementById('imageUpload').click()">
-                    <p style="font-size: 1.2em; color: #2e7d32; margin-bottom: 10px;">📊 Klicke hier, um eine Grafik hochzuladen</p>
-                    <p style="font-size: 0.9em; color: #666;">Die Grafik wird im PDF-Export des Lernjournals erscheinen</p>
+            <div class="ovi-box">
+                <h3>📋 Das O-V-I System</h3>
+                <ul>
+                    <li><strong>O</strong> = <strong>O</strong>rientierung: Was zeigt die Grafik? (Titel, Achsen, Zeitraum, Einheiten)</li>
+                    <li><strong>V</strong> = <strong>V</strong>erlauf beschreiben: Welche Entwicklungen sind sichtbar? (Trends, Wendepunkte, Besonderheiten)</li>
+                    <li><strong>I</strong> = <strong>I</strong>nterpretation: Was bedeuten die Daten? (Zusammenhänge, Ursachen, Folgen)</li>
+                </ul>
+            </div>
+
+            <div style="background: #fff9e6; border: 3px solid #ffa726; border-radius: 10px; padding: 25px; margin: 25px 0;">
+                <h3 style="color: #e65100; margin-bottom: 20px; font-size: 1.2em; cursor: pointer; user-select: none;" onclick="toggleRedemittel()">
+                    💬 Nützliche Redemittel <span id="redemittel-arrow" style="float: right;">▼</span>
+                </h3>
+                
+                <div id="redemittel-content" style="display: none;">
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #e65100; margin-bottom: 10px; font-size: 1.1em;">O - Orientierung</h4>
+                        <ul style="line-height: 1.8; color: #5d4037;">
+                            <li>Die Grafik zeigt / verdeutlicht / veranschaulicht ...</li>
+                            <li>Der Grafik ist ... zu entnehmen</li>
+                            <li>Die Grafik trägt den Titel ... / ist betitelt ...</li>
+                            <li>Die Angaben erfolgen in ... / Die Werte sind angegeben in ...</li>
+                            <li>Die Grafik stammt aus ... / ist entnommen aus ...</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #e65100; margin-bottom: 10px; font-size: 1.1em;">V - Verlauf</h4>
+                        <ul style="line-height: 1.8; color: #5d4037;">
+                            <li>X steigt kontinuierlich / stark / leicht an</li>
+                            <li>Die Werte sinken / fallen leicht ab / sind rückläufig</li>
+                            <li>X bleibt nahezu unverändert / stagniert / stabilisiert sich</li>
+                            <li>X erreicht den Höhepunkt / tiefsten Wert im Jahr ...</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 style="color: #e65100; margin-bottom: 10px; font-size: 1.1em;">I - Interpretation</h4>
+                        <ul style="line-height: 1.8; color: #5d4037;">
+                            <li>Dies liegt daran, dass ... / Der Grund ist ...</li>
+                            <li>Dies zeigt sich zum Beispiel an ...</li>
+                            <li>Man kann vermuten, dass ...</li>
+                            <li>Mögliche Ursachen sind ... / Dies könnte bedeuten, dass ...</li>
+                        </ul>
+                    </div>
                 </div>
-                <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
-                <button id="remove-image-btn" style="display: none; margin-top: 10px; background: #f44336; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;" onclick="removeImage()">🗑️ Grafik entfernen</button>
             </div>
+
+            <h2>📊 Grafik: Globaler Temperaturanstieg</h2>
             
-            <h2>📉 CO₂-Konzentration</h2>
-            <p>Die CO₂-Konzentration in der Atmosphäre hat seit 1750 um über 40% zugenommen.</p>
+            <div style="margin: 30px 0; text-align: center;">
+                <img src="images/klima.png" alt="Globale Temperaturentwicklung" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 3px solid #e0e0e0;">
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666; font-style: italic;">Quelle: Klimadaten zur globalen Temperaturentwicklung</p>
+            </div>
+
+            <h2>✍️ Aufgabe</h2>
+            <p>Analysieren Sie die Grafik systematisch nach dem O-V-I System und notieren Sie Ihre Erkenntnisse ins Lernjournal:</p>
+
             <div class="portfolio-box">
                 <h3>📝 Mein Lernjournal: Schritt 2</h3>
-                <p style="color: #666; margin-bottom: 15px;">Reflektiere über die Grafiken und Daten:</p>
-                <textarea id="portfolio-text" placeholder="• Welche Trends erkenne ich in den Grafiken?
-• Was überrascht mich an den Daten?
-• Wie interpretiere ich die Zusammenhänge?" oninput="savePortfolio()"></textarea>
+                <p style="color: #666; margin-bottom: 15px;">Analysieren Sie die Grafik nach dem O-V-I System:</p>
+                <textarea id="portfolio-text" placeholder="O - ORIENTIERUNG:
+
+
+V - VERLAUF:
+
+
+I - INTERPRETATION:
+" oninput="savePortfolio()"></textarea>
                 <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
             </div>
+
             <div class="button-group">
                 <button class="btn-back" onclick="returnToMain()">← Zurück zur Übersicht</button>
+                <button class="btn-pdf" onclick="downloadPDF()">📄 PDF Schritt 2 herunterladen</button>
                 <button class="btn-complete" onclick="completeStep()">Schritt abschließen und weiter →</button>
             </div>
         </div>
     </div>
     <script>
-        let imageData = null;
+        function toggleRedemittel() {
+            const content = document.getElementById('redemittel-content');
+            const arrow = document.getElementById('redemittel-arrow');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▼';
+            }
+        }
 
         function loadPortfolio() { 
             const saved = localStorage.getItem('learningProgress'); 
@@ -84,67 +150,7 @@
                 const progress = JSON.parse(saved); 
                 const portfolioText = progress.texts && progress.texts['2'] ? progress.texts['2'] : ''; 
                 document.getElementById('portfolio-text').value = portfolioText;
-                
-                // Lade gespeichertes Bild
-                if (progress.images && progress.images['2']) {
-                    imageData = progress.images['2'];
-                    displayImage(imageData);
-                }
             } 
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imageData = e.target.result;
-                displayImage(imageData);
-                saveImage();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function displayImage(data) {
-            const img = document.getElementById('climate-image');
-            const uploadArea = document.getElementById('upload-area');
-            const removeBtn = document.getElementById('remove-image-btn');
-            
-            img.src = data;
-            img.style.display = 'block';
-            uploadArea.style.display = 'none';
-            removeBtn.style.display = 'inline-block';
-        }
-
-        function removeImage() {
-            imageData = null;
-            const img = document.getElementById('climate-image');
-            const uploadArea = document.getElementById('upload-area');
-            const removeBtn = document.getElementById('remove-image-btn');
-            
-            img.src = '';
-            img.style.display = 'none';
-            uploadArea.style.display = 'block';
-            removeBtn.style.display = 'none';
-            
-            saveImage();
-        }
-
-        function saveImage() {
-            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
-            
-            if (!progress.images) {
-                progress.images = {};
-            }
-            
-            if (imageData) {
-                progress.images['2'] = imageData;
-            } else {
-                delete progress.images['2'];
-            }
-            
-            localStorage.setItem('learningProgress', JSON.stringify(progress));
         }
 
         function savePortfolio() { 
@@ -167,6 +173,37 @@
             setTimeout(() => { 
                 indicator.style.display = 'none'; 
             }, 2000); 
+        }
+
+        function downloadPDF() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (portfolioText === '') {
+                alert('Bitte trage zuerst deine Analyse in das Lernjournal ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Grafikanalyse Klimawandel", 20, 20);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Analyse nach dem O-V-I System:", 20, 45);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            const lines = doc.splitTextToSize(portfolioText, 170);
+            doc.text(lines, 20, 55);
+            
+            doc.save('Lernjournal_Schritt2.pdf');
         }
         
         function completeStep() { 
