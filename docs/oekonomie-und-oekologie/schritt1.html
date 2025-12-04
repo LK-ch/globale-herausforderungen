@@ -87,6 +87,8 @@
             color: #1b5e20;
             margin-bottom: 15px;
             font-size: 1.3em;
+            cursor: pointer;
+            user-select: none;
         }
 
         .stakeholder-list ul {
@@ -238,8 +240,10 @@
             </ul>
 
             <div class="stakeholder-list">
-                <h3>📌 Folgende Stakeholder werden analysiert:</h3>
-                <ul>
+                <h3 onclick="toggleStakeholder()">
+                    📌 Stakeholder <span id="stakeholder-arrow" style="float: right;">▼</span>
+                </h3>
+                <ul id="stakeholder-content" style="display: none;">
                     <li><a href="https://www.bio-suisse.ch/de/" target="_blank">Bio Suisse</a></li>
                     <li><a href="https://www.greenpeace.ch/de/" target="_blank">Greenpeace</a></li>
                     <li><a href="https://www.peta.de/" target="_blank">Peta</a></li>
@@ -329,7 +333,7 @@ Argumente GEGEN den Fleischkonsum:
                     ← Zurück zur Übersicht
                 </button>
                 <button class="btn-pdf" onclick="downloadCompletePDF()">
-                    📄 Lernjournal als PDF herunterladen
+                    📄 PDF Schritt 1 herunterladen
                 </button>
                 <button class="btn-complete" onclick="completeStep()">
                     Schritt abschließen und weiter →
@@ -339,6 +343,19 @@ Argumente GEGEN den Fleischkonsum:
     </div>
 
     <script>
+        function toggleStakeholder() {
+            const content = document.getElementById('stakeholder-content');
+            const arrow = document.getElementById('stakeholder-arrow');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                content.style.display = 'none';
+                arrow.textContent = '▼';
+            }
+        }
+
         function loadPortfolio() {
             const saved = localStorage.getItem('learningProgress');
             if (saved) {
@@ -515,7 +532,7 @@ Argumente GEGEN den Fleischkonsum:
                 doc.text(lines4, 20, yPosition);
             }
             
-            doc.save('Lernjournal_Komplett.pdf');
+            doc.save('Lernjournal_Schritt1.pdf');
         }
 
         function completeStep() {
