@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schritt 1: Ökologie & Ökonomie</title>
+    <title>Auftrag 1: Rollenspiel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -61,6 +62,60 @@
             margin-bottom: 10px;
         }
 
+        .question-italic {
+            font-style: italic;
+            font-weight: bold;
+            color: #1b5e20;
+            margin: 25px 0;
+            padding-left: 20px;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .assignment-section {
+            margin: 30px 0;
+        }
+
+        .stakeholder-list {
+            background: #e8f5e9;
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .stakeholder-list h3 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .stakeholder-list ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .stakeholder-list li {
+            background: white;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .stakeholder-list li a {
+            color: #1b5e20;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .stakeholder-list li a:hover {
+            color: #4CAF50;
+            text-decoration: underline;
+        }
+
         .portfolio-box {
             background: #e8f5e9;
             border: 3px solid #2e7d32;
@@ -77,7 +132,7 @@
 
         .portfolio-box textarea {
             width: 100%;
-            min-height: 200px;
+            min-height: 300px;
             padding: 15px;
             border: 2px solid #c8e6c9;
             border-radius: 10px;
@@ -131,16 +186,9 @@
             color: white;
         }
 
-        .info-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-
-        .info-box p {
-            color: #856404;
+        .btn-pdf {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
         }
 
         @media (max-width: 768px) {
@@ -157,78 +205,134 @@
 <body>
     <div class="container">
         <div class="lesson-header">
-            <h1>🌱 Schritt 1: Ökologie & Ökonomie</h1>
-            <p>Die Wechselwirkungen zwischen Umwelt und Wirtschaft</p>
+            <h1>🎭 Auftrag 1: Rollenspiel</h1>
+            <p>Fleischkonsum aus verschiedenen Perspektiven</p>
         </div>
 
         <div class="lesson-content">
-            <div class="info-box">
-                <p><strong>💡 Tipp:</strong> Lies dir den Inhalt aufmerksam durch und notiere deine wichtigsten Erkenntnisse im Lernjournal am Ende der Seite.</p>
+            <div class="assignment-section">
+                <p>
+                    Fleisch zählt seit jeher als Grundbestandteil unserer Ernährung. Verschiedene Menschengruppen entscheiden sich heute aber aus unterschiedlichen Gründen, auf den Fleischkonsum zu verzichten. Im Folgenden beschäftigen Sie sich mit der Frage:
+                </p>
+                
+                <p class="question-italic">
+                    Dürfen wir angesichts der Probleme mit der globalen Fleischproduktion (Massentierhaltung/Tierwohl und ökologische Folgen) noch Fleisch essen?
+                </p>
+
+                <p>
+                    Sie erhalten eine Rolle zugeteilt, aus deren Perspektive Sie sich ins Thema reindenken. Die einzelnen Stakeholder (= die betroffenen Personen und Personengruppen) haben gute Argumente FÜR oder GEGEN den Fleischkonsum.
+                </p>
             </div>
 
-            <h2>🎯 Lernziele</h2>
-            <p>In diesem Schritt wirst du:</p>
+            <h2>📋 Ihr Auftrag:</h2>
+            <p>
+                Informieren Sie sich über den zugeteilten Stakeholder und notieren Sie Argumente aus Sicht dieses Stakeholders FÜR oder GEGEN den Fleischkonsum aufgrund dessen, was Sie auf den offiziellen Websites zu den Stakeholder lesen und/ oder was Sie selbst denken. Halten Sie sich an das Muster <strong>B-B-B (Behauptung, Begründung, Beleg)</strong>.
+            </p>
+
+            <p style="margin-top: 25px;"><strong>Notieren Sie ins Lernjournal:</strong></p>
             <ul>
-                <li>Den Unterschied zwischen Ökologie und Ökonomie verstehen</li>
-                <li>Die Wechselwirkungen zwischen Wirtschaft und Umwelt kennenlernen</li>
-                <li>Nachhaltige Wirtschaftsmodelle kennenlernen</li>
+                <li><strong>WER</strong> ist der Stakeholder?</li>
+                <li><strong>WO</strong> haben Sie die Informationen über den Stakeholder rausgefunden?</li>
+                <li><strong>WARUM</strong> ist der Stakeholder FÜR oder GEGEN den Konsum von Fleisch?</li>
+                <li><strong>Argumente</strong> (B-B-B)</li>
             </ul>
 
-            <h2>📖 Was ist Ökologie?</h2>
-            <p>
-                Die Ökologie ist die Wissenschaft von den Beziehungen der Lebewesen untereinander 
-                und mit ihrer Umwelt. Sie untersucht, wie Organismen miteinander und mit ihrer 
-                natürlichen Umgebung interagieren.
-            </p>
-
-            <h2>💰 Was ist Ökonomie?</h2>
-            <p>
-                Die Ökonomie (Wirtschaftswissenschaft) beschäftigt sich damit, wie Menschen mit 
-                begrenzten Ressourcen umgehen, um ihre Bedürfnisse zu befriedigen. Sie untersucht 
-                die Produktion, Verteilung und den Konsum von Gütern und Dienstleistungen.
-            </p>
-
-            <h2>🔄 Wechselwirkungen</h2>
-            <p>
-                Ökologie und Ökonomie sind eng miteinander verbunden:
-            </p>
-            <ul>
-                <li><strong>Ressourcennutzung:</strong> Die Wirtschaft nutzt natürliche Ressourcen (Wasser, Holz, Mineralien)</li>
-                <li><strong>Umweltauswirkungen:</strong> Wirtschaftliche Aktivitäten beeinflussen Ökosysteme</li>
-                <li><strong>Nachhaltigkeit:</strong> Langfristiger wirtschaftlicher Erfolg hängt von gesunden Ökosystemen ab</li>
-            </ul>
-
-            <h2>🌍 Nachhaltiges Wirtschaften</h2>
-            <p>
-                Ein nachhaltiges Wirtschaftsmodell berücksichtigt:
-            </p>
-            <ul>
-                <li>Umweltschutz und Erhaltung der Biodiversität</li>
-                <li>Soziale Gerechtigkeit und faire Arbeitsbedingungen</li>
-                <li>Wirtschaftliche Stabilität und Wohlstand</li>
-            </ul>
+            <div class="stakeholder-list">
+                <h3>📌 Folgende Stakeholder werden analysiert:</h3>
+                <ul>
+                    <li><a href="https://www.bio-suisse.ch/de/" target="_blank">Bio Suisse</a></li>
+                    <li><a href="https://www.greenpeace.ch/de/" target="_blank">Greenpeace</a></li>
+                    <li><a href="https://www.peta.de/" target="_blank">Peta</a></li>
+                    <li><a href="https://www.proviande.ch/de" target="_blank">Proviande</a></li>
+                    <li><a href="https://www.sge-ssn.ch/de/" target="_blank">Schweizerische Gesellschaft für Ernährung</a></li>
+                    <li><a href="https://www.aboutswitzerland.eda.admin.ch/de/schweizer-kueche" target="_blank">Schweizerische Restaurants</a></li>
+                    <li><a href="https://vegan.ch/" target="_blank">Vegane Gesellschaft Schweiz</a></li>
+                </ul>
+            </div>
 
             <div class="portfolio-box">
-                <h3>📝 Mein Lernjournal: Schritt 1</h3>
+                <h3>📝 Mein Lernjournal: Auftrag 1</h3>
                 <p style="color: #666; margin-bottom: 15px;">
-                    Reflektiere über das Gelernte:
+                    Dokumentieren Sie hier Ihre Recherche und Argumente:
                 </p>
                 <textarea 
                     id="portfolio-text" 
-                    placeholder="• Wie hängen Ökologie und Ökonomie zusammen?
-• Welche Beispiele für Wechselwirkungen fallen mir ein?
-• Was bedeutet nachhaltiges Wirtschaften für mich?
-• Welche Fragen sind offen geblieben?"
+                    placeholder="WER ist der Stakeholder?
+
+WO haben Sie die Informationen rausgefunden?
+
+WARUM ist der Stakeholder FÜR oder GEGEN den Fleischkonsum?
+
+Argumente (Behauptung - Begründung - Beleg):
+1. 
+2. 
+3. "
                     oninput="savePortfolio()"></textarea>
                 <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+            </div>
+
+            <h2>🎤 Auftrag 2: Debatte</h2>
+            <p>
+                In einer Debatte werden Sie nun in der Perspektive Ihres Stakeholders argumentieren, ob Menschen in der Schweiz heute noch Fleisch essen sollten.
+            </p>
+
+            <h2>📊 Auftrag 3: Reflexion der Debatte</h2>
+            <p>
+                Nach der Debatte: Die Stakeholder haben unterschiedliche Blickwinkel und Aspekte, die für sie im Vordergrund stehen. Die Aspekte <strong>Ethik</strong>, <strong>Gesundheit</strong>, <strong>Kultur</strong>, <strong>Nachhaltigkeit</strong>, <strong>Wirtschaft</strong> sind besonders prominent vertreten. Notieren Sie je 3 Argumente FÜR und 3 Argumente GEGEN den Konsum von Fleisch aufgrund von dem, was in der Klasse diskutiert wurde. Notieren Sie daneben in Klammern, welcher Aspekt für die Befürworter oder Gegner des Fleischkonsums wohl im Vordergrund stand.
+            </p>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Auftrag 3</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Dokumentieren Sie hier die Argumente aus der Debatte:
+                </p>
+                <textarea 
+                    id="portfolio-text-3" 
+                    placeholder="Argumente FÜR den Fleischkonsum:
+1. [Argument] (Aspekt)
+2. [Argument] (Aspekt)
+3. [Argument] (Aspekt)
+
+Argumente GEGEN den Fleischkonsum:
+1. [Argument] (Aspekt)
+2. [Argument] (Aspekt)
+3. [Argument] (Aspekt)"
+                    oninput="savePortfolio3()"></textarea>
+                <div class="saved-indicator" id="saved-indicator-3">✓ Automatisch gespeichert</div>
+            </div>
+
+            <h2>⚖️ Auftrag 4: Spannungsfelder zwischen Ökonomie und Ökologie</h2>
+            <p>
+                Nicht nur bei der Frage um den Fleischkonsum, sondern auch in anderen Bereichen besteht ein Spannungsverhältnis zwischen den Aspekten <strong>Nachhaltigkeit</strong> und <strong>Wirtschaft</strong>, also Ökologie und Ökonomie. Lesen Sie dazu die entsprechende Seite im Buch Gesellschaft und notieren Sie weitere Beispiele von Spannungsfeldern zwischen Ökonomie und Ökologie in das Lernjournal.
+            </p>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Auftrag 4</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Notieren Sie hier weitere Beispiele von Spannungsfeldern:
+                </p>
+                <textarea 
+                    id="portfolio-text-4" 
+                    placeholder="Beispiele für Spannungsfelder zwischen Ökonomie und Ökologie:
+
+1. 
+
+2. 
+
+3. "
+                    oninput="savePortfolio4()"></textarea>
+                <div class="saved-indicator" id="saved-indicator-4">✓ Automatisch gespeichert</div>
             </div>
 
             <div class="button-group">
                 <button class="btn-back" onclick="returnToMain()">
                     ← Zurück zur Übersicht
                 </button>
+                <button class="btn-pdf" onclick="downloadCompletePDF()">
+                    📄 Lernjournal als PDF herunterladen
+                </button>
                 <button class="btn-complete" onclick="completeStep()">
-                    Schritt abschließen und weiter →
+                    Auftrag abschließen und weiter →
                 </button>
             </div>
         </div>
@@ -241,6 +345,12 @@
                 const progress = JSON.parse(saved);
                 const portfolioText = progress.texts && progress.texts['1'] ? progress.texts['1'] : '';
                 document.getElementById('portfolio-text').value = portfolioText;
+                
+                const portfolioText3 = progress.texts && progress.texts['3'] ? progress.texts['3'] : '';
+                document.getElementById('portfolio-text-3').value = portfolioText3;
+                
+                const portfolioText4 = progress.texts && progress.texts['4'] ? progress.texts['4'] : '';
+                document.getElementById('portfolio-text-4').value = portfolioText4;
             }
         }
 
@@ -273,11 +383,146 @@
             }, 2000);
         }
 
+        function savePortfolio3() {
+            const text = document.getElementById('portfolio-text-3').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['3'] = text;
+            
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator-3');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function savePortfolio4() {
+            const text = document.getElementById('portfolio-text-4').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['4'] = text;
+            
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator-4');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function downloadCompletePDF() {
+            const text1 = document.getElementById('portfolio-text').value;
+            const text3 = document.getElementById('portfolio-text-3').value;
+            const text4 = document.getElementById('portfolio-text-4').value;
+            
+            if (text1.trim() === '' && text3.trim() === '' && text4.trim() === '') {
+                alert('Bitte tragen Sie zuerst Ihre Notizen in mindestens einem Lernjournal ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let yPosition = 20;
+            
+            // Haupttitel
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Rollenspiel Fleischkonsum", 20, yPosition);
+            yPosition += 15;
+            
+            // Auftrag 1
+            if (text1.trim() !== '') {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("Auftrag 1: Stakeholder-Analyse", 20, yPosition);
+                yPosition += 8;
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                const lines1 = doc.splitTextToSize(text1, 170);
+                doc.text(lines1, 20, yPosition);
+                yPosition += (lines1.length * 6) + 12;
+                
+                // Neue Seite wenn nötig
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+            }
+            
+            // Auftrag 3
+            if (text3.trim() !== '') {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("Auftrag 3: Reflexion der Debatte", 20, yPosition);
+                yPosition += 8;
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                const lines3 = doc.splitTextToSize(text3, 170);
+                doc.text(lines3, 20, yPosition);
+                yPosition += (lines3.length * 6) + 12;
+                
+                // Neue Seite wenn nötig
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+            }
+            
+            // Auftrag 4
+            if (text4.trim() !== '') {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("Auftrag 4: Spannungsfelder Ökonomie & Ökologie", 20, yPosition);
+                yPosition += 8;
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                const lines4 = doc.splitTextToSize(text4, 170);
+                doc.text(lines4, 20, yPosition);
+            }
+            
+            doc.save('Lernjournal_Komplett.pdf');
+        }
+
         function completeStep() {
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
             if (portfolioText === '') {
-                const confirm = window.confirm('Du hast noch nichts in dein Lernjournal eingetragen. Möchtest du trotzdem fortfahren?');
+                const confirm = window.confirm('Sie haben noch nichts in Ihr Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
                 if (!confirm) return;
             }
             
@@ -291,7 +536,7 @@
                 localStorage.setItem('learningProgress', JSON.stringify(progress));
             }
             
-            alert('✓ Schritt 1 abgeschlossen!\n\nDein Lernjournal-Eintrag wurde gespeichert.');
+            alert('✓ Auftrag 1 abgeschlossen!\n\nIhr Lernjournal-Eintrag wurde gespeichert.');
             window.location.href = 'index.html';
         }
 
