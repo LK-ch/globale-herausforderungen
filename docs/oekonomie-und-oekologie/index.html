@@ -538,7 +538,7 @@
                 </div>
 
                 <div class="button-group">
-                    <button class="btn-primary" onclick="downloadPDF()">📄 Lernjournal als PDF herunterladen</button>
+                    <button class="btn-primary" onclick="downloadPDF()">📄 Gesamt-PDF herunterladen</button>
                     <button class="btn-info" onclick="downloadJSON()">💾 Backup herunterladen</button>
                     <button class="btn-success" onclick="loadBackup()">📂 Backup laden</button>
                 </div>
@@ -553,12 +553,14 @@
             completedPoints: [],
             currentPoint: 1,
             texts: {
-                1: '',
-                2: '',
-                3: '',
-                4: '',
-                5: '',
-                6: ''
+                '1': '',        // Schritt 1 - Auftrag 1
+                '1_task3': '',  // Schritt 1 - Auftrag 3
+                '1_task4': '',  // Schritt 1 - Auftrag 4
+                '2': '',        // Schritt 2
+                '3': '',        // Schritt 3
+                '4': '',        // Schritt 4
+                '5': '',        // Schritt 5
+                '6': ''         // Schritt 6
             },
             images: {}
         };
@@ -570,7 +572,7 @@
                 
                 if (!learningProgress.texts) {
                     learningProgress.texts = {
-                        1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
+                        '1': '', '1_task3': '', '1_task4': '', '2': '', '3': '', '4': '', '5': '', '6': ''
                     };
                 }
                 
@@ -590,7 +592,6 @@
                 return;
             }
             
-            // Erste Karte ist immer aktiv
             if (pointNumber === 1 || !card || !card.classList.contains('locked')) {
                 window.location.href = `schritt${pointNumber}.html`;
             }
@@ -648,31 +649,109 @@
             const margin = 20;
             const pageWidth = doc.internal.pageSize.width - 2 * margin;
             
-            const steps = [
-                { key: '1', title: 'Schritt 1: Ökologie & Ökonomie' },
-                { key: '2', title: 'Schritt 2: Klimaveränderung (Grafikanalyse)' },
-                { key: '3', title: 'Schritt 3: Ursachen des Klimawandels (Hörverstehen)' },
-                { key: '4', title: 'Schritt 4: Folgen des Klimawandels' },
-                { key: '5', title: 'Schritt 5: Biodiversität' },
-                { key: '6', title: 'Schritt 6: Handlungsmöglichkeiten' }
-            ];
+            // Schritt 1: Rollenspiel (hat mehrere Aufträge)
+            const text1_1 = learningProgress.texts['1'] || '';
+            const text1_3 = learningProgress.texts['1_task3'] || '';
+            const text1_4 = learningProgress.texts['1_task4'] || '';
             
-            for (let step of steps) {
-                const text = learningProgress.texts[step.key] || '(Keine Einträge vorhanden)';
-                
+            if (text1_1 || text1_3 || text1_4) {
                 doc.setFontSize(14);
                 doc.setFont(undefined, 'bold');
-                doc.text(step.title, margin, yPos);
+                doc.text('Schritt 1: Ökologie & Ökonomie (Rollenspiel)', margin, yPos);
+                yPos += lineHeight + 5;
+                
+                // Auftrag 1
+                if (text1_1.trim() !== '') {
+                    doc.setFontSize(12);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Auftrag 1: Stakeholder-Analyse', margin, yPos);
+                    yPos += lineHeight;
+                    
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'normal');
+                    const lines1_1 = doc.splitTextToSize(text1_1, pageWidth);
+                    for (let line of lines1_1) {
+                        if (yPos > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, margin, yPos);
+                        yPos += lineHeight;
+                    }
+                    yPos += 5;
+                }
+                
+                // Auftrag 3
+                if (text1_3.trim() !== '') {
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.setFontSize(12);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Auftrag 3: Reflexion der Debatte', margin, yPos);
+                    yPos += lineHeight;
+                    
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'normal');
+                    const lines1_3 = doc.splitTextToSize(text1_3, pageWidth);
+                    for (let line of lines1_3) {
+                        if (yPos > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, margin, yPos);
+                        yPos += lineHeight;
+                    }
+                    yPos += 5;
+                }
+                
+                // Auftrag 4
+                if (text1_4.trim() !== '') {
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.setFontSize(12);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Auftrag 4: Spannungsfelder Ökonomie & Ökologie', margin, yPos);
+                    yPos += lineHeight;
+                    
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'normal');
+                    const lines1_4 = doc.splitTextToSize(text1_4, pageWidth);
+                    for (let line of lines1_4) {
+                        if (yPos > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, margin, yPos);
+                        yPos += lineHeight;
+                    }
+                }
+                
+                yPos += 10;
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+            }
+            
+            // Schritt 2: Klimaveränderung (Grafikanalyse)
+            const text2 = learningProgress.texts['2'] || '';
+            if (text2.trim() !== '') {
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Schritt 2: Klimaveränderung (Grafikanalyse)', margin, yPos);
                 yPos += lineHeight + 3;
                 
-                // Füge Bild ein, falls vorhanden (nur für Schritt 2)
-                if (step.key === '2' && learningProgress.images && learningProgress.images['2']) {
+                // Füge Bild ein, falls vorhanden
+                if (learningProgress.images && learningProgress.images['2']) {
                     try {
                         const imgData = learningProgress.images['2'];
-                        const imgWidth = 170; // Breite in mm
-                        const imgHeight = 100; // Höhe in mm
+                        const imgWidth = 170;
+                        const imgHeight = 100;
                         
-                        // Prüfe ob genug Platz auf der Seite ist
                         if (yPos + imgHeight > 270) {
                             doc.addPage();
                             yPos = 20;
@@ -681,7 +760,6 @@
                         doc.addImage(imgData, 'JPEG', margin, yPos, imgWidth, imgHeight);
                         yPos += imgHeight + 10;
                         
-                        // Neue Seite wenn nötig
                         if (yPos > 250) {
                             doc.addPage();
                             yPos = 20;
@@ -690,6 +768,68 @@
                         console.error('Fehler beim Einfügen des Bildes:', error);
                     }
                 }
+                
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                const lines2 = doc.splitTextToSize(text2, pageWidth);
+                for (let line of lines2) {
+                    if (yPos > 270) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                }
+                
+                yPos += 10;
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+            }
+            
+            // Schritt 3: Ursachen (Hörverstehen)
+            const text3 = learningProgress.texts['3'] || '';
+            if (text3.trim() !== '') {
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Schritt 3: Ursachen des Klimawandels (Hörverstehen)', margin, yPos);
+                yPos += lineHeight + 3;
+                
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                const lines3 = doc.splitTextToSize(text3, pageWidth);
+                for (let line of lines3) {
+                    if (yPos > 270) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                }
+                
+                yPos += 10;
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+            }
+            
+            // Schritte 4, 5, 6
+            const steps = [
+                { key: '4', title: 'Schritt 4: Folgen des Klimawandels' },
+                { key: '5', title: 'Schritt 5: Biodiversität' },
+                { key: '6', title: 'Schritt 6: Handlungsmöglichkeiten' }
+            ];
+            
+            for (let step of steps) {
+                const text = learningProgress.texts[step.key] || '';
+                if (text.trim() === '') continue;
+                
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(step.title, margin, yPos);
+                yPos += lineHeight + 3;
                 
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
@@ -704,15 +844,14 @@
                     yPos += lineHeight;
                 }
                 
-                yPos += 8;
-                
+                yPos += 10;
                 if (yPos > 250) {
                     doc.addPage();
                     yPos = 20;
                 }
             }
             
-            doc.save('Lernjournal-Oekonomie-Oekologie.pdf');
+            doc.save('Lernjournal-Gesamt.pdf');
         }
 
         function downloadJSON() {
