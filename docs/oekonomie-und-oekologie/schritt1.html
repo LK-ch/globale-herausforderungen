@@ -193,6 +193,26 @@
             color: white;
         }
 
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
         @media (max-width: 768px) {
             .lesson-header h1 {
                 font-size: 1.8em;
@@ -207,6 +227,7 @@
 <body>
     <div class="container">
         <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
             <h1>🎭 Schritt 1: Rollenspiel</h1>
             <p>Fleischkonsum aus verschiedenen Perspektiven</p>
         </div>
