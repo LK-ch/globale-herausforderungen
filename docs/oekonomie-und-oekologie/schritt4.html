@@ -466,17 +466,9 @@
                 </div>
             </div>
 
-            <!-- Auftrag 2: Zusammenfassung -->
+            <!-- Auftrag 2: Fussabdruckrechner -->
             <div class="section">
-                <h2>Auftrag 2: Zusammenfassung in eigenen Worten</h2>
-                <p><strong>Aufgabe:</strong> Fassen Sie in 3 Sätzen zusammen, was Sie über die Folgen des Klimawandels gelesen haben.</p>
-                <textarea id="summary" placeholder="Schreiben Sie hier Ihre Zusammenfassung in 3 Sätzen..."></textarea>
-                <button class="save-btn" onclick="saveSummary()">💾 Zusammenfassung speichern</button>
-            </div>
-
-            <!-- Auftrag 3: Fussabdruckrechner -->
-            <div class="section">
-                <h2>Auftrag 3: Ökologischer Fussabdruck</h2>
+                <h2>Auftrag 2: Ökologischer Fussabdruck</h2>
                 <p><strong>Aufgabe:</strong> Berechnen Sie Ihren persönlichen ökologischen Fussabdruck mit dem WWF-Rechner.</p>
                 <div class="link-box">
                     <a href="https://www.wwf.ch/de/nachhaltig-leben/footprintrechner" target="_blank">🦶 Zum WWF-Fussabdruckrechner →</a>
@@ -484,18 +476,23 @@
                 </div>
             </div>
 
-            <!-- Auftrag 4: Erkenntnisse -->
+            <!-- Lernjournal: Schritt 4 -->
             <div class="section">
-                <h2>Auftrag 4: Erkenntnisse aus dem Fussabdruckrechner</h2>
-                <p><strong>Aufgabe:</strong> Notieren Sie Ihre Erkenntnisse aus dem Fussabdruckrechner und verknüpfen Sie diese mit dem entsprechenden Kapitel im Buch Gesellschaft.</p>
-                <textarea id="insights" placeholder="Schreiben Sie hier Ihre Erkenntnisse...
+                <h2>📝 Lernjournal Schritt 4</h2>
+                <p><strong>Aufgabe:</strong></p>
+                <ul style="margin: 10px 0 15px 20px; line-height: 1.8;">
+                    <li>Fassen Sie in 3 Sätzen zusammen, was Sie über die Folgen des Klimawandels gelesen haben.</li>
+                    <li>Notieren Sie Ihre Erkenntnisse aus dem Fussabdruckrechner und verknüpfen Sie diese mit dem entsprechenden Kapitel im Buch Gesellschaft.</li>
+                </ul>
+                <textarea id="journal" placeholder="Teil 1: Zusammenfassung der Folgen des Klimawandels
+(Was haben Sie über den Treibhauseffekt, die Auswirkungen und den Permafrost gelernt?)
 
-Mögliche Leitfragen:
+Teil 2: Erkenntnisse aus dem Fussabdruckrechner
 - Wie groß ist Ihr ökologischer Fussabdruck?
 - In welchen Bereichen verbrauchen Sie am meisten Ressourcen?
-- Was könnte Sie persönlich tun, um Ihren Fussabdruck zu verkleinern?
+- Was könnten Sie persönlich tun, um Ihren Fussabdruck zu verkleinern?
 - Welche Inhalte aus dem Buch Gesellschaft passen zu Ihren Erkenntnissen?"></textarea>
-                <button class="save-btn" onclick="saveInsights()">💾 Erkenntnisse speichern</button>
+                <button class="save-btn" onclick="saveJournal()">💾 Lernjournal speichern</button>
             </div>
 
             <!-- PDF Export -->
@@ -567,24 +564,14 @@ Mögliche Leitfragen:
             scoreDisplay.classList.add('show');
         }
 
-        function saveSummary() {
-            const summary = document.getElementById('summary').value;
-            if (summary.trim() === '') {
-                alert('Bitte schreiben Sie zuerst Ihre Zusammenfassung.');
+        function saveJournal() {
+            const journal = document.getElementById('journal').value;
+            if (journal.trim() === '') {
+                alert('Bitte schreiben Sie zuerst Ihr Lernjournal.');
                 return;
             }
-            localStorage.setItem('klimawandel_summary', summary);
-            alert('✓ Zusammenfassung gespeichert!');
-        }
-
-        function saveInsights() {
-            const insights = document.getElementById('insights').value;
-            if (insights.trim() === '') {
-                alert('Bitte notieren Sie zuerst Ihre Erkenntnisse.');
-                return;
-            }
-            localStorage.setItem('klimawandel_insights', insights);
-            alert('✓ Erkenntnisse gespeichert!');
+            localStorage.setItem('klimawandel_journal', journal);
+            alert('✓ Lernjournal gespeichert!');
         }
 
         function exportToPDF() {
@@ -603,29 +590,16 @@ Mögliche Leitfragen:
             doc.setFont(undefined, 'normal');
             doc.text(`${correctAnswers} von ${totalQuestions} Fragen richtig beantwortet`, 20, 45);
 
-            // Summary
-            const summary = document.getElementById('summary').value;
-            if (summary.trim() !== '') {
+            // Journal
+            const journal = document.getElementById('journal').value;
+            if (journal.trim() !== '') {
                 doc.setFontSize(14);
                 doc.setFont(undefined, 'bold');
-                doc.text('Zusammenfassung', 20, 60);
+                doc.text('Lernjournal Schritt 4', 20, 60);
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
-                const summaryLines = doc.splitTextToSize(summary, 170);
-                doc.text(summaryLines, 20, 70);
-            }
-
-            // Insights
-            const insights = document.getElementById('insights').value;
-            if (insights.trim() !== '') {
-                doc.addPage();
-                doc.setFontSize(14);
-                doc.setFont(undefined, 'bold');
-                doc.text('Erkenntnisse aus dem Fussabdruckrechner', 20, 20);
-                doc.setFontSize(11);
-                doc.setFont(undefined, 'normal');
-                const insightsLines = doc.splitTextToSize(insights, 170);
-                doc.text(insightsLines, 20, 30);
+                const journalLines = doc.splitTextToSize(journal, 170);
+                doc.text(journalLines, 20, 70);
             }
 
             // Footer
@@ -639,14 +613,9 @@ Mögliche Leitfragen:
 
         // Load saved data on page load
         window.addEventListener('DOMContentLoaded', () => {
-            const savedSummary = localStorage.getItem('klimawandel_summary');
-            if (savedSummary) {
-                document.getElementById('summary').value = savedSummary;
-            }
-
-            const savedInsights = localStorage.getItem('klimawandel_insights');
-            if (savedInsights) {
-                document.getElementById('insights').value = savedInsights;
+            const savedJournal = localStorage.getItem('klimawandel_journal');
+            if (savedJournal) {
+                document.getElementById('journal').value = savedJournal;
             }
         });
     </script>
