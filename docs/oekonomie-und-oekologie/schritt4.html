@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folgen des Klimawandels - Lernpfad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 40px;
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #1b5e20;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #2e7d32;
+        }
+
+        .section h2 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .instruction {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        .instruction h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .instruction p {
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .quiz-question h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .check-btn {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .check-btn:hover {
+            background: #1b5e20;
+        }
+
+        .check-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-top: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        .link-box {
+            background: #e7f3ff;
+            border: 2px solid #2196F3;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .link-box a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .link-box a:hover {
+            text-decoration: underline;
+        }
+
+        .link-box p {
+            margin-top: 10px;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .save-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #218838;
+        }
+
+        .score-display {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-display h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .score-display p {
+            font-size: 1.5em;
+            color: #0c5460;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌡️ Folgen des Klimawandels</h1>
+            <p>Lernschritt 4: Auswirkungen verstehen und reflektieren</p>
+        </header>
+
+        <a href="index.html" class="back-link">← Zurück zum Lernpfad</a>
+
+        <main>
+            <!-- Anleitung -->
+            <div class="instruction">
+                <h3>📚 Anleitung</h3>
+                <p>Lesen Sie die Seiten im Buch <strong>Gesellschaft</strong> zum Klimawandel und beantworten Sie anschließend die folgenden Fragen.</p>
+            </div>
+
+            <!-- Auftrag 1: Quiz -->
+            <div class="section">
+                <h2>Auftrag 1: Quiz zu den Folgen des Klimawandels</h2>
+                
+                <!-- Frage 1 -->
+                <div class="quiz-question" data-question="1">
+                    <h3>1. Was bewirkt der natürliche Treibhauseffekt?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="a">
+                            Er kühlt die Erde ab
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="b">
+                            Er erwärmt die Erde von –18°C auf +15°C
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="c">
+                            Er hat keinen Einfluss auf die Temperatur
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="d">
+                            Er verursacht den Klimawandel
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(1, 'b', 'Der natürliche Treibhauseffekt ist lebensnotwendig und erhöht die Durchschnittstemperatur von –18°C auf +15°C.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <!-- Frage 2 -->
+                <div class="quiz-question" data-question="2">
+                    <h3>2. Was versteht man unter dem anthropogenen Treibhauseffekt?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="a">
+                            Den natürlichen Treibhauseffekt der Erde
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="b">
+                            Die Verstärkung des Treibhauseffekts durch den Menschen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="c">
+                            Den Treibhauseffekt durch Vulkanausbrüche
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="d">
+                            Die Reduktion von Treibhausgasen
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(2, 'b', 'Anthropogen bedeutet «vom Menschen verursacht». Der Mensch verstärkt seit der industriellen Revolution den natürlichen Treibhauseffekt.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <!-- Frage 3 -->
+                <div class="quiz-question" data-question="3">
+                    <h3>3. Welche Aussage über die Folgen des Klimawandels stimmt?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="a">
+                            Alle Regionen der Welt sind gleich stark betroffen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="b">
+                            Nur die Polarregionen sind betroffen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="c">
+                            Ärmere Länder sind am schlimmsten betroffen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="d">
+                            Die Schweiz ist nicht betroffen
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(3, 'c', 'Ärmere Länder sind am stärksten betroffen, weil sie weniger finanzielle Mittel und schlechtere Infrastruktur haben, um mit den Folgen umzugehen.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <!-- Frage 4 -->
+                <div class="quiz-question" data-question="4">
+                    <h3>4. Um wie viel Grad ist die Temperatur in der Schweiz seit 1864 gestiegen?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="a">
+                            0,5 Grad
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="b">
+                            1 Grad
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="c">
+                            2 Grad
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="d">
+                            5 Grad
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(4, 'c', 'Die Temperatur in der Schweiz ist seit 1864 um zwei Grad angestiegen.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <!-- Frage 5 -->
+                <div class="quiz-question" data-question="5">
+                    <h3>5. Was ist Permafrost und warum ist das Auftauen problematisch?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="a">
+                            Dauerhaft gefrorener Boden; Auftauen macht den Boden instabil und kann zu Bergstürzen führen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="b">
+                            Zeitweise gefrorener Schnee; hat keine Auswirkungen
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="c">
+                            Gefrorenes Wasser in Seen; erhöht den Meeresspiegel
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="d">
+                            Ewiges Eis an den Polen; schmilzt nicht
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(5, 'a', 'Permafrost ist dauerhaft gefrorener Untergrund. Wenn er auftaut, wird der Boden instabil, was zu Bergstürzen und Erdrutschen führen kann.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <!-- Frage 6 -->
+                <div class="quiz-question" data-question="6">
+                    <h3>6. Wie viel Eisvolumen haben die Alpengletscher seit 1850 verloren?</h3>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="a">
+                            Etwa 20-30%
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="b">
+                            Etwa 40-50%
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="c">
+                            Etwa 70-80%
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="d">
+                            Fast nichts
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer(6, 'c', 'Die Alpengletscher haben bis Mitte der 1970er-Jahre etwa die Hälfte ihres Volumens verloren, danach weitere 20-30%, also insgesamt etwa 70-80%.')">Antwort überprüfen</button>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+
+                <div class="score-display" id="scoreDisplay">
+                    <h3>📊 Ihr Ergebnis</h3>
+                    <p><span id="score">0</span> von 6 Fragen richtig beantwortet</p>
+                </div>
+            </div>
+
+            <!-- Auftrag 2: Zusammenfassung -->
+            <div class="section">
+                <h2>Auftrag 2: Zusammenfassung in eigenen Worten</h2>
+                <p><strong>Aufgabe:</strong> Fassen Sie in 3 Sätzen zusammen, was Sie über die Folgen des Klimawandels gelesen haben.</p>
+                <textarea id="summary" placeholder="Schreiben Sie hier Ihre Zusammenfassung in 3 Sätzen..."></textarea>
+                <button class="save-btn" onclick="saveSummary()">💾 Zusammenfassung speichern</button>
+            </div>
+
+            <!-- Auftrag 3: Fussabdruckrechner -->
+            <div class="section">
+                <h2>Auftrag 3: Ökologischer Fussabdruck</h2>
+                <p><strong>Aufgabe:</strong> Berechnen Sie Ihren persönlichen ökologischen Fussabdruck mit dem WWF-Rechner.</p>
+                <div class="link-box">
+                    <a href="https://www.wwf.ch/de/nachhaltig-leben/footprintrechner" target="_blank">🦶 Zum WWF-Fussabdruckrechner →</a>
+                    <p>Der Fussabdruckrechner zeigt Ihnen, wie viel Fläche auf der Erde nötig ist, um Ihren Lebensstil zu ermöglichen. Er berücksichtigt Ernährung, Wohnen, Mobilität und Konsum.</p>
+                </div>
+            </div>
+
+            <!-- Auftrag 4: Erkenntnisse -->
+            <div class="section">
+                <h2>Auftrag 4: Erkenntnisse aus dem Fussabdruckrechner</h2>
+                <p><strong>Aufgabe:</strong> Notieren Sie Ihre Erkenntnisse aus dem Fussabdruckrechner und verknüpfen Sie diese mit dem entsprechenden Kapitel im Buch Gesellschaft.</p>
+                <textarea id="insights" placeholder="Schreiben Sie hier Ihre Erkenntnisse...
+
+Mögliche Leitfragen:
+- Wie groß ist Ihr ökologischer Fussabdruck?
+- In welchen Bereichen verbrauchen Sie am meisten Ressourcen?
+- Was könnte Sie persönlich tun, um Ihren Fussabdruck zu verkleinern?
+- Welche Inhalte aus dem Buch Gesellschaft passen zu Ihren Erkenntnissen?"></textarea>
+                <button class="save-btn" onclick="saveInsights()">💾 Erkenntnisse speichern</button>
+            </div>
+
+            <!-- PDF Export -->
+            <div class="section" style="text-align: center;">
+                <button class="save-btn" style="background: #2196F3;" onclick="exportToPDF()">📄 Alle Antworten als PDF exportieren</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let correctAnswers = 0;
+        let totalQuestions = 6;
+        let answeredQuestions = new Set();
+
+        function checkAnswer(questionNum, correctAnswer, explanation) {
+            const selectedOption = document.querySelector(`input[name="q${questionNum}"]:checked`);
+            
+            if (!selectedOption) {
+                alert('Bitte wählen Sie eine Antwort aus.');
+                return;
+            }
+
+            const feedback = document.getElementById(`feedback${questionNum}`);
+            const question = document.querySelector(`[data-question="${questionNum}"]`);
+            const button = question.querySelector('.check-btn');
+            const options = question.querySelectorAll('.quiz-option');
+
+            // Disable button after checking
+            button.disabled = true;
+
+            // Remove previous styling
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Check if this question was already answered correctly
+            const wasCorrect = answeredQuestions.has(questionNum);
+
+            if (selectedOption.value === correctAnswer) {
+                selectedOption.closest('.quiz-option').classList.add('correct');
+                feedback.className = 'feedback correct show';
+                feedback.textContent = '✓ Richtig! ' + explanation;
+                
+                if (!wasCorrect) {
+                    correctAnswers++;
+                    answeredQuestions.add(questionNum);
+                }
+            } else {
+                selectedOption.closest('.quiz-option').classList.add('incorrect');
+                feedback.className = 'feedback incorrect show';
+                feedback.textContent = '✗ Leider falsch. ' + explanation;
+                
+                // Show correct answer
+                options.forEach(opt => {
+                    const input = opt.querySelector('input');
+                    if (input.value === correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            updateScore();
+        }
+
+        function updateScore() {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreText = document.getElementById('score');
+            scoreText.textContent = correctAnswers;
+            scoreDisplay.classList.add('show');
+        }
+
+        function saveSummary() {
+            const summary = document.getElementById('summary').value;
+            if (summary.trim() === '') {
+                alert('Bitte schreiben Sie zuerst Ihre Zusammenfassung.');
+                return;
+            }
+            localStorage.setItem('klimawandel_summary', summary);
+            alert('✓ Zusammenfassung gespeichert!');
+        }
+
+        function saveInsights() {
+            const insights = document.getElementById('insights').value;
+            if (insights.trim() === '') {
+                alert('Bitte notieren Sie zuerst Ihre Erkenntnisse.');
+                return;
+            }
+            localStorage.setItem('klimawandel_insights', insights);
+            alert('✓ Erkenntnisse gespeichert!');
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Title
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('Folgen des Klimawandels - Lernjournal', 20, 20);
+
+            // Quiz Results
+            doc.setFontSize(14);
+            doc.text('Quiz-Ergebnis', 20, 35);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`${correctAnswers} von ${totalQuestions} Fragen richtig beantwortet`, 20, 45);
+
+            // Summary
+            const summary = document.getElementById('summary').value;
+            if (summary.trim() !== '') {
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Zusammenfassung', 20, 60);
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                const summaryLines = doc.splitTextToSize(summary, 170);
+                doc.text(summaryLines, 20, 70);
+            }
+
+            // Insights
+            const insights = document.getElementById('insights').value;
+            if (insights.trim() !== '') {
+                doc.addPage();
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Erkenntnisse aus dem Fussabdruckrechner', 20, 20);
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                const insightsLines = doc.splitTextToSize(insights, 170);
+                doc.text(insightsLines, 20, 30);
+            }
+
+            // Footer
+            doc.setFontSize(9);
+            doc.setTextColor(128);
+            const date = new Date().toLocaleDateString('de-CH');
+            doc.text(`Erstellt am: ${date}`, 20, 285);
+
+            doc.save('Klimawandel-Folgen-Lernjournal.pdf');
+        }
+
+        // Load saved data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedSummary = localStorage.getItem('klimawandel_summary');
+            if (savedSummary) {
+                document.getElementById('summary').value = savedSummary;
+            }
+
+            const savedInsights = localStorage.getItem('klimawandel_insights');
+            if (savedInsights) {
+                document.getElementById('insights').value = savedInsights;
+            }
+        });
+    </script>
+</body>
+</html>
