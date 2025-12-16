@@ -518,6 +518,11 @@
                     <button class="btn btn-secondary" onclick="resetEcosystem()">Zurücksetzen</button>
                     <button class="btn btn-primary" onclick="analyzeEcosystem()">Ökosystem Analysieren</button>
                 </div>
+                
+                <div class="actions" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--sage);">
+                    <button class="btn btn-secondary" onclick="returnToMain()">← Zurück zur Übersicht</button>
+                    <button class="btn btn-primary" onclick="completeStep()">Schritt abschließen und weiter →</button>
+                </div>
             </div>
         </div>
     </div>
@@ -884,6 +889,31 @@
                 updateStats();
                 showMessage('Ökosystem wurde zurückgesetzt', 'info');
             }
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        function completeStep() {
+            if (ecosystem.length < 5) {
+                const confirm = window.confirm('Du hast noch nicht viele Arten hinzugefügt. Möchtest du trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            
+            // Annahme: Dies ist Schritt 5 oder ein anderer Schritt - bitte anpassen
+            const stepNumber = 5; // Bitte die korrekte Schrittnummer einsetzen
+            
+            if (!progress.completedPoints.includes(stepNumber)) {
+                progress.completedPoints.push(stepNumber);
+                progress.currentPoint = stepNumber + 1;
+                localStorage.setItem('learningProgress', JSON.stringify(progress));
+            }
+            
+            alert(`✓ Schritt abgeschlossen!\n\nDu hast ${ecosystem.length} Arten in dein Ökosystem eingefügt.`);
+            window.location.href = 'index.html';
         }
 
         function showMessage(text, type = 'info') {
