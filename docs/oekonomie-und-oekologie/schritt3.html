@@ -85,24 +85,7 @@
             border-radius: 15px;
             padding: 30px;
             margin: 25px 0;
-            display: none;
             transition: all 0.3s ease;
-        }
-
-        .question-card.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .question-header {
@@ -149,7 +132,7 @@
             align-items: center;
         }
 
-        .answer-option:hover {
+        .answer-option:hover:not(.disabled) {
             border-color: #2e7d32;
             background: #e8f5e9;
             transform: translateX(5px);
@@ -199,11 +182,22 @@
             padding: 15px;
             border-radius: 10px;
             display: none;
-            animation: fadeIn 0.3s;
         }
 
         .feedback.show {
             display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .feedback.correct {
@@ -236,7 +230,7 @@
             transition: all 0.2s;
         }
 
-        .btn-check:hover {
+        .btn-check:hover:not(:disabled) {
             transform: scale(1.05);
         }
 
@@ -247,22 +241,6 @@
             transform: none;
         }
 
-        .btn-next {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-next:hover {
-            transform: scale(1.05);
-        }
-
         .progress-indicator {
             background: #e8f5e9;
             border: 2px solid #2e7d32;
@@ -270,6 +248,9 @@
             padding: 15px;
             margin: 30px 0;
             text-align: center;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
         }
 
         .progress-text {
@@ -472,7 +453,7 @@
             </div>
 
             <div class="progress-indicator">
-                <div class="progress-text" id="progress-text">Frage 1 von 10</div>
+                <div class="progress-text" id="progress-text">0 von 10 Fragen beantwortet</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
@@ -480,7 +461,7 @@
 
             <div class="quiz-section" id="quiz-section">
                 <!-- Frage 1 -->
-                <div class="question-card active" data-question="1" data-correct="b">
+                <div class="question-card" data-question="1" data-correct="b">
                     <div class="question-header">
                         <div class="question-number">1</div>
                         <div class="question-text">Warum widersprechen kühle, verregnete Sommer nicht dem Klimawandel?</div>
@@ -506,7 +487,6 @@
                     <div class="feedback" id="feedback-1"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(1)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(1)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -537,7 +517,6 @@
                     <div class="feedback" id="feedback-2"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(2)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(2)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -568,7 +547,6 @@
                     <div class="feedback" id="feedback-3"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(3)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(3)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -599,7 +577,6 @@
                     <div class="feedback" id="feedback-4"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(4)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(4)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -630,7 +607,6 @@
                     <div class="feedback" id="feedback-5"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(5)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(5)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -661,7 +637,6 @@
                     <div class="feedback" id="feedback-6"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(6)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(6)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -692,7 +667,6 @@
                     <div class="feedback" id="feedback-7"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(7)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(7)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -723,7 +697,6 @@
                     <div class="feedback" id="feedback-8"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(8)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(8)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -754,7 +727,6 @@
                     <div class="feedback" id="feedback-9"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(9)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(9)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
 
@@ -785,7 +757,6 @@
                     <div class="feedback" id="feedback-10"></div>
                     <div class="quiz-buttons">
                         <button class="btn-check" onclick="checkAnswer(10)">Antwort überprüfen</button>
-                        <button class="btn-next" onclick="nextQuestion(10)" style="display: none;">Nächste Frage →</button>
                     </div>
                 </div>
             </div>
@@ -834,7 +805,6 @@ Beispiele:
     </div>
 
     <script>
-        let currentQuestion = 1;
         let score = 0;
         const totalQuestions = 10;
         let answeredQuestions = new Set();
@@ -868,11 +838,15 @@ Beispiele:
                 return;
             }
 
+            // Prüfen ob bereits beantwortet
+            if (answeredQuestions.has(questionNum)) {
+                return;
+            }
+
             const selectedAnswer = selectedOption.dataset.answer;
             const correctAnswer = questionCard.dataset.correct;
             const feedback = document.getElementById(`feedback-${questionNum}`);
             const checkButton = questionCard.querySelector('.btn-check');
-            const nextButton = questionCard.querySelector('.btn-next');
 
             // Markiere bereits beantwortet
             answeredQuestions.add(questionNum);
@@ -897,39 +871,27 @@ Beispiele:
                 feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort wurde grün markiert.';
             }
 
-            checkButton.style.display = 'none';
-            nextButton.style.display = 'inline-block';
+            checkButton.disabled = true;
 
             updateProgress();
-        }
 
-        function nextQuestion(questionNum) {
-            const currentCard = document.querySelector(`.question-card[data-question="${questionNum}"]`);
-            currentCard.classList.remove('active');
-
-            if (questionNum < totalQuestions) {
-                currentQuestion = questionNum + 1;
-                const nextCard = document.querySelector(`.question-card[data-question="${currentQuestion}"]`);
-                nextCard.classList.add('active');
-                updateProgress();
-                
-                // Scroll zum Anfang der neuen Frage
-                nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                // Alle Fragen beantwortet
-                showResults();
+            // Zeige Ergebnisse wenn alle Fragen beantwortet
+            if (answeredQuestions.size === totalQuestions) {
+                setTimeout(() => {
+                    showResults();
+                }, 500);
             }
         }
 
         function updateProgress() {
-            const progressPercent = (currentQuestion / totalQuestions) * 100;
+            const answered = answeredQuestions.size;
+            const progressPercent = (answered / totalQuestions) * 100;
             document.getElementById('progress-fill').style.width = progressPercent + '%';
             document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
-            document.getElementById('progress-text').textContent = `Frage ${currentQuestion} von ${totalQuestions}`;
+            document.getElementById('progress-text').textContent = `${answered} von ${totalQuestions} Fragen beantwortet`;
         }
 
         function showResults() {
-            document.getElementById('quiz-section').style.display = 'none';
             const resultsSection = document.getElementById('results-section');
             resultsSection.classList.add('show');
             document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
