@@ -590,18 +590,14 @@
                 opt.classList.remove('correct', 'incorrect');
             });
 
-            // Check if this question was already answered correctly
-            const wasCorrect = answeredQuestions.has(questionNum);
+            // Mark this question as answered (regardless of correctness)
+            answeredQuestions.add(questionNum);
 
             if (selectedOption.value === correctAnswer) {
                 selectedOption.closest('.quiz-option').classList.add('correct');
                 feedback.className = 'feedback correct show';
                 feedback.textContent = '✓ Richtig! ' + explanation;
-                
-                if (!wasCorrect) {
-                    correctAnswers++;
-                    answeredQuestions.add(questionNum);
-                }
+                correctAnswers++;
             } else {
                 selectedOption.closest('.quiz-option').classList.add('incorrect');
                 feedback.className = 'feedback incorrect show';
@@ -685,8 +681,9 @@
         function completeStep() {
             const journal = document.getElementById('journal').value.trim();
             
+            // Check if all questions have been answered (not necessarily correct)
             if (answeredQuestions.size < totalQuestions) {
-                alert('Bitte beantworten Sie zuerst alle Fragen!');
+                alert(`Bitte beantworten Sie zuerst alle ${totalQuestions} Fragen!\n\nSie haben bisher ${answeredQuestions.size} von ${totalQuestions} Fragen beantwortet.`);
                 return;
             }
             
@@ -695,7 +692,10 @@
                 if (!confirm) return;
             }
             
-            saveJournal();
+            // Save journal if there's content
+            if (journal !== '') {
+                saveJournal();
+            }
             
             let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
             
@@ -705,7 +705,7 @@
                 localStorage.setItem('learningProgress', JSON.stringify(progress));
             }
             
-            alert(`✓ Schritt 3 abgeschlossen!\n\nSie haben ${correctAnswers} von ${totalQuestions} Fragen richtig beantwortet.\nIhr Lernjournal-Eintrag wurde gespeichert.`);
+            alert(`✓ Schritt 3 abgeschlossen!\n\nSie haben ${correctAnswers} von ${totalQuestions} Fragen richtig beantwortet.${journal !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
             window.location.href = 'index.html';
         }
 
