@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ursachen des Klimawandels - Lernpfad</title>
+    <title>Ursachen & Folgen des Klimawandels - Lernpfad</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -282,6 +282,18 @@
             flex-wrap: wrap;
         }
 
+        details summary {
+            transition: color 0.3s;
+        }
+
+        details summary:hover {
+            color: #1b5e20;
+        }
+
+        details[open] summary {
+            margin-bottom: 0;
+        }
+
         .btn-back {
             padding: 15px 30px;
             background: #f5f5f5;
@@ -336,7 +348,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌡️ Schritt 3: Ursachen des Klimawandels</h1>
+            <h1>🌡️ Schritt 3: Ursachen & Folgen des Klimawandels</h1>
         </header>
 
         <a href="index.html" class="back-link">← Zurück zum Lernpfad</a>
@@ -345,12 +357,12 @@
             <!-- Anleitung -->
             <div class="instruction">
                 <h3>📚 Anleitung</h3>
-                <p>Lesen Sie die Seiten im Buch <strong>Gesellschaft</strong> zum Klimawandel und beantworten Sie anschließend die folgenden Fragen.</p>
+                <p>Lesen Sie die Seiten im Buch <strong>Gesellschaft</strong> zu den Ursachen & Folgen des Klimawandels und beantworten Sie anschließend die folgenden Fragen.</p>
             </div>
 
             <!-- Auftrag 1: Quiz -->
             <div class="section">
-                <h2>Auftrag 1: Quiz zu den Folgen des Klimawandels</h2>
+                <h2>Auftrag 1: Quiz zu den Ursachen & Folgen des Klimawandels</h2>
                 
                 <!-- Frage 1 -->
                 <div class="quiz-question" data-question="1">
@@ -508,14 +520,22 @@
                 </div>
             </div>
 
-            <!-- Auftrag 2: Fussabdruckrechner -->
+            <!-- Auftrag 2: Video -->
             <div class="section">
-                <h2>Auftrag 2: Ökologischer Fussabdruck</h2>
-                <p><strong>Aufgabe:</strong> Berechnen Sie Ihren persönlichen ökologischen Fussabdruck mit dem WWF-Rechner.</p>
-                <div class="link-box">
-                    <a href="https://www.wwf.ch/de/nachhaltig-leben/footprintrechner" target="_blank">🦶 Zum WWF-Fussabdruckrechner →</a>
-                    <p>Der Fussabdruckrechner zeigt Ihnen, wie viel Fläche auf der Erde nötig ist, um Ihren Lebensstil zu ermöglichen. Er berücksichtigt Ernährung, Wohnen, Mobilität und Konsum.</p>
-                </div>
+                <h2>Auftrag 2: Video zu den Ursachen und Folgen hinzufügen</h2>
+                <p><strong>Aufgabe:</strong> Schauen Sie sich das Video an und erweitern Sie Ihr Verständnis über die Ursachen und Folgen des Klimawandels.</p>
+                
+                <details style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; border: 2px solid #2e7d32;">
+                    <summary style="cursor: pointer; font-weight: bold; font-size: 1.1em; color: #2e7d32; padding: 10px; user-select: none;">
+                        📺 Video öffnen
+                    </summary>
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e9ecef;">
+                        <div class="link-box">
+                            <a href="https://www.ardmediathek.de/video/Y3JpZDovL3BsYW5ldC1zY2h1bGUuZGUvQVJEXzk5NjJfdmlkZW8" target="_blank">🎬 Zum Video in der ARD Mediathek →</a>
+                            <p>Das Video erklärt die wissenschaftlichen Grundlagen der Klimaerwärmung und zeigt die Auswirkungen auf verschiedene Regionen der Welt.</p>
+                        </div>
+                    </div>
+                </details>
             </div>
 
             <!-- Lernjournal: Schritt 3 -->
@@ -523,7 +543,7 @@
                 <h2>📝 Lernjournal Schritt 3</h2>
                 <p><strong>Aufgabe:</strong></p>
                 <ul style="margin: 10px 0 15px 20px; line-height: 1.8;">
-                    <li>Fassen Sie zusammen, was Sie über die Ursachen des Klimawandels erfahren haben in diesem Schritt (Lesen inklusive Fussabdruckberechnung).</li>
+                    <li>Fassen Sie zusammen, was Sie über die Ursachen & Folgen des Klimawandels erfahren haben in diesem Schritt (Lesen und Video).</li>
                 </ul>
                 <textarea id="journal" placeholder=""></textarea>
                 <button class="save-btn" onclick="saveJournal()">💾 Lernjournal speichern</button>
@@ -632,7 +652,7 @@
             // Title
             doc.setFontSize(18);
             doc.setFont(undefined, 'bold');
-            doc.text('Folgen des Klimawandels - Lernjournal', 20, 20);
+            doc.text('Ursachen & Folgen des Klimawandels - Lernjournal', 20, 20);
 
             // Quiz Results
             doc.setFontSize(14);
