@@ -3,21 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ökosystem-Baumeister - Ein Biodiversitäts-Spiel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Biodiversität - Hörverstehen</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root {
-            --forest-dark: #1a3a2e;
-            --forest-mid: #2d5a45;
-            --moss: #6b8f71;
-            --sage: #9db89d;
-            --cream: #f5f3ed;
-            --earth: #8b5a3c;
-            --sky: #87ceeb;
-            --warning: #d4743b;
-            --success: #5a8f5d;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -25,63 +13,207 @@
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, var(--cream) 0%, #e8e5d8 100%);
-            color: var(--forest-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
-        /* Animated background elements */
-        .bg-decoration {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0.05;
-            z-index: 0;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        .leaf {
-            font-size: 60px;
-            animation: float 20s infinite ease-in-out;
+        .lesson-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
         }
 
-        .leaf:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
-        .leaf:nth-child(2) { top: 60%; right: 10%; animation-delay: 5s; }
-        .leaf:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 10s; }
-        .leaf:nth-child(4) { top: 40%; right: 25%; animation-delay: 15s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
 
-        header {
+        .lesson-content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #856404;
+        }
+
+        .audio-container {
+            background: #f8f9fa;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
             text-align: center;
-            padding: 3rem 2rem 2rem;
-            position: relative;
-            z-index: 1;
-            animation: fadeInDown 0.8s ease-out;
         }
 
-        h1 {
-            font-family: 'Crimson Pro', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--forest-dark);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+        .audio-container h3 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+            font-size: 1.3em;
         }
 
-        .subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--forest-mid);
-            font-weight: 400;
+        .audio-container audio {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
         }
 
-        @keyframes fadeInDown {
+        .audio-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .quiz-section {
+            margin: 40px 0;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5em;
+        }
+
+        .question-card {
+            background: #f5f5f5;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            transition: all 0.3s ease;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #1b5e20;
+            line-height: 1.4;
+        }
+
+        .answers {
+            margin-top: 20px;
+        }
+
+        .answer-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .answer-option:hover:not(.disabled) {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+            transform: translateX(5px);
+        }
+
+        .answer-option.selected {
+            border-color: #2196F3;
+            background: #e3f2fd;
+        }
+
+        .answer-option.correct {
+            border-color: #4CAF50;
+            background: #c8e6c9;
+        }
+
+        .answer-option.incorrect {
+            border-color: #f44336;
+            background: #ffcdd2;
+        }
+
+        .answer-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .answer-letter {
+            background: #2e7d32;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .answer-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -89,863 +221,695 @@
             }
         }
 
-        .game-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 3rem;
-            position: relative;
-            z-index: 1;
+        .feedback.correct {
+            background: #c8e6c9;
+            border-left: 4px solid #4CAF50;
+            color: #1b5e20;
         }
 
-        .game-stats {
+        .feedback.incorrect {
+            background: #ffcdd2;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+
+        .quiz-buttons {
             display: flex;
-            justify-content: space-around;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            animation: fadeIn 1s ease-out 0.3s backwards;
+            gap: 15px;
+            margin-top: 25px;
         }
 
-        .stat-card {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(42, 87, 68, 0.12);
-            flex: 1;
-            min-width: 200px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(42, 87, 68, 0.18);
-            border-color: var(--moss);
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--moss);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--forest-dark);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            animation: fadeIn 1s ease-out 0.5s backwards;
-        }
-
-        @media (max-width: 968px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .species-panel {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(42, 87, 68, 0.12);
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-        }
-
-        .panel-title {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--forest-dark);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .species-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 1rem;
-        }
-
-        .species-card {
-            background: var(--cream);
-            border: 2px solid var(--sage);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
+        .btn-check {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
         }
 
-        .species-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
+        .btn-check:hover:not(:disabled) {
+            transform: scale(1.05);
         }
 
-        .species-card:hover::before {
-            left: 100%;
-        }
-
-        .species-card:hover {
-            transform: scale(1.05) rotate(2deg);
-            border-color: var(--forest-mid);
-            box-shadow: 0 8px 25px rgba(42, 87, 68, 0.2);
-        }
-
-        .species-card.disabled {
-            opacity: 0.4;
+        .btn-check:disabled {
+            background: #e0e0e0;
+            color: #999;
             cursor: not-allowed;
-        }
-
-        .species-card.disabled:hover {
             transform: none;
-            box-shadow: none;
         }
 
-        .species-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .species-name {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--forest-dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .species-type {
-            font-size: 0.75rem;
-            color: var(--moss);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .ecosystem-panel {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(42, 87, 68, 0.12);
-            min-height: 500px;
-            position: relative;
-        }
-
-        .ecosystem-canvas {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            background: linear-gradient(180deg, var(--sky) 0%, var(--sage) 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 3px solid var(--moss);
-        }
-
-        .ecosystem-item {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: grab;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: 3px solid var(--forest-mid);
-            transition: all 0.3s ease;
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .ecosystem-item:active {
-            cursor: grabbing;
-        }
-
-        @keyframes popIn {
-            0% {
-                transform: scale(0) rotate(180deg);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        .ecosystem-item:hover {
-            transform: scale(1.1);
+        .progress-indicator {
+            background: #e8f5e9;
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 30px 0;
+            text-align: center;
+            position: sticky;
+            top: 20px;
             z-index: 100;
         }
 
-        .ecosystem-item-icon {
-            font-size: 2rem;
+        .progress-text {
+            color: #1b5e20;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
         }
 
-        .ecosystem-item-name {
-            font-size: 0.65rem;
-            font-weight: 600;
-            margin-top: 0.25rem;
-            color: var(--forest-dark);
+        .progress-bar {
+            background: #c8e6c9;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
         }
 
-        .connection-line {
-            position: absolute;
-            height: 2px;
-            background: var(--moss);
-            transform-origin: left center;
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 1;
-            animation: drawLine 0.5s ease-out;
-        }
-
-        @keyframes drawLine {
-            from {
-                width: 0;
-            }
-        }
-
-        .info-box {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid var(--moss);
-            transform: translateY(120%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 200;
-        }
-
-        .info-box.visible {
-            transform: translateY(0);
-        }
-
-        .info-title {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--forest-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .info-text {
-            font-size: 0.875rem;
-            color: var(--forest-mid);
-            line-height: 1.6;
-        }
-
-        .actions {
+        .progress-fill {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            height: 100%;
+            transition: width 0.5s ease;
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .results-section {
+            background: #e8f5e9;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .results-header h2 {
+            color: #1b5e20;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .score-display {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .score-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .score-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .portfolio-box {
+            background: #e8f5e9;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .portfolio-box h3 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-box textarea {
+            width: 100%;
+            min-height: 250px;
+            padding: 15px;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-box textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+        }
+
+        .saved-indicator {
+            color: #4CAF50;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 0.875rem 1.75rem;
+        button {
+            padding: 15px 30px;
             border: none;
-            border-radius: 12px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: var(--forest-mid);
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: white;
         }
 
-        .btn-primary:hover {
-            background: var(--forest-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(42, 87, 68, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--earth);
+        .btn-pdf {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: white;
         }
 
-        .btn-secondary:hover {
-            background: #6d4730;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 90, 60, 0.3);
-        }
-
-        .message {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            padding: 1.25rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            z-index: 1000;
-            animation: slideInRight 0.5s ease-out;
-            max-width: 400px;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(120%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .message.success {
-            background: var(--success);
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-        }
-
-        .message.warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .message.info {
-            background: var(--moss);
-            color: white;
-        }
-
-        .tooltip {
-            position: absolute;
-            background: var(--forest-dark);
-            color: white;
-            padding: 0.75rem 1rem;
+            padding: 10px 20px;
+            border: 2px solid white;
             border-radius: 8px;
-            font-size: 0.875rem;
-            pointer-events: none;
-            z-index: 1000;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
         }
 
-        .tooltip.visible {
-            opacity: 1;
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header h1 {
+                font-size: 1.8em;
+            }
+
+            .lesson-content {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .quiz-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Background decorations -->
-    <div class="leaf bg-decoration">🍃</div>
-    <div class="leaf bg-decoration">🌿</div>
-    <div class="leaf bg-decoration">🍂</div>
-    <div class="leaf bg-decoration">🌾</div>
-
-    <header>
-        <h1>🌍 Ökosystem-Baumeister</h1>
-        <p class="subtitle">Entdecke die Kraft der Biodiversität</p>
-    </header>
-
-    <div class="game-container">
-        <div class="game-stats">
-            <div class="stat-card">
-                <div class="stat-label">Arten im System</div>
-                <div class="stat-value" id="speciesCount">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Biodiversität</div>
-                <div class="stat-value" id="diversity">0%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Stabilität</div>
-                <div class="stat-value" id="stability">🔴</div>
-            </div>
+    <div class="container">
+        <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
+            <h1>🦋 Biodiversität - Hörverstehen</h1>
         </div>
 
-        <div class="main-content">
-            <div class="species-panel">
-                <h2 class="panel-title">
-                    <span>🌱</span>
-                    Verfügbare Arten
-                </h2>
-                <div class="species-grid" id="speciesGrid"></div>
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>📋 Aufgabe:</strong> Hören Sie sich das Audio über Biodiversität aufmerksam an und beantworten Sie anschließend die Fragen.</p>
             </div>
 
-            <div class="ecosystem-panel">
-                <h2 class="panel-title">
-                    <span>🏞️</span>
-                    Dein Ökosystem
-                </h2>
-                <div class="ecosystem-canvas" id="ecosystem"></div>
-                <div class="info-box" id="infoBox">
-                    <div class="info-title" id="infoTitle"></div>
-                    <div class="info-text" id="infoText"></div>
+            <h2 style="color: #2e7d32; margin-bottom: 15px;">🎧 Audio: Biologische Vielfalt</h2>
+            
+            <div class="audio-container">
+                <h3>Podcast zur Biodiversität</h3>
+                <audio controls controlsList="nodownload">
+                    <source src="https://erzbe-my.sharepoint.com/:u:/r/personal/lea_klaey_bzl_ch/Documents/Desktop/github%20Audio/biodiv.m4a.m4a?csf=1&web=1&e=rdwe1C" type="audio/mp4">
+                    Ihr Browser unterstützt das Audio-Element nicht.
+                </audio>
+                <div class="audio-info">
+                    💡 Tipp: Sie können das Audio beliebig oft anhören, bevor Sie die Fragen beantworten.
                 </div>
-                <div class="actions">
-                    <button class="btn btn-secondary" onclick="resetEcosystem()">Zurücksetzen</button>
-                    <button class="btn btn-primary" onclick="analyzeEcosystem()">Ökosystem Analysieren</button>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="progress-text" id="progress-text">0 von 7 Fragen beantwortet</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
+            </div>
+
+            <div class="quiz-section" id="quiz-section">
                 
-                <div class="actions" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--sage);">
-                    <button class="btn btn-secondary" onclick="returnToMain()">← Zurück zur Übersicht</button>
-                    <button class="btn btn-primary" onclick="completeStep()">Schritt abschließen und weiter →</button>
+                <!-- Frage 1 -->
+                <div class="question-card" data-question="1" data-correct="b">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <div class="question-text">Wie viel Prozent unserer modernen Medikamente kommen laut dem Audio ursprünglich aus der Natur?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">Etwa 25%</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Mehr als 50%</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Etwa 75%</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Fast 90%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-1"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(1)">Antwort überprüfen</button>
+                    </div>
                 </div>
+
+                <!-- Frage 2 -->
+                <div class="question-card" data-question="2" data-correct="c">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Was passierte im Yellowstone-Nationalpark, nachdem die Wölfe ausgerottet wurden?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">Die Bäume wuchsen schneller, weil die Hirsche sich nicht mehr vor Wölfen verstecken mussten und die Vegetation mehr Nährstoffe erhielt</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Die Biber vermehrten sich stark, da sie nicht mehr von Wölfen gejagt wurden und mehr Baumaterial zur Verfügung hatten</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Die Hirschpopulation explodierte und fraß die jungen Bäume kahl, wodurch auch die Biber verschwanden</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Das Ökosystem stabilisierte sich von selbst, da andere Raubtiere die Rolle der Wölfe übernahmen und die Hirschpopulation kontrollierten</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-2"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(2)">Antwort überprüfen</button>
+                    </div>
+                </div>
+
+                <!-- Frage 3 -->
+                <div class="question-card" data-question="3" data-correct="b">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <div class="question-text">Wie viel Geld sparen Fledermäuse der US-Landwirtschaft jährlich durch das Fressen von Insekten?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">Etwa 500 Millionen Dollar</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Über 3 Milliarden Dollar</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Etwa 1 Milliarde Dollar</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Etwa 10 Milliarden Dollar</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-3"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(3)">Antwort überprüfen</button>
+                    </div>
+                </div>
+
+                <!-- Frage 4 -->
+                <div class="question-card" data-question="4" data-correct="a">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <div class="question-text">Was ist der sogenannte "Verdünnungseffekt"?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">In artenreichen Ökosystemen gibt es viele inkompetente Wirte, die Krankheitserreger verdünnen und das Infektionsrisiko senken</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Wenn Flüsse durch Schmelzwasser verdünnt werden und dadurch Nährstoffe in die Ökosysteme transportiert werden</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Die Verdünnung von Schadstoffen im Boden durch natürliche Filterprozesse in intakten Feuchtgebieten und Wäldern</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Die Verringerung der CO₂-Konzentration in der Atmosphäre durch Aufnahme von Kohlenstoff in Pflanzen und Böden</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-4"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(4)">Antwort überprüfen</button>
+                    </div>
+                </div>
+
+                <!-- Frage 5 -->
+                <div class="question-card" data-question="5" data-correct="c">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <div class="question-text">Wie viel Prozent unserer CO₂-Emissionen werden laut Audio von der Natur aufgenommen?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">Etwa 30%</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Etwa 45%</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Rund 60%</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Etwa 80%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-5"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(5)">Antwort überprüfen</button>
+                    </div>
+                </div>
+
+                <!-- Frage 6 -->
+                <div class="question-card" data-question="6" data-correct="a">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <div class="question-text">Im Podcast wird gesagt, dass 80% der globalen Biodiversität von indigenen Gemeinschaften geschützt wird. Was ist damit gemeint?</div>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-option" data-answer="a">
+                            <div class="answer-letter">a</div>
+                            <div class="answer-text">Dass in den Lebensräumen indigener Völker 80% der noch verbliebenen Artenvielfalt der Welt erhalten ist</div>
+                        </div>
+                        <div class="answer-option" data-answer="b">
+                            <div class="answer-letter">b</div>
+                            <div class="answer-text">Dass indigene Gemeinschaften 80% der weltweiten Naturschutzgebiete rechtlich besitzen und verwalten</div>
+                        </div>
+                        <div class="answer-option" data-answer="c">
+                            <div class="answer-letter">c</div>
+                            <div class="answer-text">Dass 80% aller bekannten Tier- und Pflanzenarten ausschließlich in indigenen Territorien vorkommen</div>
+                        </div>
+                        <div class="answer-option" data-answer="d">
+                            <div class="answer-letter">d</div>
+                            <div class="answer-text">Dass indigene Völker für 80% aller internationalen Artenschutzprogramme verantwortlich sind</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback-6"></div>
+                    <div class="quiz-buttons">
+                        <button class="btn-check" onclick="checkAnswer(6)">Antwort überprüfen</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section" id="results-section">
+                <div class="results-header">
+                    <h2>🎉 Alle Fragen beantwortet!</h2>
+                    <p>Sie haben das Hörverstehen abgeschlossen</p>
+                </div>
+                <div class="score-display">
+                    <div class="score-number" id="final-score">0/6</div>
+                    <div class="score-text">richtige Antworten</div>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Schritt 5</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    <strong>Aufgabe (Frage 7):</strong>
+                </p>
+                <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #666;">
+                    <li><strong>Erklären Sie anhand der Beispiele Lachs und Wolf in den USA, warum Biodiversität wichtig ist.</strong></li>
+                </ul>
+                <textarea 
+                    id="portfolio-text" 
+                    placeholder="Ihre Antwort hier eingeben..."
+                    oninput="savePortfolio()"></textarea>
+                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
+                </button>
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    📄 PDF Schritt 5 herunterladen
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschließen und weiter →
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="tooltip" id="tooltip"></div>
-
     <script>
-        const species = [
-            {
-                id: 'tree',
-                name: 'Baum',
-                icon: '🌳',
-                type: 'Produzent',
-                info: 'Bäume produzieren durch Photosynthese Sauerstoff und sind die Grundlage vieler Nahrungsketten. Sie bieten Lebensraum für zahlreiche Tierarten.',
-                connections: ['bird', 'insect', 'fungi'],
-                role: 'Primärproduzent - erzeugt Energie aus Sonnenlicht'
-            },
-            {
-                id: 'grass',
-                name: 'Gras',
-                icon: '🌾',
-                type: 'Produzent',
-                info: 'Gräser sind essenzielle Primärproduzenten in vielen Ökosystemen. Sie stabilisieren den Boden und dienen als Nahrungsquelle.',
-                connections: ['herbivore', 'insect'],
-                role: 'Bodenstabilisator und Nahrungsquelle'
-            },
-            {
-                id: 'flower',
-                name: 'Blume',
-                icon: '🌺',
-                type: 'Produzent',
-                info: 'Blütenpflanzen sind entscheidend für die Bestäubung und Biodiversität. Sie ziehen Insekten an und produzieren Nektar.',
-                connections: ['bee', 'butterfly', 'bird'],
-                role: 'Bestäubungspartner'
-            },
-            {
-                id: 'bee',
-                name: 'Biene',
-                icon: '🐝',
-                type: 'Bestäuber',
-                info: 'Bienen sind unverzichtbare Bestäuber. Sie tragen zur Vermehrung von ca. 80% aller Blütenpflanzen bei.',
-                connections: ['flower', 'tree'],
-                role: 'Bestäuber - sichert Pflanzenvermehrung'
-            },
-            {
-                id: 'butterfly',
-                name: 'Schmetterling',
-                icon: '🦋',
-                type: 'Bestäuber',
-                info: 'Schmetterlinge sind wichtige Indikatoren für Umweltgesundheit und bestäuben viele Pflanzenarten.',
-                connections: ['flower'],
-                role: 'Bestäuber und Bioindikator'
-            },
-            {
-                id: 'bird',
-                name: 'Vogel',
-                icon: '🐦',
-                type: 'Konsument',
-                info: 'Vögel kontrollieren Insektenpopulationen, verbreiten Samen und sind wichtige Glieder in Nahrungsketten.',
-                connections: ['tree', 'insect', 'worm'],
-                role: 'Insektenkontrolle und Samenverbreitung'
-            },
-            {
-                id: 'insect',
-                name: 'Insekt',
-                icon: '🦗',
-                type: 'Konsument',
-                info: 'Insekten sind die artenreichste Tiergruppe. Sie zersetzen organisches Material und dienen als Nahrung.',
-                connections: ['grass', 'tree', 'fungi'],
-                role: 'Zersetzer und Nahrungsquelle'
-            },
-            {
-                id: 'herbivore',
-                name: 'Pflanzenfresser',
-                icon: '🦌',
-                type: 'Konsument',
-                info: 'Pflanzenfresser regulieren Pflanzenpopulationen und sind wichtige Beutetiere für Raubtiere.',
-                connections: ['grass', 'tree', 'predator'],
-                role: 'Pflanzenkontrolle'
-            },
-            {
-                id: 'predator',
-                name: 'Raubtier',
-                icon: '🦊',
-                type: 'Top-Konsument',
-                info: 'Raubtiere regulieren Beutierpopulationen und erhalten das ökologische Gleichgewicht.',
-                connections: ['herbivore', 'bird'],
-                role: 'Populationskontrolle'
-            },
-            {
-                id: 'worm',
-                name: 'Regenwurm',
-                icon: '🪱',
-                type: 'Zersetzer',
-                info: 'Regenwürmer lockern den Boden auf und wandeln organisches Material in Nährstoffe um.',
-                connections: ['grass', 'fungi'],
-                role: 'Bodenverbesserer'
-            },
-            {
-                id: 'fungi',
-                name: 'Pilze',
-                icon: '🍄',
-                type: 'Zersetzer',
-                info: 'Pilze zersetzen totes organisches Material und bilden lebenswichtige Nährstoffkreisläufe.',
-                connections: ['tree', 'grass'],
-                role: 'Nährstoffrecycling'
-            },
-            {
-                id: 'bacteria',
-                name: 'Bakterien',
-                icon: '🦠',
-                type: 'Zersetzer',
-                info: 'Bakterien sind mikroskopisch klein, aber essentiell für Zersetzung und Nährstoffkreisläufe.',
-                connections: ['fungi', 'worm', 'grass'],
-                role: 'Nährstoffumwandlung'
-            }
-        ];
+        let score = 0;
+        const totalQuestions = 6;
+        let answeredQuestions = new Set();
 
-        let ecosystem = [];
-        let draggedItem = null;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        function init() {
-            renderSpeciesGrid();
-            updateStats();
-        }
-
-        function renderSpeciesGrid() {
-            const grid = document.getElementById('speciesGrid');
-            grid.innerHTML = '';
+        // Eventlistener für Antwortoptionen
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPortfolio();
             
-            species.forEach(sp => {
-                const card = document.createElement('div');
-                card.className = 'species-card';
-                card.innerHTML = `
-                    <span class="species-icon">${sp.icon}</span>
-                    <div class="species-name">${sp.name}</div>
-                    <div class="species-type">${sp.type}</div>
-                `;
-                card.onclick = () => addToEcosystem(sp);
-                card.onmouseenter = (e) => showTooltip(e, sp.info);
-                card.onmouseleave = hideTooltip;
-                grid.appendChild(card);
+            const allOptions = document.querySelectorAll('.answer-option');
+            allOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionCard = this.closest('.question-card');
+                    const questionNum = questionCard.dataset.question;
+                    
+                    // Nur erlauben wenn noch nicht beantwortet
+                    if (!answeredQuestions.has(parseInt(questionNum))) {
+                        const allOptionsInCard = questionCard.querySelectorAll('.answer-option');
+                        allOptionsInCard.forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                    }
+                });
             });
-        }
+        });
 
-        function addToEcosystem(sp) {
-            const existing = ecosystem.find(item => item.id === sp.id);
-            if (existing) {
-                showMessage('Diese Art ist bereits im Ökosystem!', 'warning');
+        function checkAnswer(questionNum) {
+            const questionCard = document.querySelector(`.question-card[data-question="${questionNum}"]`);
+            const selectedOption = questionCard.querySelector('.answer-option.selected');
+            
+            if (!selectedOption) {
+                alert('Bitte wählen Sie zuerst eine Antwort aus!');
                 return;
             }
 
-            const canvas = document.getElementById('ecosystem');
-            const rect = canvas.getBoundingClientRect();
-            
-            const item = {
-                ...sp,
-                x: Math.random() * (rect.width - 100) + 50,
-                y: Math.random() * (rect.height - 100) + 50
-            };
-            
-            ecosystem.push(item);
-            renderEcosystem();
-            updateStats();
-            showMessage(`${sp.name} wurde hinzugefügt! 🎉`, 'success');
-        }
-
-        function renderEcosystem() {
-            const canvas = document.getElementById('ecosystem');
-            
-            // Remove old items and connections
-            canvas.querySelectorAll('.ecosystem-item, .connection-line').forEach(el => el.remove());
-            
-            // Draw connections first (so they're behind items)
-            ecosystem.forEach(item => {
-                item.connections.forEach(connId => {
-                    const connectedItem = ecosystem.find(e => e.id === connId);
-                    if (connectedItem) {
-                        drawConnection(item, connectedItem);
-                    }
-                });
-            });
-            
-            // Draw items
-            ecosystem.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'ecosystem-item';
-                div.style.left = item.x + 'px';
-                div.style.top = item.y + 'px';
-                div.innerHTML = `
-                    <span class="ecosystem-item-icon">${item.icon}</span>
-                    <span class="ecosystem-item-name">${item.name}</span>
-                `;
-                
-                div.onmousedown = (e) => startDrag(e, index);
-                div.onclick = () => showInfo(item);
-                div.onmouseenter = (e) => showTooltip(e, item.role);
-                div.onmouseleave = hideTooltip;
-                
-                canvas.appendChild(div);
-            });
-        }
-
-        function drawConnection(from, to) {
-            const canvas = document.getElementById('ecosystem');
-            const line = document.createElement('div');
-            line.className = 'connection-line';
-            
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            const length = Math.sqrt(dx * dx + dy * dy);
-            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-            
-            line.style.width = length + 'px';
-            line.style.left = (from.x + 40) + 'px';
-            line.style.top = (from.y + 40) + 'px';
-            line.style.transform = `rotate(${angle}deg)`;
-            
-            canvas.appendChild(line);
-        }
-
-        function startDrag(e, index) {
-            draggedItem = index;
-            const item = ecosystem[index];
-            offsetX = e.clientX - item.x;
-            offsetY = e.clientY - item.y;
-            
-            document.onmousemove = drag;
-            document.onmouseup = stopDrag;
-            e.preventDefault();
-        }
-
-        function drag(e) {
-            if (draggedItem !== null) {
-                const canvas = document.getElementById('ecosystem');
-                const rect = canvas.getBoundingClientRect();
-                
-                let newX = e.clientX - rect.left - offsetX;
-                let newY = e.clientY - rect.top - offsetY;
-                
-                newX = Math.max(10, Math.min(newX, rect.width - 90));
-                newY = Math.max(10, Math.min(newY, rect.height - 90));
-                
-                ecosystem[draggedItem].x = newX;
-                ecosystem[draggedItem].y = newY;
-                
-                renderEcosystem();
-            }
-        }
-
-        function stopDrag() {
-            draggedItem = null;
-            document.onmousemove = null;
-            document.onmouseup = null;
-        }
-
-        function showInfo(item) {
-            const infoBox = document.getElementById('infoBox');
-            const infoTitle = document.getElementById('infoTitle');
-            const infoText = document.getElementById('infoText');
-            
-            infoTitle.textContent = `${item.icon} ${item.name} (${item.type})`;
-            infoText.textContent = item.info;
-            
-            infoBox.classList.add('visible');
-            
-            setTimeout(() => {
-                infoBox.classList.remove('visible');
-            }, 5000);
-        }
-
-        function updateStats() {
-            const speciesCount = ecosystem.length;
-            const maxSpecies = species.length;
-            const diversity = Math.round((speciesCount / maxSpecies) * 100);
-            
-            document.getElementById('speciesCount').textContent = speciesCount;
-            document.getElementById('diversity').textContent = diversity + '%';
-            
-            // Calculate stability based on diversity and connections
-            let stability = '🔴';
-            let connections = 0;
-            
-            ecosystem.forEach(item => {
-                item.connections.forEach(connId => {
-                    if (ecosystem.find(e => e.id === connId)) {
-                        connections++;
-                    }
-                });
-            });
-            
-            if (speciesCount >= 8 && connections >= 12) {
-                stability = '🟢';
-            } else if (speciesCount >= 5 && connections >= 6) {
-                stability = '🟡';
-            }
-            
-            document.getElementById('stability').textContent = stability;
-        }
-
-        function analyzeEcosystem() {
-            if (ecosystem.length === 0) {
-                showMessage('Füge zuerst Arten zu deinem Ökosystem hinzu!', 'info');
+            // Prüfen ob bereits beantwortet
+            if (answeredQuestions.has(questionNum)) {
                 return;
             }
-            
-            const typeCount = {
-                'Produzent': 0,
-                'Bestäuber': 0,
-                'Konsument': 0,
-                'Top-Konsument': 0,
-                'Zersetzer': 0
-            };
-            
-            ecosystem.forEach(item => {
-                typeCount[item.type] = (typeCount[item.type] || 0) + 1;
+
+            const selectedAnswer = selectedOption.dataset.answer;
+            const correctAnswer = questionCard.dataset.correct;
+            const feedback = document.getElementById(`feedback-${questionNum}`);
+            const checkButton = questionCard.querySelector('.btn-check');
+
+            // Markiere bereits beantwortet
+            answeredQuestions.add(questionNum);
+
+            // Deaktiviere alle Optionen
+            const allOptions = questionCard.querySelectorAll('.answer-option');
+            allOptions.forEach(opt => {
+                opt.classList.add('disabled');
+                opt.style.pointerEvents = 'none';
             });
-            
-            let connections = 0;
-            ecosystem.forEach(item => {
-                item.connections.forEach(connId => {
-                    if (ecosystem.find(e => e.id === connId)) {
-                        connections++;
-                    }
-                });
-            });
-            
-            let analysis = `🔬 Ökosystem-Analyse:\n\n`;
-            analysis += `📊 Arten: ${ecosystem.length} von ${species.length} möglichen\n`;
-            analysis += `🔗 Aktive Verbindungen: ${connections}\n\n`;
-            
-            let feedback = '';
-            
-            if (typeCount['Produzent'] === 0) {
-                feedback += '⚠️ Ohne Produzenten (Pflanzen) kann kein Ökosystem existieren!\n';
-            }
-            
-            if (typeCount['Zersetzer'] === 0) {
-                feedback += '⚠️ Zersetzer fehlen - Nährstoffe werden nicht recycelt!\n';
-            }
-            
-            if (connections < 5) {
-                feedback += '⚠️ Zu wenige Verbindungen - das Ökosystem ist instabil!\n';
-            }
-            
-            if (ecosystem.length >= 8 && connections >= 12 && typeCount['Produzent'] > 0 && typeCount['Zersetzer'] > 0) {
-                feedback += '🎉 Ausgezeichnet! Dein Ökosystem ist vielfältig und stabil!\n';
-                feedback += '✅ Hohe Biodiversität erhöht die Widerstandsfähigkeit gegen Störungen.\n';
-            } else if (ecosystem.length >= 5) {
-                feedback += '👍 Guter Anfang! Füge mehr Arten hinzu, um die Stabilität zu erhöhen.\n';
+
+            if (selectedAnswer === correctAnswer) {
+                selectedOption.classList.add('correct');
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
+                score++;
             } else {
-                feedback += '💡 Tipp: Ein stabiles Ökosystem braucht mindestens 5-8 verschiedene Arten!\n';
+                selectedOption.classList.add('incorrect');
+                const correctOption = questionCard.querySelector(`.answer-option[data-answer="${correctAnswer}"]`);
+                correctOption.classList.add('correct');
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort wurde grün markiert.';
             }
-            
-            alert(analysis + feedback);
+
+            checkButton.disabled = true;
+
+            updateProgress();
+
+            // Zeige Ergebnisse wenn alle Fragen beantwortet
+            if (answeredQuestions.size === totalQuestions) {
+                setTimeout(() => {
+                    showResults();
+                }, 500);
+            }
         }
 
-        function resetEcosystem() {
-            if (confirm('Möchtest du das Ökosystem wirklich zurücksetzen?')) {
-                ecosystem = [];
-                renderEcosystem();
-                updateStats();
-                showMessage('Ökosystem wurde zurückgesetzt', 'info');
+        function updateProgress() {
+            const answered = answeredQuestions.size;
+            const progressPercent = (answered / totalQuestions) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
+            document.getElementById('progress-text').textContent = `${answered} von ${totalQuestions} Fragen beantwortet`;
+        }
+
+        function showResults() {
+            const resultsSection = document.getElementById('results-section');
+            resultsSection.classList.add('show');
+            document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+            
+            // Scroll zu Ergebnissen
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function loadPortfolio() {
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const portfolioText = progress.texts && progress.texts['5'] ? progress.texts['5'] : '';
+                document.getElementById('portfolio-text').value = portfolioText;
             }
+        }
+
+        function savePortfolio() {
+            const text = document.getElementById('portfolio-text').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {},
+                images: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['5'] = text;
+            
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function downloadPDF() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (portfolioText === '') {
+                alert('Bitte tragen Sie zuerst Ihre Antwort ins Lernjournal ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Biodiversität", 20, 20);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            doc.text(`Erreichte Punktzahl: ${score}/${totalQuestions}`, 20, 36);
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Aufgabe: Lachs und Wolf - Bedeutung von Biodiversität", 20, 50);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            const lines = doc.splitTextToSize(portfolioText, 170);
+            doc.text(lines, 20, 60);
+            
+            doc.save('Lernjournal_Schritt5_Biodiversitaet.pdf');
+        }
+
+        function completeStep() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (answeredQuestions.size < totalQuestions) {
+                alert('Bitte beantworten Sie zuerst alle Fragen des Hörverstehens!');
+                return;
+            }
+            
+            if (portfolioText === '') {
+                const confirm = window.confirm('Sie haben noch nichts ins Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            savePortfolio();
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            
+            if (!progress.completedPoints.includes(5)) {
+                progress.completedPoints.push(5);
+                progress.currentPoint = 6;
+                localStorage.setItem('learningProgress', JSON.stringify(progress));
+            }
+            
+            alert(`✓ Schritt 5 abgeschlossen!\n\nSie haben ${score} von ${totalQuestions} Fragen richtig beantwortet.\nIhr Lernjournal-Eintrag wurde gespeichert.`);
+            window.location.href = 'index.html';
         }
 
         function returnToMain() {
             window.location.href = 'index.html';
         }
-
-        function completeStep() {
-            if (ecosystem.length < 5) {
-                const confirm = window.confirm('Du hast noch nicht viele Arten hinzugefügt. Möchtest du trotzdem fortfahren?');
-                if (!confirm) return;
-            }
-            
-            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
-            
-            // Annahme: Dies ist Schritt 5 oder ein anderer Schritt - bitte anpassen
-            const stepNumber = 5; // Bitte die korrekte Schrittnummer einsetzen
-            
-            if (!progress.completedPoints.includes(stepNumber)) {
-                progress.completedPoints.push(stepNumber);
-                progress.currentPoint = stepNumber + 1;
-                localStorage.setItem('learningProgress', JSON.stringify(progress));
-            }
-            
-            alert(`✓ Schritt abgeschlossen!\n\nDu hast ${ecosystem.length} Arten in dein Ökosystem eingefügt.`);
-            window.location.href = 'index.html';
-        }
-
-        function showMessage(text, type = 'info') {
-            const existing = document.querySelector('.message');
-            if (existing) existing.remove();
-            
-            const msg = document.createElement('div');
-            msg.className = `message ${type}`;
-            msg.textContent = text;
-            document.body.appendChild(msg);
-            
-            setTimeout(() => {
-                msg.style.animation = 'slideInRight 0.5s ease-out reverse';
-                setTimeout(() => msg.remove(), 500);
-            }, 3000);
-        }
-
-        function showTooltip(e, text) {
-            const tooltip = document.getElementById('tooltip');
-            tooltip.textContent = text;
-            tooltip.style.left = e.clientX + 15 + 'px';
-            tooltip.style.top = e.clientY + 15 + 'px';
-            tooltip.classList.add('visible');
-        }
-
-        function hideTooltip() {
-            const tooltip = document.getElementById('tooltip');
-            tooltip.classList.remove('visible');
-        }
-
-        // Initialize game
-        init();
     </script>
 </body>
 </html>
