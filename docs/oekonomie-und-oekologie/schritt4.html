@@ -1092,12 +1092,15 @@
         function completeStep() {
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
+            // Check if all tasks have been answered (not necessarily correct)
             const task1Done = answeredTasks.has(1);
             const task2Done = answeredTasks.has(2) && answeredTasks.has(3) && 
                              answeredTasks.has(4) && answeredTasks.has(5) && answeredTasks.has(6);
             
             if (!task1Done || !task2Done) {
-                alert('Bitte bearbeiten Sie zuerst alle Aufgaben zur Grafikanalyse!');
+                const answeredCount = answeredTasks.size;
+                const totalQuestions = 6;
+                alert(`Bitte beantworten Sie zuerst alle Fragen zur Grafikanalyse!\n\nSie haben bisher ${answeredCount} von ${totalQuestions} Fragen beantwortet.`);
                 return;
             }
             
@@ -1106,7 +1109,10 @@
                 if (!confirm) return;
             }
             
-            savePortfolio();
+            // Save journal if there's content
+            if (portfolioText !== '') {
+                savePortfolio();
+            }
             
             let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
             
@@ -1116,7 +1122,7 @@
                 localStorage.setItem('learningProgress', JSON.stringify(progress));
             }
             
-            alert(`✓ Schritt 4 abgeschlossen!\n\nSie haben ${score} von ${maxScore} Punkten erreicht.\nIhr Lernjournal-Eintrag wurde gespeichert.`);
+            alert(`✓ Schritt 4 abgeschlossen!\n\nSie haben ${score} von ${maxScore} Punkten erreicht.${portfolioText !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
             window.location.href = 'index.html';
         }
 
