@@ -743,7 +743,7 @@
             }, 2000);
         }
 
-        function downloadPDF() {
+        async function downloadPDF() {
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
             const { jsPDF } = window.jspdf;
@@ -778,37 +778,71 @@
                     if (progress.images['6'].type !== 'application/pdf') {
                         try {
                             const imgData = progress.images['6'].data;
-                            const imgFormat = progress.images['6'].type.split('/')[1].toUpperCase();
                             
-                            // Calculate image dimensions to fit on page
-                            const maxWidth = 170;
-                            const maxHeight = 180;
+                            // Create an image element to get actual dimensions
+                            const img = new Image();
+                            img.src = imgData;
                             
-                            // Add image (jsPDF will auto-scale if dimensions are provided)
-                            doc.addImage(imgData, imgFormat, 20, currentY, maxWidth, maxHeight);
-                            currentY += maxHeight + 10;
+                            await new Promise((resolve) => {
+                                img.onload = resolve;
+                            });
                             
-                            // Add new page if reflection text is provided and space is limited
-                            if (portfolioText !== '' && currentY > 250) {
+                            const imgWidth = img.width;
+                            const imgHeight = img.height;
+                            const aspectRatio = imgWidth / imgHeight;
+                            
+                            // Calculate dimensions to fit on page
+                            const maxWidth = 170; // mm
+                            const maxHeight = 200; // mm
+                            
+                            let finalWidth, finalHeight;
+                            
+                            if (aspectRatio > maxWidth / maxHeight) {
+                                // Image is wider - fit to width
+                                finalWidth = maxWidth;
+                                finalHeight = maxWidth / aspectRatio;
+                            } else {
+                                // Image is taller - fit to height
+                                finalHeight = maxHeight;
+                                finalWidth = maxHeight * aspectRatio;
+                            }
+                            
+                            // Check if we need a new page
+                            if (currentY + finalHeight > 270) {
                                 doc.addPage();
                                 currentY = 20;
                             }
+                            
+                            // Determine image format
+                            let imgFormat = 'JPEG';
+                            if (progress.images['6'].type === 'image/png') {
+                                imgFormat = 'PNG';
+                            }
+                            
+                            // Add image with calculated dimensions
+                            doc.addImage(imgData, imgFormat, 20, currentY, finalWidth, finalHeight);
+                            currentY += finalHeight + 10;
+                            
                         } catch (error) {
                             console.error('Fehler beim Einfügen des Bildes:', error);
                             doc.setFont("helvetica", "italic");
                             doc.setFontSize(10);
-                            doc.text("(Bild konnte nicht eingefügt werden)", 20, currentY);
-                            currentY += 10;
+                            doc.text("(Bild konnte nicht eingefügt werden - Fehler: " + error.message + ")", 20, currentY, {maxWidth: 170});
+                            currentY += 15;
                         }
                     } else {
                         doc.setFont("helvetica", "italic");
                         doc.setFontSize(10);
-                        doc.text("(PDF-Datei - nicht als Bild darstellbar)", 20, currentY);
+                        doc.text("(PDF-Datei wurde hochgeladen - kann nicht als Bild angezeigt werden)", 20, currentY, {maxWidth: 170});
                         currentY += 15;
                     }
-                } else {
-                    currentY += 10;
                 }
+            }
+            
+            // Add new page for reflection if needed
+            if (portfolioText !== '' && currentY > 240) {
+                doc.addPage();
+                currentY = 20;
             }
             
             // Journal
