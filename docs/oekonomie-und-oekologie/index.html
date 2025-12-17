@@ -73,6 +73,19 @@
             padding: 20px;
         }
 
+        .info-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        .info-notice strong {
+            color: #664d03;
+        }
+
         .flowchart-container {
             max-width: 1100px;
             margin: 0 auto 15px;
@@ -171,7 +184,7 @@
             justify-content: center;
         }
 
-        .card:hover:not(.locked) {
+        .card:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.15);
         }
@@ -187,13 +200,6 @@
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-color: #2196F3;
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .card.locked {
-            background: #f5f5f5;
-            border-color: #e0e0e0;
-            cursor: not-allowed;
-            opacity: 0.6;
         }
 
         .card.highlight-final::before {
@@ -260,10 +266,6 @@
             font-weight: bold;
             color: #1b5e20;
             line-height: 1.2;
-        }
-
-        .card.locked .card-title {
-            color: #999;
         }
 
         @media (max-width: 1024px) {
@@ -402,6 +404,10 @@
         </header>
 
         <main>
+            <div class="info-notice">
+                <strong>💡 Hinweis:</strong> Alle Schritte sind von Anfang an freigeschaltet. Es wird jedoch empfohlen, die Schritte der Reihe nach zu bearbeiten, da sie aufeinander aufbauen.
+            </div>
+
             <div class="flowchart-container">
                 <!-- Erste Reihe: Schritte 1, 2, 3 -->
                 <div class="flow-row horizontal">
@@ -415,7 +421,7 @@
 
                     <div class="arrow-right">→</div>
 
-                    <div class="card locked flow-card" onclick="openPoint(2)" data-step="2">
+                    <div class="card flow-card" onclick="openPoint(2)" data-step="2">
                         <div class="card-number">2</div>
                         <div class="card-content">
                             <div class="card-icon">📊</div>
@@ -425,7 +431,7 @@
 
                     <div class="arrow-right">→</div>
 
-                    <div class="card locked flow-card" onclick="openPoint(3)" data-step="3">
+                    <div class="card flow-card" onclick="openPoint(3)" data-step="3">
                         <div class="card-number">3</div>
                         <div class="card-content">
                             <div class="card-icon">🌡️</div>
@@ -441,7 +447,7 @@
 
                 <!-- Zweite Reihe: Schritte 6, 5, 4 (rückwärts) -->
                 <div class="flow-row horizontal reverse">
-                    <div class="card locked flow-card highlight-final" onclick="openPoint(6)" data-step="6">
+                    <div class="card flow-card highlight-final" onclick="openPoint(6)" data-step="6">
                         <div class="card-number">6</div>
                         <div class="card-content">
                             <div class="card-icon">💡</div>
@@ -451,7 +457,7 @@
 
                     <div class="arrow-left">←</div>
 
-                    <div class="card locked flow-card" onclick="openPoint(5)" data-step="5">
+                    <div class="card flow-card" onclick="openPoint(5)" data-step="5">
                         <div class="card-number">5</div>
                         <div class="card-content">
                             <div class="card-icon">🦋</div>
@@ -461,7 +467,7 @@
 
                     <div class="arrow-left">←</div>
 
-                    <div class="card locked flow-card" onclick="openPoint(4)" data-step="4">
+                    <div class="card flow-card" onclick="openPoint(4)" data-step="4">
                         <div class="card-number">4</div>
                         <div class="card-content">
                             <div class="card-icon">📈</div>
@@ -526,13 +532,6 @@
         }
 
         function openPoint(pointNumber) {
-            const card = document.querySelector(`.card[data-step="${pointNumber}"]`);
-            
-            if (card && card.classList.contains('locked')) {
-                alert('🔒 Dieser Schritt ist noch nicht freigeschaltet!\nSchließe zuerst die vorherigen Schritte ab.');
-                return;
-            }
-            
             // Map to correct file names
             const fileNames = {
                 1: 'schritt1.html',
@@ -543,9 +542,7 @@
                 6: 'schritt6.html'
             };
             
-            if (pointNumber === 1 || !card || !card.classList.contains('locked')) {
-                window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
-            }
+            window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
         }
 
         function completePoint(pointNumber) {
@@ -558,23 +555,19 @@
         }
 
         function updateUI() {
+            // Alle Karten sind immer anklickbar, aber wir zeigen den Status
             for (let i = 1; i <= 6; i++) {
                 const card = document.querySelector(`.card[data-step="${i}"]`);
                 if (!card) continue;
                 
                 if (learningProgress.completedPoints.includes(i)) {
-                    card.classList.remove('locked', 'active');
+                    card.classList.remove('active');
                     card.classList.add('completed');
                     
                     const number = card.querySelector('.card-number');
                     if (number) number.textContent = '✓';
                 } else if (i === learningProgress.currentPoint) {
-                    card.classList.remove('locked');
                     card.classList.add('active');
-                } else if (i < learningProgress.currentPoint) {
-                    card.classList.remove('locked');
-                } else {
-                    card.classList.add('locked');
                 }
             }
             
@@ -698,7 +691,7 @@
             
             // Schritt 2: Klimaveränderung (Grafikanalyse)
             const text2 = learningProgress.texts['2'] || '';
-            if (text2.trim() !== '') {
+            if (text2.trim() !== '' || (learningProgress.images && learningProgress.images['2'])) {
                 if (yPos > 240) {
                     doc.addPage();
                     yPos = 20;
@@ -712,17 +705,41 @@
                 // Füge Bild ein, falls vorhanden
                 if (learningProgress.images && learningProgress.images['2']) {
                     try {
-                        const imgData = learningProgress.images['2'];
-                        const imgWidth = 170;
-                        const imgHeight = 100;
+                        const imgData = learningProgress.images['2'].data || learningProgress.images['2'];
                         
-                        if (yPos + imgHeight > 270) {
+                        // Erstelle ein Image-Element um Dimensionen zu erhalten
+                        const img = new Image();
+                        img.src = imgData;
+                        
+                        await new Promise((resolve) => {
+                            img.onload = resolve;
+                        });
+                        
+                        const imgWidth = img.width;
+                        const imgHeight = img.height;
+                        const aspectRatio = imgWidth / imgHeight;
+                        
+                        // Berechne Dimensionen für PDF
+                        const maxWidth = 170;
+                        const maxHeight = 120;
+                        
+                        let finalWidth, finalHeight;
+                        
+                        if (aspectRatio > maxWidth / maxHeight) {
+                            finalWidth = maxWidth;
+                            finalHeight = maxWidth / aspectRatio;
+                        } else {
+                            finalHeight = maxHeight;
+                            finalWidth = maxHeight * aspectRatio;
+                        }
+                        
+                        if (yPos + finalHeight > 270) {
                             doc.addPage();
                             yPos = 20;
                         }
                         
-                        doc.addImage(imgData, 'JPEG', margin, yPos, imgWidth, imgHeight);
-                        yPos += imgHeight + 10;
+                        doc.addImage(imgData, 'JPEG', margin, yPos, finalWidth, finalHeight);
+                        yPos += finalHeight + 10;
                         
                         if (yPos > 250) {
                             doc.addPage();
@@ -733,16 +750,18 @@
                     }
                 }
                 
-                doc.setFontSize(11);
-                doc.setFont(undefined, 'normal');
-                const lines2 = doc.splitTextToSize(text2, pageWidth);
-                for (let line of lines2) {
-                    if (yPos > 270) {
-                        doc.addPage();
-                        yPos = 20;
+                if (text2.trim() !== '') {
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'normal');
+                    const lines2 = doc.splitTextToSize(text2, pageWidth);
+                    for (let line of lines2) {
+                        if (yPos > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, margin, yPos);
+                        yPos += lineHeight;
                     }
-                    doc.text(line, margin, yPos);
-                    yPos += lineHeight;
                 }
                 
                 yPos += 10;
@@ -850,15 +869,71 @@
                 doc.text('Schritt 6: Handlungsmöglichkeiten (MindMap)', margin, yPos);
                 yPos += lineHeight + 5;
                 
-                // MindMap Info
+                // MindMap Bild einfügen
                 if (learningProgress.images && learningProgress.images['6']) {
-                    doc.setFontSize(11);
-                    doc.setFont(undefined, 'bold');
-                    doc.text('MindMap:', margin, yPos);
-                    yPos += lineHeight;
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`Hochgeladen: ${learningProgress.images['6'].name || 'mindmap.jpg'}`, margin, yPos);
-                    yPos += lineHeight + 5;
+                    const imgData = learningProgress.images['6'];
+                    
+                    if (imgData.type !== 'application/pdf') {
+                        try {
+                            const imgSrc = imgData.data || imgData;
+                            
+                            // Erstelle ein Image-Element um Dimensionen zu erhalten
+                            const img = new Image();
+                            img.src = imgSrc;
+                            
+                            await new Promise((resolve) => {
+                                img.onload = resolve;
+                            });
+                            
+                            const imgWidth = img.width;
+                            const imgHeight = img.height;
+                            const aspectRatio = imgWidth / imgHeight;
+                            
+                            // Berechne Dimensionen für PDF
+                            const maxWidth = 170;
+                            const maxHeight = 180;
+                            
+                            let finalWidth, finalHeight;
+                            
+                            if (aspectRatio > maxWidth / maxHeight) {
+                                finalWidth = maxWidth;
+                                finalHeight = maxWidth / aspectRatio;
+                            } else {
+                                finalHeight = maxHeight;
+                                finalWidth = maxHeight * aspectRatio;
+                            }
+                            
+                            if (yPos + finalHeight > 270) {
+                                doc.addPage();
+                                yPos = 20;
+                            }
+                            
+                            // Bestimme Bildformat
+                            let imgFormat = 'JPEG';
+                            if (imgData.type === 'image/png') {
+                                imgFormat = 'PNG';
+                            }
+                            
+                            doc.addImage(imgSrc, imgFormat, margin, yPos, finalWidth, finalHeight);
+                            yPos += finalHeight + 10;
+                            
+                            if (yPos > 250) {
+                                doc.addPage();
+                                yPos = 20;
+                            }
+                        } catch (error) {
+                            console.error('Fehler beim Einfügen des MindMap-Bildes:', error);
+                            doc.setFontSize(10);
+                            doc.setFont(undefined, 'italic');
+                            doc.text(`MindMap: ${imgData.name || 'hochgeladen'}`, margin, yPos);
+                            yPos += lineHeight + 5;
+                        }
+                    } else {
+                        doc.setFontSize(10);
+                        doc.setFont(undefined, 'italic');
+                        doc.text(`MindMap (PDF): ${imgData.name || 'hochgeladen'}`, margin, yPos);
+                        yPos += lineHeight + 5;
+                    }
                 }
                 
                 if (text6.trim() !== '') {
