@@ -507,7 +507,7 @@
             </div>
 
             <div class="progress-indicator">
-                <div class="progress-text" id="progress-text">0 von 7 Fragen beantwortet</div>
+                <div class="progress-text" id="progress-text">0 von 6 Fragen beantwortet</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
@@ -906,8 +906,10 @@
         function completeStep() {
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
+            // Check if all questions have been answered (not necessarily correct)
             if (answeredQuestions.size < totalQuestions) {
-                alert('Bitte beantworten Sie zuerst alle Fragen des Hörverstehens!');
+                const answeredCount = answeredQuestions.size;
+                alert(`Bitte beantworten Sie zuerst alle Fragen des Hörverstehens!\n\nSie haben bisher ${answeredCount} von ${totalQuestions} Fragen beantwortet.`);
                 return;
             }
             
@@ -916,7 +918,10 @@
                 if (!confirm) return;
             }
             
-            savePortfolio();
+            // Save journal if there's content
+            if (portfolioText !== '') {
+                savePortfolio();
+            }
             
             let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
             
@@ -926,7 +931,7 @@
                 localStorage.setItem('learningProgress', JSON.stringify(progress));
             }
             
-            alert(`✓ Schritt 5 abgeschlossen!\n\nSie haben ${score} von ${totalQuestions} Fragen richtig beantwortet.\nIhr Lernjournal-Eintrag wurde gespeichert.`);
+            alert(`✓ Schritt 5 abgeschlossen!\n\nSie haben ${score} von ${totalQuestions} Fragen richtig beantwortet.${portfolioText !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
             window.location.href = 'index.html';
         }
 
