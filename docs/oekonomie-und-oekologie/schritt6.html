@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ökologie und Ökonomie - Lernspiel</title>
+    <title>Handlungsmöglichkeiten</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,850 +14,818 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #333;
-            background-image: url('images/oekologie.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            padding: 20px;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(30, 58, 138, 0.7);
-            z-index: -1;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin: 1rem 0 0 0;
-            color: #0ea5e9;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            flex: 1;
-            max-width: 1000px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem 2rem 1rem;
-        }
-
-        .game-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .game-container h2 {
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
-        }
-
-        .game-description {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .game-screen {
-            background: linear-gradient(135deg, #f0fdf4, #dbeafe);
-            border-radius: 10px;
-            padding: 2rem;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .scenario-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .score-bars {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .score-item {
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
             background: white;
-            padding: 1rem;
-            border-radius: 8px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        .score-item h4 {
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 0.3rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            transition: width 0.5s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
+        .lesson-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
         }
 
-        .progress-fill.blue { background: #3b82f6; }
-        .progress-fill.green { background: #10b981; }
-
-        .scenario-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1f2937;
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
 
-        .scenario-content p {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            color: #374151;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .option-btn {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.25rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-        }
-
-        .option-btn:hover {
-            background: #f9fafb;
-            border-color: #a855f7;
-        }
-
-        .option-btn strong {
-            display: block;
-            color: #1f2937;
-            margin-bottom: 0.25rem;
-        }
-
-        .option-btn small {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .result-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-        }
-
-        .result-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .result-bar {
-            height: 40px;
-            margin-bottom: 0.5rem;
-        }
-
-        .assessment {
-            background: #faf5ff;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .assessment h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .decisions-list {
-            background: #f9fafb;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .decision-item {
-            border-left: 4px solid #a855f7;
-            padding-left: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .decision-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .learning-box {
-            background: #fefce8;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .learning-box h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .learning-box ul {
-            list-style: none;
-        }
-
-        .learning-box li {
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .learning-box li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #a855f7;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background: #a855f7;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: background 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: #9333ea;
+        .lesson-content {
+            padding: 40px;
+            line-height: 1.8;
         }
 
         .info-box {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
         }
 
-        .info-box h3 {
-            font-size: 1.3rem;
-            color: #1f2937;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .info-box p {
+            color: #856404;
+            line-height: 1.8;
         }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        .info-box strong {
+            color: #664d03;
         }
 
-        .info-item {
-            display: flex;
-            gap: 0.75rem;
-            align-items: start;
-            padding: 0.75rem;
-            background: #f9fafb;
-            border-radius: 8px;
-        }
-
-        .info-item span {
-            font-size: 2rem;
-        }
-
-        .expandable-section {
-            background: rgba(255, 255, 255, 0.95);
+        .article-section {
+            background: #e7f3ff;
+            border: 3px solid #2196F3;
             border-radius: 15px;
-            padding: 0;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
+            padding: 25px;
+            margin: 30px 0;
         }
 
-        .expandable-header {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            padding: 1.5rem 2rem;
+        .article-section h3 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        details {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #2196F3;
+        }
+
+        summary {
             cursor: pointer;
-            font-size: 1.2rem;
             font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 1.1em;
+            color: #1565C0;
+            padding: 10px;
+            user-select: none;
+            transition: color 0.3s;
+        }
+
+        summary:hover {
+            color: #0D47A1;
+        }
+
+        details[open] summary {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .article-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .assignment-box {
+            background: #e8f5e9;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .assignment-box h3 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .assignment-box h4 {
+            color: #2e7d32;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .assignment-box ul {
+            margin: 15px 0 15px 30px;
+            line-height: 2;
+        }
+
+        .assignment-box li {
+            color: #1b5e20;
+            margin: 10px 0;
+        }
+
+        .danger-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .danger-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #66bb6a;
+            text-align: center;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .danger-item span {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .guidelines-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .guidelines-box h4 {
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+
+        .guidelines-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .guidelines-box li {
+            color: #e65100;
+            margin: 8px 0;
+        }
+
+        .upload-section {
+            background: #f5f5f5;
+            border: 3px dashed #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .upload-section h3 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .upload-area {
+            background: white;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
             transition: all 0.3s;
         }
 
-        .expandable-header:hover {
-            background: linear-gradient(135deg, #d97706, #b45309);
+        .upload-area:hover {
+            background: #e8f5e9;
+            border-color: #2e7d32;
         }
 
-        .expandable-header .arrow {
-            font-size: 1.5rem;
-            transition: transform 0.3s;
+        .upload-area.dragover {
+            background: #c8e6c9;
+            border-color: #1b5e20;
+            transform: scale(1.02);
         }
 
-        .expandable-header.open .arrow {
-            transform: rotate(180deg);
+        .upload-icon {
+            font-size: 3em;
+            color: #2e7d32;
+            margin-bottom: 15px;
         }
 
-        .expandable-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
+        .upload-text {
+            color: #666;
+            font-size: 1.1em;
         }
 
-        .expandable-content.open {
-            max-height: 10000px;
-            transition: max-height 0.5s ease-in;
+        #fileInput {
+            display: none;
         }
 
-        .expandable-inner {
-            padding: 2rem;
+        .preview-container {
+            margin: 20px 0;
+            display: none;
         }
 
-        .task-box {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            padding: 1.5rem;
+        .preview-container.show {
+            display: block;
+        }
+
+        .preview-image {
+            max-width: 100%;
             border-radius: 10px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #f59e0b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 20px 0;
         }
 
-        .task-box h3 {
-            color: #92400e;
-            margin-bottom: 0.75rem;
+        .file-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: left;
         }
 
-        .task-box p {
-            color: #78350f;
-            line-height: 1.6;
+        .file-info p {
+            color: #1b5e20;
+            margin: 5px 0;
         }
 
-        .task-box-blue {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 4px solid #3b82f6;
+        .remove-file-btn {
+            background: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.2s;
         }
 
-        .task-box-blue h3 {
-            color: #1e3a8a;
+        .remove-file-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.05);
         }
 
-        .task-box-blue p {
-            color: #1e40af;
+        .portfolio-box {
+            background: #e8f5e9;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .portfolio-box h3 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-box textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-box textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+        }
+
+        .saved-indicator {
+            color: #4CAF50;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+            .lesson-header h1 {
+                font-size: 1.8em;
             }
-            
-            .results-grid, .score-bars, .info-grid {
+
+            .lesson-content {
+                padding: 20px;
+            }
+
+            .assignment-box {
+                padding: 20px;
+            }
+
+            .danger-list {
                 grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🌱💼 Ökologie und Ökonomie</h1>
-        <a href="../index.html" class="back-link">← Zurück zum Lernpfad</a>
-    </header>
+    <div class="container">
+        <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
+            <h1>💡 Handlungsmöglichkeiten</h1>
+            <p style="font-size: 1.1em; margin-top: 10px; opacity: 0.95;">Was können wir konkret tun?</p>
+        </div>
 
-    <main>
-        <!-- Interaktives Lernspiel -->
-        <div class="game-container">
-            <h2>🎮 Interaktives Lernspiel: Ökonomie vs. Ökologie</h2>
-            <p class="game-description">Triff Entscheidungen in verschiedenen Situationen und erlebe, wie sich wirtschaftliche und ökologische Überlegungen unterscheiden. Gibt es einen Weg, beides zu vereinen?</p>
-            
-            <div class="game-screen" id="game-root">
-                <!-- Startbildschirm -->
-                <div id="start-screen">
-                    <div style="text-align: center; margin-bottom: 2rem;">
-                        <h1 style="font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem;">
-                            Ökonomie vs. Ökologie
-                        </h1>
-                        <p style="font-size: 1.1rem; color: #6b7280;">
-                            Ein Lernspiel über unterschiedliche Perspektiven
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>📌 Kontext:</strong> Die Schweiz ist besonders vom Klimawandel betroffen. In diesem Schritt erarbeiten Sie konkrete Handlungsmöglichkeiten zum Schutz vor klimabedingten Gefahren.</p>
+            </div>
+
+            <div class="article-section">
+                <h3>🇨🇭 Die Schweiz – ein Hotspot des Klimawandels</h3>
+                <p style="color: #1565C0; margin-bottom: 15px;">
+                    Die Schweiz wird besonders vom Klimawandel betroffen sein, wie Sie im folgenden Artikel nachlesen können:
+                </p>
+                
+                <details>
+                    <summary>📰 SRF-Artikel öffnen: "Die Schweiz – ein Hotspot des Klimawandels"</summary>
+                    <div style="margin-top: 15px;">
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>Quelle:</strong> Schweizer Radio und Fernsehen (SRF)<br>
+                            <strong>Link:</strong> <a href="https://www.srf.ch/news/schweiz/neue-klimaszenarien-die-schweiz-ein-hotspot-des-klimawandels-1" target="_blank" style="color: #2196F3; text-decoration: none; font-weight: bold;">Artikel auf SRF.ch öffnen →</a>
+                        </p>
+                        <iframe 
+                            class="article-iframe" 
+                            src="https://www.srf.ch/news/schweiz/neue-klimaszenarien-die-schweiz-ein-hotspot-des-klimawandels-1"
+                            title="SRF Artikel über Klimawandel in der Schweiz">
+                        </iframe>
+                        <p style="color: #999; font-size: 0.85em; margin-top: 10px; font-style: italic;">
+                            Falls der Artikel nicht geladen wird, können Sie ihn über den Link oben direkt auf SRF.ch lesen.
                         </p>
                     </div>
-
-                    <div class="info-box">
-                        <h3>🧠 Was lernst du?</h3>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span>📈</span>
-                                <div>
-                                    <strong>Ökonomie</strong>
-                                    <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Wirtschaft, Profit, Arbeitsplätze, kurzfristige Gewinne</p>
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <span>🌿</span>
-                                <div>
-                                    <strong>Ökologie</strong>
-                                    <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Umwelt, Nachhaltigkeit, langfristige Folgen</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn-primary" onclick="startGame()">
-                        <span>🎮</span>
-                        Spiel starten
-                    </button>
-                </div>
-
-                <!-- Spiel-Bildschirm -->
-                <div id="game-screen" class="hidden"></div>
-
-                <!-- Ergebnis-Bildschirm -->
-                <div id="result-screen" class="hidden"></div>
+                </details>
             </div>
-        </div>
 
-        <!-- Aufklappbarer Aufgaben-Bereich 1 -->
-        <div class="expandable-section">
-            <div class="expandable-header" onclick="toggleExpand1()">
-                <span>📋 Aufgabenbereich 1</span>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="expandable-content" id="expandable-content1">
-                <div class="expandable-inner">
-                    <div class="task-box">
-                        <h3>📚 Auftrag:</h3>
-                        <p>Notieren Sie nach dem Spielen Ihre Überlegungen zum Unterschied von Ökonomie und Ökologie in Ihr OneNote.</p>
+            <div class="assignment-box">
+                <h3>✏️ Auftrag: MindMap erstellen</h3>
+                
+                <p style="color: #1b5e20; font-size: 1.1em; margin-bottom: 20px;">
+                    <strong>Erstellen Sie eine MindMap von Hand</strong>, in der Sie zusammenfassen, was Menschen in der Schweiz konkret tun können, um sich vor folgenden vier Gefahren zu schützen:
+                </p>
+
+                <div class="danger-list">
+                    <div class="danger-item">
+                        <span>🌡️</span>
+                        Hitze
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Aufklappbarer Aufgaben-Bereich 2 -->
-        <div class="expandable-section">
-            <div class="expandable-header" onclick="toggleExpand2()">
-                <span>📋 Aufgabenbereich 2</span>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="expandable-content" id="expandable-content2">
-                <div class="expandable-inner">
-                    <div class="task-box">
-                        <h3>📚 Auftrag:</h3>
-                        <p>Hier kommt der Inhalt des zweiten Auftrags...</p>
+                    <div class="danger-item">
+                        <span>💨</span>
+                        Schlechte Luftqualität
                     </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        // Vereinfachte Szenarien - kürzer und klarer
-        const scenarios = [
-            {
-                title: 'Neues Industriegebiet',
-                description: 'Eine Firma möchte ein großes Werk bauen. Es würde 500 Arbeitsplätze schaffen, aber ein Waldgebiet müsste gerodet werden.',
-                options: [
-                    { 
-                        text: 'Sofort genehmigen', 
-                        detail: 'Schneller Wirtschaftsaufschwung, Wald wird zerstört',
-                        oekonomie: 15, 
-                        oekologie: -20
-                    },
-                    { 
-                        text: 'Mit Umweltauflagen genehmigen', 
-                        detail: 'Kompromiss: Teurer für Firma, aber Naturschutz möglich',
-                        oekonomie: 8, 
-                        oekologie: -5
-                    },
-                    { 
-                        text: 'Ablehnen', 
-                        detail: 'Wald bleibt erhalten, Firma geht woanders hin',
-                        oekonomie: -10, 
-                        oekologie: 15
-                    }
-                ]
-            },
-            {
-                title: 'Nachhaltige Produktion',
-                description: 'Ein Textilunternehmen könnte auf Bio-Rohstoffe umstellen. Das wäre besser für die Umwelt, würde aber 20% mehr kosten.',
-                options: [
-                    { 
-                        text: 'Komplett auf Bio umstellen', 
-                        detail: 'Teurer, aber umweltfreundlich und zukunftssicher',
-                        oekonomie: -10, 
-                        oekologie: 20
-                    },
-                    { 
-                        text: 'Halb-halb: 50% Bio', 
-                        detail: 'Mittlerer Weg: Etwas teurer, etwas nachhaltiger',
-                        oekonomie: -3, 
-                        oekologie: 10
-                    },
-                    { 
-                        text: 'Alles beim Alten lassen', 
-                        detail: 'Günstig bleiben, aber umweltschädlich',
-                        oekonomie: 8, 
-                        oekologie: -15
-                    }
-                ]
-            },
-            {
-                title: 'Autofreie Innenstadt',
-                description: 'Die Stadt plant eine autofreie Zone mit neuen Straßenbahnen. Kosten: 80 Millionen Euro. Die Luft würde besser, aber Geschäfte befürchten weniger Kunden.',
-                options: [
-                    { 
-                        text: 'Vollständig umsetzen', 
-                        detail: 'Teuer und lange Bauzeit, aber viel bessere Lebensqualität',
-                        oekonomie: -12, 
-                        oekologie: 18
-                    },
-                    { 
-                        text: 'Höhere Parkgebühren einführen', 
-                        detail: 'Autofahren wird teurer, weniger Autos, Stadt verdient',
-                        oekonomie: 5, 
-                        oekologie: 8
-                    },
-                    { 
-                        text: 'Nichts ändern', 
-                        detail: 'Keine Kosten, aber Luftverschmutzung bleibt',
-                        oekonomie: 3, 
-                        oekologie: -12
-                    }
-                ]
-            },
-            {
-                title: 'Neue Energieversorgung',
-                description: 'Das alte Kraftwerk muss ersetzt werden. Wind und Solar kosten 150 Mio., ein Gaskraftwerk 60 Mio., Kohle sanieren 30 Mio.',
-                options: [
-                    { 
-                        text: 'Erneuerbare Energien', 
-                        detail: 'Sehr teuer am Anfang, aber später günstig und sauber',
-                        oekonomie: -15, 
-                        oekologie: 25
-                    },
-                    { 
-                        text: 'Mix: 60% Erneuerbare + Gas', 
-                        detail: 'Mittelweg: Etwas teurer, deutlich sauberer',
-                        oekonomie: -5, 
-                        oekologie: 10
-                    },
-                    { 
-                        text: 'Kohle weiter nutzen', 
-                        detail: 'Billigste Lösung jetzt, aber klimaschädlich',
-                        oekonomie: 10, 
-                        oekologie: -20
-                    }
-                ]
-            },
-            {
-                title: 'Plastikverpackungen',
-                description: 'Ein Supermarkt könnte Plastikverpackungen durch Papier und Mehrweg ersetzen. Das würde Müll reduzieren, kostet aber mehr.',
-                options: [
-                    { 
-                        text: 'Alles auf Mehrweg umstellen', 
-                        detail: 'Höhere Kosten, aber kaum noch Müll',
-                        oekonomie: -8, 
-                        oekologie: 18
-                    },
-                    { 
-                        text: 'Nur bei bestimmten Produkten', 
-                        detail: 'Kleiner Schritt: Etwas mehr Aufwand, weniger Müll',
-                        oekonomie: -3, 
-                        oekologie: 8
-                    },
-                    { 
-                        text: 'Plastik beibehalten', 
-                        detail: 'Billig und praktisch, aber viel Müll',
-                        oekonomie: 5, 
-                        oekologie: -12
-                    }
-                ]
-            }
-        ];
-
-        // Spiel-Status
-        let gameState = {
-            currentScenario: 0,
-            scores: { oekonomie: 50, oekologie: 50 },
-            decisions: []
-        };
-
-        // Spiel starten
-        function startGame() {
-            document.getElementById('start-screen').classList.add('hidden');
-            showScenario();
-        }
-
-        // Szenario anzeigen
-        function showScenario() {
-            const scenario = scenarios[gameState.currentScenario];
-            const gameScreen = document.getElementById('game-screen');
-            
-            let optionsHtml = '';
-            scenario.options.forEach((option, index) => {
-                optionsHtml += `
-                    <button class="option-btn" onclick="makeDecision(${index})">
-                        <strong>${option.text}</strong>
-                        <small>${option.detail}</small>
-                    </button>
-                `;
-            });
-
-            gameScreen.innerHTML = `
-                <div class="scenario-header">
-                    <span style="font-size: 1.2rem; font-weight: bold; color: #1f2937;">
-                        Szenario ${gameState.currentScenario + 1} / ${scenarios.length}
-                    </span>
-                </div>
-
-                <div class="score-bars">
-                    <div class="score-item">
-                        <h4><span>📈</span> Ökonomie</h4>
-                        <div class="progress-bar">
-                            <div class="progress-fill blue" style="width: ${gameState.scores.oekonomie}%">
-                                ${gameState.scores.oekonomie}%
-                            </div>
-                        </div>
+                    <div class="danger-item">
+                        <span>⛈️</span>
+                        Unwetter
                     </div>
-                    <div class="score-item">
-                        <h4><span>🌿</span> Ökologie</h4>
-                        <div class="progress-bar">
-                            <div class="progress-fill green" style="width: ${gameState.scores.oekologie}%">
-                                ${gameState.scores.oekologie}%
-                            </div>
-                        </div>
+                    <div class="danger-item">
+                        <span>🦠</span>
+                        Krankheiten & Pandemien
                     </div>
                 </div>
 
-                <div class="scenario-content">
-                    <h2>${scenario.title}</h2>
-                    <p>${scenario.description}</p>
-                    <h3 style="margin-bottom: 1rem; font-weight: 600;">Was entscheidest du?</h3>
-                    <div class="options">
-                        ${optionsHtml}
-                    </div>
-                </div>
-            `;
-            
-            gameScreen.classList.remove('hidden');
-        }
+                <h4>🔍 Besondere Hinweise:</h4>
+                <ul>
+                    <li>Bei <strong>Krankheiten & Pandemien</strong>: Gehen Sie speziell auf das <strong>Immunsystem</strong> ein</li>
+                    <li>Notieren Sie die verwendeten <strong>Quellen hinten auf die MindMap</strong></li>
+                </ul>
 
-        // Entscheidung treffen
-        function makeDecision(optionIndex) {
-            const scenario = scenarios[gameState.currentScenario];
-            const option = scenario.options[optionIndex];
-            
-            // Scores aktualisieren
-            gameState.scores.oekonomie = Math.max(0, Math.min(100, gameState.scores.oekonomie + option.oekonomie));
-            gameState.scores.oekologie = Math.max(0, Math.min(100, gameState.scores.oekologie + option.oekologie));
-            
-            // Entscheidung speichern
-            gameState.decisions.push({
-                scenario: scenario.title,
-                choice: option.text,
-                detail: option.detail
-            });
-            
-            // Nächstes Szenario oder Ergebnis
-            if (gameState.currentScenario < scenarios.length - 1) {
-                gameState.currentScenario++;
-                showScenario();
-            } else {
-                showResults();
-            }
-        }
-
-        // Ergebnisse anzeigen
-        function showResults() {
-            const diff = Math.abs(gameState.scores.oekonomie - gameState.scores.oekologie);
-            let assessment;
-            
-            if (diff < 15) {
-                assessment = { 
-                    text: '⚖️ Ausgewogen', 
-                    color: '#10b981', 
-                    description: 'Du hast wirtschaftliche und ökologische Interessen gut balanciert!' 
-                };
-            } else if (gameState.scores.oekonomie > gameState.scores.oekologie + 15) {
-                assessment = { 
-                    text: '📈 Wirtschafts-orientiert', 
-                    color: '#3b82f6', 
-                    description: 'Du hast vor allem auf Wirtschaft und Arbeitsplätze geachtet.' 
-                };
-            } else {
-                assessment = { 
-                    text: '🌿 Umwelt-orientiert', 
-                    color: '#10b981', 
-                    description: 'Du hast den Umweltschutz in den Vordergrund gestellt.' 
-                };
-            }
-
-            let decisionsHtml = '';
-            gameState.decisions.forEach(decision => {
-                decisionsHtml += `
-                    <div class="decision-item">
-                        <p style="font-weight: bold; margin-bottom: 0.25rem;">${decision.scenario}</p>
-                        <p style="margin-bottom: 0.25rem;">➜ ${decision.choice}</p>
-                        <p style="font-size: 0.85rem; color: #6b7280; font-style: italic;">${decision.detail}</p>
-                    </div>
-                `;
-            });
-
-            document.getElementById('game-screen').classList.add('hidden');
-            const resultScreen = document.getElementById('result-screen');
-            resultScreen.innerHTML = `
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <h1 style="font-size: 2rem; font-weight: bold; color: #1f2937;">
-                        Spielende - Deine Bilanz
-                    </h1>
-                </div>
-
-                <div class="results-grid">
-                    <div class="result-card">
-                        <h3><span>📈</span> Ökonomie</h3>
-                        <div class="progress-bar result-bar">
-                            <div class="progress-fill blue" style="width: ${gameState.scores.oekonomie}%">
-                                ${gameState.scores.oekonomie}%
-                            </div>
-                        </div>
-                    </div>
-                    <div class="result-card">
-                        <h3><span>🌿</span> Ökologie</h3>
-                        <div class="progress-bar result-bar">
-                            <div class="progress-fill green" style="width: ${gameState.scores.oekologie}%">
-                                ${gameState.scores.oekologie}%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="assessment">
-                    <h3 style="color: ${assessment.color}">${assessment.text}</h3>
-                    <p style="font-size: 1.1rem;">${assessment.description}</p>
-                </div>
-
-                <div class="decisions-list">
-                    <h3 style="margin-bottom: 1rem;">Deine Entscheidungen:</h3>
-                    ${decisionsHtml}
-                </div>
-
-                <div class="learning-box">
-                    <h3><span>🧠</span> Was hast du gelernt?</h3>
+                <div class="guidelines-box">
+                    <h4>⚠️ Wichtige Arbeitsrichtlinien:</h4>
                     <ul>
-                        <li><strong>Ökonomie</strong> denkt in Geld, Gewinn und kurzfristigen Vorteilen</li>
-                        <li><strong>Ökologie</strong> denkt in Umwelt, Nachhaltigkeit und langfristigen Folgen</li>
-                        <li>Beide Perspektiven sind wichtig und haben gute Gründe</li>
-                        <li>Die Herausforderung ist, <strong>beides zu vereinen</strong></li>
-                        <li>Nachhaltige Lösungen sind oft teurer am Anfang, sparen aber später Kosten</li>
+                        <li><strong>Verwenden Sie nur seriöse Quellen</strong> (z.B. BAG, MeteoSchweiz, wissenschaftliche Institutionen, anerkannte Medien)</li>
+                        <li><strong>KI darf nur zum Finden von geeigneten Internetquellen verwendet werden</strong></li>
+                        <li>Die MindMap wird <strong>von Hand</strong> erstellt (nicht digital)</li>
                     </ul>
                 </div>
 
-                <button class="btn-primary" onclick="resetGame()">
-                    <span>🔄</span>
-                    Nochmal spielen
+                <h4>💡 Tipps für eine gute MindMap:</h4>
+                <ul>
+                    <li>Verwenden Sie Farben zur Unterscheidung der Ebenen der Mindmap und/ oder zur Unterscheidung der vier Hauptbereiche</li>
+                    <li>Strukturieren Sie klar: Hauptgefahr → Unterkategorien → konkrete Maßnahmen</li>
+                    <li>Nutzen Sie Symbole und kleine Zeichnungen zur Visualisierung</li>
+                    <li>Achten Sie auf Lesbarkeit</li>
+                </ul>
+            </div>
+
+            <div class="upload-section">
+                <h3>📸 MindMap hochladen</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Fotografieren oder scannen Sie Ihre fertige MindMap und laden Sie sie hier hoch.
+                </p>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📤</div>
+                    <div class="upload-text">
+                        <strong>Klicken Sie hier oder ziehen Sie eine Datei hierher</strong><br>
+                        <span style="font-size: 0.9em; color: #999;">Unterstützte Formate: JPG, PNG, PDF (max. 10 MB)</span>
+                    </div>
+                </div>
+                
+                <input type="file" id="fileInput" accept="image/*,.pdf" onchange="handleFileSelect(event)">
+                
+                <div class="preview-container" id="previewContainer">
+                    <h4 style="color: #1b5e20; margin-bottom: 15px;">Vorschau:</h4>
+                    <img id="previewImage" class="preview-image" alt="MindMap Vorschau">
+                    <div class="file-info" id="fileInfo"></div>
+                    <button class="remove-file-btn" onclick="removeFile()">Datei entfernen</button>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Schritt 6</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    <strong>Reflexion:</strong>
+                </p>
+                <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #666;">
+                    <li>Was waren die wichtigsten Erkenntnisse aus Ihrer Recherche?</li>
+                    <li>Welche Handlungsmöglichkeiten fanden Sie am wichtigsten oder überraschendsten?</li>
+                    <li>Was nehmen Sie persönlich mit aus dieser Aufgabe?</li>
+                </ul>
+                <textarea 
+                    id="portfolio-text" 
+                    placeholder="Ihre Reflexion hier eingeben..."
+                    oninput="savePortfolio()"></textarea>
+                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
                 </button>
-            `;
-            resultScreen.classList.remove('hidden');
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    📄 PDF Schritt 6 herunterladen
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschließen und weiter →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFile = null;
+
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
 
-        // Spiel zurücksetzen
-        function resetGame() {
-            gameState = {
-                currentScenario: 0,
-                scores: { oekonomie: 50, oekologie: 50 },
-                decisions: []
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.remove('dragover');
+            }, false);
+        });
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            // Check file size (10 MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Die Datei ist zu groß. Bitte wählen Sie eine Datei unter 10 MB.');
+                return;
+            }
+
+            // Check file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                alert('Bitte wählen Sie eine JPG, PNG oder PDF Datei.');
+                return;
+            }
+
+            uploadedFile = file;
+
+            // Show preview
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const fileInfo = document.getElementById('fileInfo');
+
+            if (file.type === 'application/pdf') {
+                previewImage.style.display = 'none';
+                fileInfo.innerHTML = `
+                    <p><strong>📄 PDF hochgeladen</strong></p>
+                    <p>Dateiname: ${file.name}</p>
+                    <p>Größe: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                `;
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+
+                fileInfo.innerHTML = `
+                    <p><strong>✓ Bild hochgeladen</strong></p>
+                    <p>Dateiname: ${file.name}</p>
+                    <p>Größe: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                `;
+            }
+
+            previewContainer.classList.add('show');
+
+            // Save to localStorage
+            saveUploadedFile(file);
+        }
+
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('previewContainer').classList.remove('show');
+            
+            // Remove from localStorage
+            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            if (progress.images) {
+                delete progress.images['6'];
+            }
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+        }
+
+        function saveUploadedFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+                
+                if (!progress.images) {
+                    progress.images = {};
+                }
+                
+                progress.images['6'] = {
+                    data: e.target.result,
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                };
+                
+                localStorage.setItem('learningProgress', JSON.stringify(progress));
             };
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('start-screen').classList.remove('hidden');
+            reader.readAsDataURL(file);
         }
 
-        // Toggle Expandable Functions
-        function toggleExpand1() {
-            const content = document.getElementById('expandable-content1');
-            const headers = document.querySelectorAll('.expandable-header');
-            const header = headers[0];
-            content.classList.toggle('open');
-            header.classList.toggle('open');
+        function loadUploadedFile() {
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                if (progress.images && progress.images['6']) {
+                    const fileData = progress.images['6'];
+                    const previewContainer = document.getElementById('previewContainer');
+                    const previewImage = document.getElementById('previewImage');
+                    const fileInfo = document.getElementById('fileInfo');
+
+                    if (fileData.type === 'application/pdf') {
+                        previewImage.style.display = 'none';
+                        fileInfo.innerHTML = `
+                            <p><strong>📄 PDF gespeichert</strong></p>
+                            <p>Dateiname: ${fileData.name}</p>
+                            <p>Größe: ${(fileData.size / 1024 / 1024).toFixed(2)} MB</p>
+                        `;
+                    } else {
+                        previewImage.src = fileData.data;
+                        previewImage.style.display = 'block';
+                        fileInfo.innerHTML = `
+                            <p><strong>✓ Bild gespeichert</strong></p>
+                            <p>Dateiname: ${fileData.name}</p>
+                            <p>Größe: ${(fileData.size / 1024 / 1024).toFixed(2)} MB</p>
+                        `;
+                    }
+
+                    previewContainer.classList.add('show');
+                }
+            }
         }
 
-        function toggleExpand2() {
-            const content = document.getElementById('expandable-content2');
-            const headers = document.querySelectorAll('.expandable-header');
-            const header = headers[1];
-            content.classList.toggle('open');
-            header.classList.toggle('open');
+        function loadPortfolio() {
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const portfolioText = progress.texts && progress.texts['6'] ? progress.texts['6'] : '';
+                document.getElementById('portfolio-text').value = portfolioText;
+            }
         }
+
+        function savePortfolio() {
+            const text = document.getElementById('portfolio-text').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {},
+                images: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['6'] = text;
+            
+            localStorage.setItem('learningProgress', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function downloadPDF() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Handlungsmöglichkeiten", 20, 20);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            
+            // MindMap Info
+            const saved = localStorage.getItem('learningProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                if (progress.images && progress.images['6']) {
+                    doc.setFont("helvetica", "bold");
+                    doc.text("MindMap:", 20, 45);
+                    doc.setFont("helvetica", "normal");
+                    doc.text(`Hochgeladen: ${progress.images['6'].name}`, 20, 52);
+                }
+            }
+            
+            // Journal
+            if (portfolioText !== '') {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text("Reflexion:", 20, 70);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                const lines = doc.splitTextToSize(portfolioText, 170);
+                doc.text(lines, 20, 78);
+            }
+            
+            doc.save('Lernjournal_Schritt6_Handlungsmoeglichkeiten.pdf');
+        }
+
+        function completeStep() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            const saved = localStorage.getItem('learningProgress');
+            let hasMindMap = false;
+            
+            if (saved) {
+                const progress = JSON.parse(saved);
+                hasMindMap = progress.images && progress.images['6'];
+            }
+            
+            if (!hasMindMap) {
+                const confirm = window.confirm('Sie haben noch keine MindMap hochgeladen. Möchten Sie trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            if (portfolioText === '') {
+                const confirm = window.confirm('Sie haben noch nichts ins Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            savePortfolio();
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgress') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            
+            if (!progress.completedPoints.includes(6)) {
+                progress.completedPoints.push(6);
+                progress.currentPoint = 7;
+                localStorage.setItem('learningProgress', JSON.stringify(progress));
+            }
+            
+            alert('✓ Schritt 6 abgeschlossen!\n\nIhr Lernjournal-Eintrag und Ihre MindMap wurden gespeichert.');
+            window.location.href = 'index.html';
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // Load saved data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPortfolio();
+            loadUploadedFile();
+        });
     </script>
 </body>
 </html>
-
