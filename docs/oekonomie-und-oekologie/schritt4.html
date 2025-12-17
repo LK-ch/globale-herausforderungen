@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Folgen des Klimawandels</title>
+    <title>Folgen des Klimawandels - Grafikanalyse</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -56,27 +56,43 @@
             color: #856404;
         }
 
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
+        .graphic-container {
+            background: #f8f9fa;
+            border: 3px solid #2e7d32;
+            border-radius: 15px;
+            padding: 20px;
             margin: 30px 0;
+            text-align: center;
+        }
+
+        .graphic-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+        .graphic-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
         }
 
         .quiz-section {
             margin: 40px 0;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5em;
         }
 
         .question-card {
@@ -177,6 +193,60 @@
             line-height: 1.5;
         }
 
+        /* Checkbox Aufgaben */
+        .checkbox-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .checkbox-option:hover:not(.disabled) {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+
+        .checkbox-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .checkbox-option.correct-checked {
+            border-color: #4CAF50;
+            background: #c8e6c9;
+        }
+
+        .checkbox-option.incorrect-checked {
+            border-color: #f44336;
+            background: #ffcdd2;
+        }
+
+        .checkbox-option.correct-unchecked {
+            border-color: #FFA726;
+            background: #FFE0B2;
+        }
+
+        .checkbox-wrapper {
+            margin-right: 15px;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:disabled {
+            cursor: not-allowed;
+        }
+
         .feedback {
             margin-top: 20px;
             padding: 15px;
@@ -210,6 +280,12 @@
             background: #ffcdd2;
             border-left: 4px solid #f44336;
             color: #c62828;
+        }
+
+        .feedback.partial {
+            background: #FFE0B2;
+            border-left: 4px solid #FFA726;
+            color: #E65100;
         }
 
         .quiz-buttons {
@@ -441,332 +517,251 @@
     <div class="container">
         <div class="lesson-header">
             <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
-            <h1>🎧 Folgen des Klimawandels</h1>
+            <h1>📊 Folgen des Klimawandels - Grafikanalyse</h1>
         </div>
 
         <div class="lesson-content">
-            <h2 style="color: #2e7d32; margin-bottom: 15px;">📺 Video: Wie viel Hitze verträgt die Erde?</h2>
+            <div class="info-box">
+                <p><strong>📋 Aufgabe:</strong> Analysieren Sie die folgende Grafik zum Meeresspiegelanstieg und seinen Folgen. Beantworten Sie anschließend die Fragen zur Grafik.</p>
+            </div>
+
+            <h2 style="color: #2e7d32; margin-bottom: 15px;">📈 Grafik: Bedrohte Küstenregionen durch Meeresspiegelanstieg</h2>
             
-            <div class="video-container">
-                <iframe src="https://www.ardmediathek.de/embed/Y3JpZDovL3BsYW5ldC1zY2h1bGUuZGUvQVJEXzk5NjJfdmlkZW8" allowfullscreen allow="clipboard-read; clipboard-write" scrolling="no"></iframe>
+            <div class="graphic-container">
+                <img src="docs/oekonomie-und-oekologie/images/klima2.png" alt="Atlas der Globalisierung - Bedrohte Küstenregionen">
+                <div class="graphic-caption">
+                    Quelle: Atlas der Globalisierung - Vom Meeresspiegelanstieg betroffene Bevölkerung
+                </div>
             </div>
 
             <div class="progress-indicator">
-                <div class="progress-text" id="progress-text">0 von 10 Fragen beantwortet</div>
+                <div class="progress-text" id="progress-text">0 von 2 Aufgaben beantwortet</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
             </div>
 
             <div class="quiz-section" id="quiz-section">
-                <!-- Frage 1 -->
-                <div class="question-card" data-question="1" data-correct="b">
+                
+                <!-- Aufgabe 1: Richtig/Falsch Aussagen -->
+                <div class="section-header">
+                    <h2>Aufgabe 1: Aussagen zur Grafik bewerten</h2>
+                    <p style="margin-top: 10px; font-size: 0.95em;">Kreuzen Sie alle Aussagen an, die laut der Grafik korrekt sind.</p>
+                </div>
+
+                <div class="question-card" data-question="1" data-type="checkbox">
                     <div class="question-header">
                         <div class="question-number">1</div>
-                        <div class="question-text">Warum widersprechen kühle, verregnete Sommer nicht dem Klimawandel?</div>
+                        <div class="question-text">Welche der folgenden Aussagen sind gemäß der Grafik korrekt? (Mehrfachauswahl möglich)</div>
                     </div>
                     <div class="answers">
-                        <div class="answer-option" data-answer="a">
-                            <div class="answer-letter">a</div>
-                            <div class="answer-text">Weil die Wissenschaftler sich geirrt haben und es gar keinen Klimawandel gibt</div>
+                        <div class="checkbox-option" data-answer="a" data-correct="true">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1a">
+                            </div>
+                            <label for="cb1a" class="answer-text">Asiatische Megastädte sind besonders stark vom Meeresspiegelanstieg betroffen</label>
                         </div>
-                        <div class="answer-option" data-answer="b">
-                            <div class="answer-letter">b</div>
-                            <div class="answer-text">Weil Wetter und Klima nicht dasselbe sind – Wetter beschreibt den kurzlebigen Zustand an einem Ort, Klima einen Zeitraum von mindestens mehreren Jahrzehnten</div>
+                        <div class="checkbox-option" data-answer="b" data-correct="false">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1b">
+                            </div>
+                            <label for="cb1b" class="answer-text">Europa ist stärker betroffen als Asien</label>
                         </div>
-                        <div class="answer-option" data-answer="c">
-                            <div class="answer-letter">c</div>
-                            <div class="answer-text">Weil kühle Sommer in Deutschland vorkommen, weltweit wird es aber überall wärmer</div>
+                        <div class="checkbox-option" data-answer="c" data-correct="true">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1c">
+                            </div>
+                            <label for="cb1c" class="answer-text">Die Grafik zeigt vier verschiedene Klimaszenarien mit unterschiedlichen Temperaturanstiegen</label>
                         </div>
-                        <div class="answer-option" data-answer="d">
-                            <div class="answer-letter">d</div>
-                            <div class="answer-text">Weil der Klimawandel erst in 100 Jahren richtig spürbar wird</div>
+                        <div class="checkbox-option" data-answer="d" data-correct="false">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1d">
+                            </div>
+                            <label for="cb1d" class="answer-text">Die USA haben die meisten betroffenen Einwohner in Küstennähe</label>
+                        </div>
+                        <div class="checkbox-option" data-answer="e" data-correct="true">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1e">
+                            </div>
+                            <label for="cb1e" class="answer-text">China hat laut Balkendiagramm die größte betroffene Bevölkerung in Küstenregionen</label>
+                        </div>
+                        <div class="checkbox-option" data-answer="f" data-correct="true">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="cb1f">
+                            </div>
+                            <label for="cb1f" class="answer-text">Die Kreise auf der Karte zeigen die Anzahl der betroffenen Bevölkerung in Millionen Einwohnern an</label>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-1"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(1)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkCheckboxAnswer(1)">Antworten überprüfen</button>
                     </div>
                 </div>
 
-                <!-- Frage 2 -->
-                <div class="question-card" data-question="2" data-correct="c">
+                <!-- Aufgabe 2: Multiple Choice Fragen -->
+                <div class="section-header">
+                    <h2>Aufgabe 2: Multiple-Choice Fragen zur Grafik</h2>
+                    <p style="margin-top: 10px; font-size: 0.95em;">Wählen Sie jeweils die richtige Antwort aus.</p>
+                </div>
+
+                <!-- MC Frage 1 -->
+                <div class="question-card" data-question="2" data-correct="c" data-type="radio">
                     <div class="question-header">
                         <div class="question-number">2</div>
-                        <div class="question-text">Welche Rolle spielt die Sonne für das Klima auf der Erde?</div>
+                        <div class="question-text">Was zeigt die Farbcodierung der Länder in der Weltkarte an?</div>
                     </div>
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Die Sonne ist weniger wichtig, entscheidender sind die Ozeane für das Klima</div>
+                            <div class="answer-text">Die aktuelle Durchschnittstemperatur des Landes</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Die Sonne sorgt für die Jahreszeiten, aber nicht für langfristige Klimaveränderungen</div>
+                            <div class="answer-text">Die Anzahl der bedrohten Städte</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Die Sonne ist der wichtigste Motor für das Klima und liefert der Erde fast ihre gesamte Energie in Form von Strahlung</div>
+                            <div class="answer-text">Den prozentualen Anteil der betroffenen Gesamtbevölkerung bei verschiedenen Klimaszenarien</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Die Sonne kühlt die Erde ab, indem sie Wärmestrahlung zurück ins All reflektiert</div>
+                            <div class="answer-text">Die Höhe des Meeresspiegelanstiegs in Metern</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-2"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(2)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkRadioAnswer(2)">Antwort überprüfen</button>
                     </div>
                 </div>
 
-                <!-- Frage 3 -->
-                <div class="question-card" data-question="3" data-correct="a">
+                <!-- MC Frage 2 -->
+                <div class="question-card" data-question="3" data-correct="b" data-type="radio">
                     <div class="question-header">
                         <div class="question-number">3</div>
-                        <div class="question-text">Was ist der Treibhauseffekt und warum ist er wichtig?</div>
+                        <div class="question-text">Welche Region/Stadt zeigt laut der Karte die größte betroffene Bevölkerungszahl?</div>
                     </div>
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Treibhausgase wie CO₂ wirken wie Glasscheiben eines Gewächshauses und halten Wärmestrahlung zurück – dadurch erwärmt sich die Erde auf durchschnittlich 14°C statt -19°C</div>
+                            <div class="answer-text">Alexandria in Ägypten</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Der Treibhauseffekt ist eine umstrittene Theorie und wissenschaftlich nicht bewiesen</div>
+                            <div class="answer-text">Der Großraum um Shanghai, Hongkong und andere chinesische Küstenstädte</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Treibhausgase lassen weniger Sonnenstrahlen durch und kühlen die Erde dadurch ab</div>
+                            <div class="answer-text">Mumbai in Indien</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Der Treibhauseffekt funktioniert in Gewächshäusern, hat aber keinen Einfluss auf die Erdatmosphäre</div>
+                            <div class="answer-text">Lagos in Nigeria</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-3"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(3)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkRadioAnswer(3)">Antwort überprüfen</button>
                     </div>
                 </div>
 
-                <!-- Frage 4 -->
-                <div class="question-card" data-question="4" data-correct="b">
+                <!-- MC Frage 3 -->
+                <div class="question-card" data-question="4" data-correct="a" data-type="radio">
                     <div class="question-header">
                         <div class="question-number">4</div>
-                        <div class="question-text">Warum und wann konnten Menschen in Europa sesshaft werden und Ackerbau betreiben?</div>
+                        <div class="question-text">Was bedeutet die Angabe "1,5" im Legendenkasten "Klimaszenarien Temperaturanstieg, in °C"?</div>
                     </div>
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Vor etwa 50.000 Jahren, als die letzte Eiszeit begann und es kälter wurde</div>
+                            <div class="answer-text">Ein Szenario mit 1,5°C globalem Temperaturanstieg</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Vor etwa 12.000 Jahren, als die Durchschnittstemperaturen so weit gestiegen waren, dass Ackerbau möglich wurde</div>
+                            <div class="answer-text">Die durchschnittliche Wassertemperatur der Ozeane</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Vor etwa 150 Jahren mit dem Beginn der Industrialisierung</div>
+                            <div class="answer-text">Die Anzahl der Meter Meeresspiegelanstieg</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Menschen waren bereits während der Eiszeiten sesshaft in Europa</div>
+                            <div class="answer-text">Der jährliche Temperaturanstieg in den letzten 10 Jahren</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-4"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(4)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkRadioAnswer(4)">Antwort überprüfen</button>
                     </div>
                 </div>
 
-                <!-- Frage 5 -->
-                <div class="question-card" data-question="5" data-correct="c">
+                <!-- MC Frage 4 -->
+                <div class="question-card" data-question="5" data-correct="c" data-type="radio">
                     <div class="question-header">
                         <div class="question-number">5</div>
-                        <div class="question-text">Was ist das Besondere am jetzigen Klimawandel? Es gab doch schon immer Klimaschwankungen!</div>
+                        <div class="question-text">Was zeigt das Balkendiagramm am unteren Rand der Grafik?</div>
                     </div>
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Der jetzige Klimawandel verläuft genauso langsam wie frühere Klimaschwankungen</div>
+                            <div class="answer-text">Die CO₂-Emissionen verschiedener Länder</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Dieses Mal ist die Sonneneinstrahlung deutlich stärker als in der Vergangenheit</div>
+                            <div class="answer-text">Die durchschnittliche Temperatur in den Ländern</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Das Entscheidende ist der Faktor Zeit – die Klimaänderung kommt schlagartig statt über Jahrmillionen, sodass sich Pflanzen und Tiere nicht anpassen können</div>
+                            <div class="answer-text">Die vom Meeresspiegelanstieg betroffene Bevölkerung in Küstenregionen verschiedener Länder (in Millionen)</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Früher gab es natürliche Klimaschwankungen, heute ist das Klima völlig stabil</div>
+                            <div class="answer-text">Die Länge der Küstenlinie in Kilometern</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-5"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(5)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkRadioAnswer(5)">Antwort überprüfen</button>
                     </div>
                 </div>
 
-                <!-- Frage 6 -->
-                <div class="question-card" data-question="6" data-correct="a">
+                <!-- MC Frage 5 -->
+                <div class="question-card" data-question="6" data-correct="b" data-type="radio">
                     <div class="question-header">
                         <div class="question-number">6</div>
-                        <div class="question-text">Seit wann verändert der Mensch die Erdatmosphäre und das Klima radikal?</div>
+                        <div class="question-text">Welche Aussage über die Städtegröße (Kreise) auf der Karte ist korrekt?</div>
                     </div>
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Seit Beginn des Industriezeitalters vor etwa 150 Jahren</div>
+                            <div class="answer-text">Alle markierten Städte haben die gleiche Anzahl betroffener Einwohner</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Seit dem Jahr 2000 durch die Globalisierung</div>
+                            <div class="answer-text">Je größer der Kreis, desto mehr Menschen sind in dieser Stadt vom Meeresspiegelanstieg betroffen</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Seit etwa 12.000 Jahren, als der Ackerbau begann</div>
+                            <div class="answer-text">Die Kreise zeigen die geografische Größe der Städte</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Seit etwa 50 Jahren, seit der Erfindung des Verbrennungsmotors</div>
+                            <div class="answer-text">Die Kreise zeigen die Höhe über dem Meeresspiegel</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-6"></div>
                     <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(6)">Antwort überprüfen</button>
-                    </div>
-                </div>
-
-                <!-- Frage 7 -->
-                <div class="question-card" data-question="7" data-correct="c">
-                    <div class="question-header">
-                        <div class="question-number">7</div>
-                        <div class="question-text">Wie werden Treibhausgase freigesetzt?</div>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-option" data-answer="a">
-                            <div class="answer-letter">a</div>
-                            <div class="answer-text">Hauptsächlich durch Vulkanausbrüche und natürliche Prozesse</div>
-                        </div>
-                        <div class="answer-option" data-answer="b">
-                            <div class="answer-letter">b</div>
-                            <div class="answer-text">Durch Autoabgase und den Verkehrssektor</div>
-                        </div>
-                        <div class="answer-option" data-answer="c">
-                            <div class="answer-letter">c</div>
-                            <div class="answer-text">Durch Verbrennung fossiler Energieträger (Kohle, Öl, Gas), Viehhaltung, intensive Düngung, Klärwerke und Müllverbrennung</div>
-                        </div>
-                        <div class="answer-option" data-answer="d">
-                            <div class="answer-letter">d</div>
-                            <div class="answer-text">Durch die Atmung von Menschen und Tieren sowie durch Waldbrände</div>
-                        </div>
-                    </div>
-                    <div class="feedback" id="feedback-7"></div>
-                    <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(7)">Antwort überprüfen</button>
-                    </div>
-                </div>
-
-                <!-- Frage 8 -->
-                <div class="question-card" data-question="8" data-correct="b">
-                    <div class="question-header">
-                        <div class="question-number">8</div>
-                        <div class="question-text">Warum ist das Schmelzen des Grönlandeises ein besonderes Problem?</div>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-option" data-answer="a">
-                            <div class="answer-letter">a</div>
-                            <div class="answer-text">Weil Eisbären und andere arktische Tiere ihren Lebensraum verlieren</div>
-                        </div>
-                        <div class="answer-option" data-answer="b">
-                            <div class="answer-letter">b</div>
-                            <div class="answer-text">Weil durch das Schmelzwasser große Mengen Süßwasser ins Meer gelangen, was den Salzgehalt stark absenkt und den Golfstrom unterbrechen könnte</div>
-                        </div>
-                        <div class="answer-option" data-answer="c">
-                            <div class="answer-letter">c</div>
-                            <div class="answer-text">Weil das geschmolzene Eis nicht wieder nachwachsen kann</div>
-                        </div>
-                        <div class="answer-option" data-answer="d">
-                            <div class="answer-letter">d</div>
-                            <div class="answer-text">Weil dadurch mehr Sonnenstrahlung ins Weltall reflektiert wird</div>
-                        </div>
-                    </div>
-                    <div class="feedback" id="feedback-8"></div>
-                    <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(8)">Antwort überprüfen</button>
-                    </div>
-                </div>
-
-                <!-- Frage 9 -->
-                <div class="question-card" data-question="9" data-correct="b">
-                    <div class="question-header">
-                        <div class="question-number">9</div>
-                        <div class="question-text">Sowohl extreme Hitze als auch Abkühlung sind mögliche Szenarien für die Zukunft. Warum sind beide Szenarien problematisch?</div>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-option" data-answer="a">
-                            <div class="answer-letter">a</div>
-                            <div class="answer-text">Weil die Menschen dann unterschiedliche Kleidung brauchen und sich umstellen müssen</div>
-                        </div>
-                        <div class="answer-option" data-answer="b">
-                            <div class="answer-letter">b</div>
-                            <div class="answer-text">Weil beide zu extremen Wetterereignissen führen, die Mensch und Umwelt stark belasten</div>
-                        </div>
-                        <div class="answer-option" data-answer="c">
-                            <div class="answer-letter">c</div>
-                            <div class="answer-text">Weil die Jahreszeiten dadurch verschwinden würden</div>
-                        </div>
-                        <div class="answer-option" data-answer="d">
-                            <div class="answer-letter">d</div>
-                            <div class="answer-text">Weil Hitze problematisch ist, während Abkühlung Europa zugutekommen würde</div>
-                        </div>
-                    </div>
-                    <div class="feedback" id="feedback-9"></div>
-                    <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(9)">Antwort überprüfen</button>
-                    </div>
-                </div>
-
-                <!-- Frage 10 -->
-                <div class="question-card" data-question="10" data-correct="b">
-                    <div class="question-header">
-                        <div class="question-number">10</div>
-                        <div class="question-text">Welche weiteren Probleme verursacht der Klimawandel für die Menschheit?</div>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-option" data-answer="a">
-                            <div class="answer-letter">a</div>
-                            <div class="answer-text">Steigende Temperaturen und längere Sommer</div>
-                        </div>
-                        <div class="answer-option" data-answer="b">
-                            <div class="answer-letter">b</div>
-                            <div class="answer-text">Häufigere Dürren, erhöhtes Risiko von Waldbränden, Millionenschäden, Menschen werden obdachlos, Straßen platzen auf, Gesundheitsrisiken</div>
-                        </div>
-                        <div class="answer-option" data-answer="c">
-                            <div class="answer-letter">c</div>
-                            <div class="answer-text">Die Menschen werden sich schnell an die Veränderungen anpassen können</div>
-                        </div>
-                        <div class="answer-option" data-answer="d">
-                            <div class="answer-letter">d</div>
-                            <div class="answer-text">Das Abschmelzen der Gletscher und steigende Meeresspiegel</div>
-                        </div>
-                    </div>
-                    <div class="feedback" id="feedback-10"></div>
-                    <div class="quiz-buttons">
-                        <button class="btn-check" onclick="checkAnswer(10)">Antwort überprüfen</button>
+                        <button class="btn-check" onclick="checkRadioAnswer(6)">Antwort überprüfen</button>
                     </div>
                 </div>
             </div>
 
             <div class="results-section" id="results-section">
                 <div class="results-header">
-                    <h2>🎉 Herzlichen Glückwunsch!</h2>
-                    <p>Du hast alle Fragen beantwortet</p>
+                    <h2>🎉 Alle Aufgaben bearbeitet!</h2>
+                    <p>Sie haben die Grafikanalyse abgeschlossen</p>
                 </div>
                 <div class="score-display">
-                    <div class="score-number" id="final-score">0/10</div>
+                    <div class="score-number" id="final-score">0/6</div>
                     <div class="score-text">richtige Antworten</div>
                 </div>
             </div>
@@ -777,7 +772,8 @@
                     <strong>Aufgabe:</strong>
                 </p>
                 <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #666;">
-                    <li>Fassen Sie zusammen, was Sie über die Folgen des Klimawandels erfahren haben aus dem Video in diesem Schritt.</li>
+                    <li>Fassen Sie zusammen, welche wichtigsten Erkenntnisse Sie aus der Grafikanalyse zu den Folgen des Klimawandels gewonnen haben.</li>
+                    <li>Welche Regionen sind besonders betroffen und warum ist dies problematisch?</li>
                 </ul>
                 <textarea 
                     id="portfolio-text" 
@@ -802,40 +798,113 @@
 
     <script>
         let score = 0;
-        const totalQuestions = 10;
-        let answeredQuestions = new Set();
+        let maxScore = 6; // 1 Checkbox-Aufgabe + 5 MC-Fragen
+        let answeredTasks = new Set();
+        const totalTasks = 2; // Aufgabe 1 (Checkbox) und Aufgabe 2 (5 MC-Fragen)
 
-        // Eventlistener für Antwortoptionen
+        // Eventlistener für Radio-Optionen
         document.addEventListener('DOMContentLoaded', function() {
             loadPortfolio();
             
-            const allOptions = document.querySelectorAll('.answer-option');
-            allOptions.forEach(option => {
+            // Radio buttons
+            const radioOptions = document.querySelectorAll('.question-card[data-type="radio"] .answer-option');
+            radioOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     const questionCard = this.closest('.question-card');
                     const questionNum = questionCard.dataset.question;
                     
-                    // Nur erlauben wenn noch nicht beantwortet
-                    if (!answeredQuestions.has(parseInt(questionNum))) {
+                    if (!answeredTasks.has(parseInt(questionNum))) {
                         const allOptionsInCard = questionCard.querySelectorAll('.answer-option');
                         allOptionsInCard.forEach(opt => opt.classList.remove('selected'));
                         this.classList.add('selected');
                     }
                 });
             });
+
+            // Checkbox options
+            const checkboxOptions = document.querySelectorAll('.checkbox-option');
+            checkboxOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        if (!checkbox.disabled) {
+                            checkbox.checked = !checkbox.checked;
+                        }
+                    }
+                });
+            });
         });
 
-        function checkAnswer(questionNum) {
+        function checkCheckboxAnswer(questionNum) {
+            const questionCard = document.querySelector(`.question-card[data-question="${questionNum}"]`);
+            
+            if (answeredTasks.has(questionNum)) {
+                return;
+            }
+
+            const checkboxOptions = questionCard.querySelectorAll('.checkbox-option');
+            const feedback = document.getElementById(`feedback-${questionNum}`);
+            const checkButton = questionCard.querySelector('.btn-check');
+            
+            let correctSelections = 0;
+            let totalCorrect = 0;
+            let wrongSelections = 0;
+            let missedCorrect = 0;
+
+            checkboxOptions.forEach(option => {
+                const checkbox = option.querySelector('input[type="checkbox"]');
+                const isCorrect = option.dataset.correct === 'true';
+                const isChecked = checkbox.checked;
+
+                checkbox.disabled = true;
+                option.classList.add('disabled');
+
+                if (isCorrect) {
+                    totalCorrect++;
+                }
+
+                if (isCorrect && isChecked) {
+                    correctSelections++;
+                    option.classList.add('correct-checked');
+                } else if (!isCorrect && isChecked) {
+                    wrongSelections++;
+                    option.classList.add('incorrect-checked');
+                } else if (isCorrect && !isChecked) {
+                    missedCorrect++;
+                    option.classList.add('correct-unchecked');
+                }
+            });
+
+            answeredTasks.add(questionNum);
+            checkButton.disabled = true;
+
+            // Bewertung
+            if (correctSelections === totalCorrect && wrongSelections === 0) {
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '<strong>✓ Perfekt!</strong> Sie haben alle korrekten Aussagen erkannt!';
+                score++;
+            } else if (correctSelections > 0 && wrongSelections === 0) {
+                feedback.className = 'feedback partial show';
+                feedback.innerHTML = `<strong>⚠ Teilweise richtig.</strong> Sie haben ${correctSelections} von ${totalCorrect} korrekten Aussagen gefunden. Die nicht angekreuzten korrekten Aussagen sind orange markiert.`;
+                score += 0.5;
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `<strong>✗ Nicht korrekt.</strong> Grün = richtig angekreuzt, Rot = falsch angekreuzt, Orange = korrekte Aussage nicht angekreuzt.`;
+            }
+
+            updateTaskProgress();
+        }
+
+        function checkRadioAnswer(questionNum) {
             const questionCard = document.querySelector(`.question-card[data-question="${questionNum}"]`);
             const selectedOption = questionCard.querySelector('.answer-option.selected');
             
             if (!selectedOption) {
-                alert('Bitte wähle zuerst eine Antwort aus!');
+                alert('Bitte wählen Sie zuerst eine Antwort aus!');
                 return;
             }
 
-            // Prüfen ob bereits beantwortet
-            if (answeredQuestions.has(questionNum)) {
+            if (answeredTasks.has(questionNum)) {
                 return;
             }
 
@@ -844,10 +913,8 @@
             const feedback = document.getElementById(`feedback-${questionNum}`);
             const checkButton = questionCard.querySelector('.btn-check');
 
-            // Markiere bereits beantwortet
-            answeredQuestions.add(questionNum);
+            answeredTasks.add(questionNum);
 
-            // Deaktiviere alle Optionen
             const allOptions = questionCard.querySelectorAll('.answer-option');
             allOptions.forEach(opt => {
                 opt.classList.add('disabled');
@@ -857,7 +924,7 @@
             if (selectedAnswer === correctAnswer) {
                 selectedOption.classList.add('correct');
                 feedback.className = 'feedback correct show';
-                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut gemacht!';
+                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
                 score++;
             } else {
                 selectedOption.classList.add('incorrect');
@@ -868,31 +935,38 @@
             }
 
             checkButton.disabled = true;
+            updateTaskProgress();
+        }
 
-            updateProgress();
+        function updateTaskProgress() {
+            // Task 1 = Checkbox (Question 1)
+            // Tasks 2-6 = MC Questions (Questions 2-6)
+            const task1Done = answeredTasks.has(1);
+            const task2Done = answeredTasks.has(2) && answeredTasks.has(3) && 
+                             answeredTasks.has(4) && answeredTasks.has(5) && answeredTasks.has(6);
+            
+            let completedTasks = 0;
+            if (task1Done) completedTasks++;
+            if (task2Done) completedTasks++;
 
-            // Zeige Ergebnisse wenn alle Fragen beantwortet
-            if (answeredQuestions.size === totalQuestions) {
+            const progressPercent = (completedTasks / totalTasks) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
+            document.getElementById('progress-text').textContent = `${completedTasks} von ${totalTasks} Aufgaben beantwortet`;
+
+            // Zeige Ergebnisse wenn alle beantwortet
+            if (completedTasks === totalTasks) {
                 setTimeout(() => {
                     showResults();
                 }, 500);
             }
         }
 
-        function updateProgress() {
-            const answered = answeredQuestions.size;
-            const progressPercent = (answered / totalQuestions) * 100;
-            document.getElementById('progress-fill').style.width = progressPercent + '%';
-            document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
-            document.getElementById('progress-text').textContent = `${answered} von ${totalQuestions} Fragen beantwortet`;
-        }
-
         function showResults() {
             const resultsSection = document.getElementById('results-section');
             resultsSection.classList.add('show');
-            document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+            document.getElementById('final-score').textContent = `${score}/${maxScore}`;
             
-            // Scroll zu Ergebnissen
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -939,7 +1013,7 @@
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
             if (portfolioText === '') {
-                alert('Bitte trage zuerst deine Notizen in das Lernjournal ein.');
+                alert('Bitte tragen Sie zuerst Ihre Notizen in das Lernjournal ein.');
                 return;
             }
             
@@ -953,30 +1027,34 @@
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
             doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
-            doc.text(`Erreichte Punktzahl: ${score}/${totalQuestions}`, 20, 36);
+            doc.text(`Erreichte Punktzahl: ${score}/${maxScore}`, 20, 36);
             
             doc.setFont("helvetica", "bold");
             doc.setFontSize(14);
-            doc.text("Neue Erkenntnisse:", 20, 50);
+            doc.text("Grafikanalyse - Erkenntnisse:", 20, 50);
             
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
             const lines = doc.splitTextToSize(portfolioText, 170);
             doc.text(lines, 20, 58);
             
-            doc.save('Lernjournal_Schritt4_Folgen.pdf');
+            doc.save('Lernjournal_Schritt4_Grafikanalyse.pdf');
         }
 
         function completeStep() {
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
-            if (answeredQuestions.size < totalQuestions) {
-                alert('Bitte beantworte zuerst alle Fragen des Hörverstehens!');
+            const task1Done = answeredTasks.has(1);
+            const task2Done = answeredTasks.has(2) && answeredTasks.has(3) && 
+                             answeredTasks.has(4) && answeredTasks.has(5) && answeredTasks.has(6);
+            
+            if (!task1Done || !task2Done) {
+                alert('Bitte bearbeiten Sie zuerst alle Aufgaben zur Grafikanalyse!');
                 return;
             }
             
             if (portfolioText === '') {
-                const confirm = window.confirm('Du hast noch nichts in dein Lernjournal eingetragen. Möchtest du trotzdem fortfahren?');
+                const confirm = window.confirm('Sie haben noch nichts in Ihr Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
                 if (!confirm) return;
             }
             
@@ -990,7 +1068,7 @@
                 localStorage.setItem('learningProgress', JSON.stringify(progress));
             }
             
-            alert(`✓ Schritt 4 abgeschlossen!\n\nDu hast ${score} von ${totalQuestions} Fragen richtig beantwortet.\nDein Lernjournal-Eintrag wurde gespeichert.`);
+            alert(`✓ Schritt 4 abgeschlossen!\n\nSie haben ${score} von ${maxScore} Punkten erreicht.\nIhr Lernjournal-Eintrag wurde gespeichert.`);
             window.location.href = 'index.html';
         }
 
