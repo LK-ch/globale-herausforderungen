@@ -428,8 +428,8 @@
                     <div class="card locked flow-card" onclick="openPoint(3)" data-step="3">
                         <div class="card-number">3</div>
                         <div class="card-content">
-                            <div class="card-icon">🎧</div>
-                            <div class="card-title">Ursachen</div>
+                            <div class="card-icon">🌡️</div>
+                            <div class="card-title">Ursachen & Folgen</div>
                         </div>
                     </div>
                 </div>
@@ -464,8 +464,8 @@
                     <div class="card locked flow-card" onclick="openPoint(4)" data-step="4">
                         <div class="card-number">4</div>
                         <div class="card-content">
-                            <div class="card-icon">🌡️</div>
-                            <div class="card-title">Folgen</div>
+                            <div class="card-icon">📈</div>
+                            <div class="card-title">Folgen (Grafikanalyse)</div>
                         </div>
                     </div>
                 </div>
@@ -533,8 +533,18 @@
                 return;
             }
             
+            // Map to correct file names
+            const fileNames = {
+                1: 'schritt1.html',
+                2: 'schritt2_klimaveraenderung.html',
+                3: 'step3_ursachen_folgen.html',
+                4: 'step4_grafikanalyse.html',
+                5: 'step5_biodiversitaet_hoerverstehen.html',
+                6: 'step6_handlungsmoeglichkeiten.html'
+            };
+            
             if (pointNumber === 1 || !card || !card.classList.contains('locked')) {
-                window.location.href = `schritt${pointNumber}.html`;
+                window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
             }
         }
 
@@ -579,24 +589,32 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
+            // Title Page
             doc.setFontSize(22);
-            doc.text('Lernjournal: Ökologie und Ökonomie', 20, 25);
+            doc.setFont(undefined, 'bold');
+            doc.text('Lernjournal', 105, 100, { align: 'center' });
+            doc.setFontSize(18);
+            doc.text('Ökologie und Ökonomie', 105, 115, { align: 'center' });
             
             doc.setFontSize(11);
-            doc.text('Datum: ' + new Date().toLocaleDateString('de-DE'), 20, 35);
+            doc.setFont(undefined, 'normal');
+            doc.text('Datum: ' + new Date().toLocaleDateString('de-DE'), 105, 140, { align: 'center' });
+            doc.text(`Abgeschlossene Schritte: ${learningProgress.completedPoints.length} von 6`, 105, 150, { align: 'center' });
             
-            let yPos = 50;
+            doc.addPage();
+            
+            let yPos = 20;
             const lineHeight = 7;
             const margin = 20;
             const pageWidth = doc.internal.pageSize.width - 2 * margin;
             
-            // Schritt 1: Rollenspiel (hat mehrere Aufträge)
+            // Schritt 1: Ökologie & Ökonomie (Rollenspiel)
             const text1_1 = learningProgress.texts['1'] || '';
             const text1_3 = learningProgress.texts['1_task3'] || '';
             const text1_4 = learningProgress.texts['1_task4'] || '';
             
             if (text1_1 || text1_3 || text1_4) {
-                doc.setFontSize(14);
+                doc.setFontSize(16);
                 doc.setFont(undefined, 'bold');
                 doc.text('Schritt 1: Ökologie & Ökonomie (Rollenspiel)', margin, yPos);
                 yPos += lineHeight + 5;
@@ -681,10 +699,15 @@
             // Schritt 2: Klimaveränderung (Grafikanalyse)
             const text2 = learningProgress.texts['2'] || '';
             if (text2.trim() !== '') {
-                doc.setFontSize(14);
+                if (yPos > 240) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFontSize(16);
                 doc.setFont(undefined, 'bold');
                 doc.text('Schritt 2: Klimaveränderung (Grafikanalyse)', margin, yPos);
-                yPos += lineHeight + 3;
+                yPos += lineHeight + 5;
                 
                 // Füge Bild ein, falls vorhanden
                 if (learningProgress.images && learningProgress.images['2']) {
@@ -723,19 +746,20 @@
                 }
                 
                 yPos += 10;
-                if (yPos > 250) {
+            }
+            
+            // Schritt 3: Ursachen & Folgen
+            const text3 = learningProgress.texts['3'] || '';
+            if (text3.trim() !== '') {
+                if (yPos > 240) {
                     doc.addPage();
                     yPos = 20;
                 }
-            }
-            
-            // Schritt 3: Ursachen (Hörverstehen)
-            const text3 = learningProgress.texts['3'] || '';
-            if (text3.trim() !== '') {
-                doc.setFontSize(14);
+                
+                doc.setFontSize(16);
                 doc.setFont(undefined, 'bold');
-                doc.text('Schritt 3: Ursachen des Klimawandels (Hörverstehen)', margin, yPos);
-                yPos += lineHeight + 3;
+                doc.text('Schritt 3: Ursachen & Folgen des Klimawandels', margin, yPos);
+                yPos += lineHeight + 5;
                 
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
@@ -750,33 +774,25 @@
                 }
                 
                 yPos += 10;
-                if (yPos > 250) {
+            }
+            
+            // Schritt 4: Folgen (Grafikanalyse)
+            const text4 = learningProgress.texts['4'] || '';
+            if (text4.trim() !== '') {
+                if (yPos > 240) {
                     doc.addPage();
                     yPos = 20;
                 }
-            }
-            
-            // Schritte 4, 5, 6
-            const steps = [
-                { key: '4', title: 'Schritt 4: Folgen des Klimawandels' },
-                { key: '5', title: 'Schritt 5: Biodiversität' },
-                { key: '6', title: 'Schritt 6: Handlungsmöglichkeiten' }
-            ];
-            
-            for (let step of steps) {
-                const text = learningProgress.texts[step.key] || '';
-                if (text.trim() === '') continue;
                 
-                doc.setFontSize(14);
+                doc.setFontSize(16);
                 doc.setFont(undefined, 'bold');
-                doc.text(step.title, margin, yPos);
-                yPos += lineHeight + 3;
+                doc.text('Schritt 4: Folgen des Klimawandels (Grafikanalyse)', margin, yPos);
+                yPos += lineHeight + 5;
                 
                 doc.setFontSize(11);
                 doc.setFont(undefined, 'normal');
-                const lines = doc.splitTextToSize(text, pageWidth);
-                
-                for (let line of lines) {
+                const lines4 = doc.splitTextToSize(text4, pageWidth);
+                for (let line of lines4) {
                     if (yPos > 270) {
                         doc.addPage();
                         yPos = 20;
@@ -786,13 +802,91 @@
                 }
                 
                 yPos += 10;
-                if (yPos > 250) {
+            }
+            
+            // Schritt 5: Biodiversität (Hörverstehen)
+            const text5 = learningProgress.texts['5'] || '';
+            if (text5.trim() !== '') {
+                if (yPos > 240) {
                     doc.addPage();
                     yPos = 20;
                 }
+                
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('Schritt 5: Biodiversität (Hörverstehen)', margin, yPos);
+                yPos += lineHeight + 5;
+                
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text('Aufgabe: Lachs und Wolf - Bedeutung von Biodiversität', margin, yPos);
+                yPos += lineHeight + 3;
+                
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                const lines5 = doc.splitTextToSize(text5, pageWidth);
+                for (let line of lines5) {
+                    if (yPos > 270) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                }
+                
+                yPos += 10;
             }
             
-            doc.save('Lernjournal-Gesamt.pdf');
+            // Schritt 6: Handlungsmöglichkeiten (MindMap)
+            const text6 = learningProgress.texts['6'] || '';
+            if (text6.trim() !== '' || (learningProgress.images && learningProgress.images['6'])) {
+                if (yPos > 240) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('Schritt 6: Handlungsmöglichkeiten (MindMap)', margin, yPos);
+                yPos += lineHeight + 5;
+                
+                // MindMap Info
+                if (learningProgress.images && learningProgress.images['6']) {
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('MindMap:', margin, yPos);
+                    yPos += lineHeight;
+                    doc.setFont(undefined, 'normal');
+                    doc.text(`Hochgeladen: ${learningProgress.images['6'].name || 'mindmap.jpg'}`, margin, yPos);
+                    yPos += lineHeight + 5;
+                }
+                
+                if (text6.trim() !== '') {
+                    doc.setFontSize(12);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Reflexion:', margin, yPos);
+                    yPos += lineHeight + 3;
+                    
+                    doc.setFontSize(11);
+                    doc.setFont(undefined, 'normal');
+                    const lines6 = doc.splitTextToSize(text6, pageWidth);
+                    for (let line of lines6) {
+                        if (yPos > 270) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, margin, yPos);
+                        yPos += lineHeight;
+                    }
+                }
+            }
+            
+            // Footer on last page
+            doc.setFontSize(9);
+            doc.setTextColor(128);
+            doc.text('Ende des Lernjournals', 105, 285, { align: 'center' });
+            
+            doc.save('Lernjournal_Komplett.pdf');
         }
 
         function downloadJSON() {
