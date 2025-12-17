@@ -475,15 +475,89 @@
             <div class="audio-container">
                 <h3>Podcast zur Biodiversität</h3>
                 
-                <audio controls controlsList="nodownload">
+                <!-- Try direct audio first -->
+                <audio controls controlsList="nodownload" id="audioPlayer" style="width: 100%; margin: 20px 0;">
                     <source src="docs/oekonomie-und-oekologie/biodiv.m4a.m4a" type="audio/mp4">
                     Ihr Browser unterstützt das Audio-Element nicht.
                 </audio>
                 
+                <!-- OneDrive embedded player as fallback -->
+                <div id="oneDrivePlayer" style="display: none;">
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                        Das Audio wird von OneDrive geladen:
+                    </p>
+                    <iframe 
+                        src="https://erzbe-my.sharepoint.com/personal/lea_klaey_bzl_ch/_layouts/15/embed.aspx?UniqueId=REPLACE_WITH_FILE_ID&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"
+                        width="100%" 
+                        height="120" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        allowfullscreen 
+                        title="biodiv.m4a.m4a"
+                        style="border: none; border-radius: 10px; margin: 20px 0;">
+                    </iframe>
+                </div>
+                
+                <!-- Alternative: OneDrive Web Player -->
+                <div id="webPlayer" style="display: none; margin: 20px 0;">
+                    <iframe 
+                        src="https://erzbe-my.sharepoint.com/:u:/r/personal/lea_klaey_bzl_ch/Documents/Desktop/github%20Audio/biodiv.m4a.m4a?csf=1&web=1&e=rdwe1C"
+                        width="100%" 
+                        height="400" 
+                        frameborder="0" 
+                        scrolling="auto"
+                        style="border: 2px solid #2e7d32; border-radius: 10px;">
+                    </iframe>
+                </div>
+                
                 <div class="audio-info">
                     💡 Tipp: Sie können das Audio beliebig oft anhören, bevor Sie die Fragen beantworten.
                 </div>
+                
+                <!-- Fallback button if nothing works -->
+                <div id="fallbackButton" style="display: none; text-align: center; margin-top: 20px;">
+                    <p style="color: #d32f2f; margin-bottom: 15px;">⚠️ Audio konnte nicht geladen werden.</p>
+                    <a href="https://erzbe-my.sharepoint.com/:u:/r/personal/lea_klaey_bzl_ch/Documents/Desktop/github%20Audio/biodiv.m4a.m4a?csf=1&web=1&e=rdwe1C" 
+                       target="_blank" 
+                       style="display: inline-block; padding: 15px 30px; background: #2e7d32; color: white; text-decoration: none; border-radius: 10px; font-weight: bold;">
+                        🎧 Audio auf OneDrive öffnen
+                    </a>
+                </div>
             </div>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    const oneDrivePlayer = document.getElementById('oneDrivePlayer');
+                    const webPlayer = document.getElementById('webPlayer');
+                    const fallbackButton = document.getElementById('fallbackButton');
+                    
+                    // Try to load local audio
+                    audioPlayer.addEventListener('error', function() {
+                        console.log('Local audio failed, trying OneDrive web player...');
+                        audioPlayer.style.display = 'none';
+                        webPlayer.style.display = 'block';
+                        
+                        // If iframe also fails after 5 seconds, show fallback
+                        setTimeout(function() {
+                            // Check if iframe loaded successfully
+                            const iframe = webPlayer.querySelector('iframe');
+                            try {
+                                if (!iframe.contentWindow || iframe.contentWindow.length === 0) {
+                                    webPlayer.style.display = 'none';
+                                    fallbackButton.style.display = 'block';
+                                }
+                            } catch(e) {
+                                // Can't access iframe content due to cross-origin, assume it's working
+                                console.log('OneDrive player loaded (cross-origin)');
+                            }
+                        }, 5000);
+                    });
+                    
+                    // Try to load the audio
+                    audioPlayer.load();
+                });
+            </script>
 
             <div class="progress-indicator">
                 <div class="progress-text" id="progress-text">0 von 7 Fragen beantwortet</div>
@@ -653,19 +727,19 @@
                     <div class="answers">
                         <div class="answer-option" data-answer="a">
                             <div class="answer-letter">a</div>
-                            <div class="answer-text">Dass in den Lebensräumen von sogenannt eingeborenen Völker 80% der noch verbliebenen Artenvielfalt der Welt erhalten ist</div>
+                            <div class="answer-text">Dass in den Lebensräumen indigener Völker 80% der noch verbliebenen Artenvielfalt der Welt erhalten ist</div>
                         </div>
                         <div class="answer-option" data-answer="b">
                             <div class="answer-letter">b</div>
-                            <div class="answer-text">Dass indische Gemeinschaften 80% der weltweiten Naturschutzgebiete rechtlich besitzen und verwalten</div>
+                            <div class="answer-text">Dass indigene Gemeinschaften 80% der weltweiten Naturschutzgebiete rechtlich besitzen und verwalten</div>
                         </div>
                         <div class="answer-option" data-answer="c">
                             <div class="answer-letter">c</div>
-                            <div class="answer-text">Dass 80% aller bekannten Tier- und Pflanzenarten ausschließlich in internen Naturgebieten vorkommen</div>
+                            <div class="answer-text">Dass 80% aller bekannten Tier- und Pflanzenarten ausschließlich in indigenen Territorien vorkommen</div>
                         </div>
                         <div class="answer-option" data-answer="d">
                             <div class="answer-letter">d</div>
-                            <div class="answer-text">Dass isolierte Völker für 80% aller internationalen Artenschutzprogramme verantwortlich sind</div>
+                            <div class="answer-text">Dass indigene Völker für 80% aller internationalen Artenschutzprogramme verantwortlich sind</div>
                         </div>
                     </div>
                     <div class="feedback" id="feedback-6"></div>
