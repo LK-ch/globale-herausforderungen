@@ -202,6 +202,26 @@
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
         }
 
+        .card.locked {
+            background: #f5f5f5;
+            border-color: #bdbdbd;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .card.locked:hover {
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+        }
+
         .card.highlight-final::before {
             content: '🎯';
             position: absolute;
@@ -243,6 +263,10 @@
             background: linear-gradient(135deg, #2196F3 0%, #1976d2 100%);
         }
 
+        .card.locked .card-number {
+            background: #bdbdbd;
+        }
+
         @keyframes pulse-number {
             0%, 100% {
                 box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
@@ -261,11 +285,19 @@
             margin-bottom: 6px;
         }
 
+        .card.locked .card-icon {
+            filter: grayscale(100%);
+        }
+
         .card-title {
             font-size: 0.95em;
             font-weight: bold;
             color: #1b5e20;
             line-height: 1.2;
+        }
+
+        .card.locked .card-title {
+            color: #757575;
         }
 
         @media (max-width: 1024px) {
@@ -529,6 +561,12 @@
         }
 
         function openPoint(pointNumber) {
+            // Check if the step is locked (previous step not completed)
+            if (pointNumber > 1 && !learningProgress.completedPoints.includes(pointNumber - 1)) {
+                alert('⚠️ Bitte schließe zuerst Schritt ' + (pointNumber - 1) + ' ab!');
+                return;
+            }
+            
             // Map to correct file names
             const fileNames = {
                 1: 'schritt1.html',
@@ -552,18 +590,24 @@
         }
 
         function updateUI() {
-            // Alle Karten sind immer anklickbar, aber wir zeigen den Status
+            // Update card states based on completion and locking
             for (let i = 1; i <= 6; i++) {
                 const card = document.querySelector(`.card[data-step="${i}"]`);
                 if (!card) continue;
                 
+                // Remove all state classes first
+                card.classList.remove('active', 'completed', 'locked');
+                
                 if (learningProgress.completedPoints.includes(i)) {
-                    card.classList.remove('active');
+                    // Step is completed
                     card.classList.add('completed');
-                    
                     const number = card.querySelector('.card-number');
                     if (number) number.textContent = '✓';
+                } else if (i > 1 && !learningProgress.completedPoints.includes(i - 1)) {
+                    // Step is locked (previous step not completed)
+                    card.classList.add('locked');
                 } else if (i === learningProgress.currentPoint) {
+                    // Step is active (current step)
                     card.classList.add('active');
                 }
             }
