@@ -784,10 +784,6 @@
 
                 <div class="game-feedback" id="game-feedback"></div>
 
-                <button class="next-scenario-btn" id="next-scenario-btn" onclick="nextScenario()">
-                    Nächste Situation →
-                </button>
-
                 <div class="score-display">
                     <h3>Ihre Punktzahl - Aufgabe 2</h3>
                     <div class="score-number" id="gameScore">0 / 8</div>
@@ -977,22 +973,35 @@
                 gameScore++;
                 feedback.className = 'game-feedback correct show';
                 feedback.innerHTML = `
-                    <strong>✓ Richtig!</strong> ${scenario.explanation}<br>
-                    <span style="font-size: 0.9em; margin-top: 10px; display: inline-block;">
-                        💡 Dieses Ziel gehört zur Kategorie der <strong>"${scenario.category}"</strong> (${getCategoryExplanation(scenario.category)})
-                    </span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <strong>✓ Richtig!</strong> ${scenario.explanation}<br>
+                            <span style="font-size: 0.9em; margin-top: 10px; display: inline-block;">
+                                💡 Dieses Ziel gehört zur Kategorie der <strong>"${scenario.category}"</strong> (${getCategoryExplanation(scenario.category)})
+                            </span>
+                        </div>
+                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Nächste Situation →
+                        </button>
+                    </div>
                 `;
             } else {
                 const correctSDG = sdgs.find(s => s.num === scenario.correctSDG);
                 feedback.className = 'game-feedback incorrect show';
                 feedback.innerHTML = `
-                    <strong>✗ Leider falsch.</strong> Die richtige Antwort wäre <strong>SDG ${scenario.correctSDG}: ${correctSDG.title}</strong>.<br>
-                    ${scenario.explanation}
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <strong>✗ Leider falsch.</strong> Die richtige Antwort wäre <strong>SDG ${scenario.correctSDG}: ${correctSDG.title}</strong>.<br>
+                            ${scenario.explanation}
+                        </div>
+                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Nächste Situation →
+                        </button>
+                    </div>
                 `;
             }
 
             document.getElementById('gameScore').textContent = `${gameScore} / ${scenarios.length}`;
-            document.getElementById('next-scenario-btn').classList.add('show');
         }
 
         function getCategoryExplanation(category) {
