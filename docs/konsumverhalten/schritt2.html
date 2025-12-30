@@ -944,8 +944,7 @@
             const portfolioText = document.getElementById('portfolio-text').value.trim();
             
             if (answeredQuestions.size < 10) {
-                alert(`⚠️ Bitte beantworten Sie zuerst alle Fragen!\n\nSie haben bisher ${answeredQuestions.size} von 10 Fragen beantwortet.`);
-                return;
+                alert(`⚠️ Hinweis: Sie haben bisher ${answeredQuestions.size} von 10 Fragen beantwortet.\n\nSie können den Schritt trotzdem abschließen.`);
             }
             
             if (portfolioText === '') {
