@@ -707,136 +707,52 @@
                 </div>
 
                 <!-- Teil B: Synonyme -->
-                <h3 style="color: #f97316; margin: 40px 0 20px 0;">Teil B: Wortschatz - Finden Sie Synonyme (5 Fragen)</h3>
-                <p style="color: #78350f; margin-bottom: 20px;">Welches Wort aus dem Text hat eine ähnliche Bedeutung?</p>
+                <h3 style="color: #f97316; margin: 50px 0 20px 0; font-size: 1.4em; padding-top: 30px; border-top: 3px solid #fde68a;">Teil B: Wortschatz - Welches Wort steht im Text?</h3>
+                <p style="color: #78350f; margin-bottom: 20px; font-size: 1.05em;"><strong>Suchen Sie in den angegebenen Zeilen nach einem Wort mit der beschriebenen Bedeutung:</strong></p>
 
                 <!-- Synonym 1 -->
                 <div class="question-block" data-question="6">
                     <span class="question-number">Frage 6</span>
-                    <div class="question-text">Finden Sie in <strong>Zeile 48</strong> ein Synonym für "vielfach" oder "zahlreich":</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="multiple">
-                            <span>multiple (multiplen)</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="konkret">
-                            <span>konkret</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="ausgeklügelt">
-                            <span>ausgeklügelt</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(6, 'mc', 'multiple')">Überprüfen</button>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 4</strong> ein Wort, das <em>"ehrgeizig"</em> oder <em>"anspruchsvoll"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q6-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(6, 'text-synonym', ['ambitioniert'])">Überprüfen</button>
                     <div class="feedback" id="feedback-6"></div>
                 </div>
 
                 <!-- Synonym 2 -->
                 <div class="question-block" data-question="7">
                     <span class="question-number">Frage 7</span>
-                    <div class="question-text">In <strong>Zeile 34-35</strong> wird beschrieben, wie Frauen leben. Welches Wort ist ein Synonym für "schwierig", "unsicher" oder "problematisch"?</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="prekär">
-                            <span>prekär (im Text: "schwierigen Verhältnissen")</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="benachteiligt">
-                            <span>benachteiligt</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="separat">
-                            <span>separat</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'prekär')">Überprüfen</button>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 25</strong> ein Wort, das <em>"durchdacht"</em> oder <em>"raffiniert geplant"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q7-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(7, 'text-synonym', ['ausgeklügelt', 'ausgeklügeltes'])">Überprüfen</button>
                     <div class="feedback" id="feedback-7"></div>
                 </div>
 
                 <!-- Synonym 3 -->
                 <div class="question-block" data-question="8">
                     <span class="question-number">Frage 8</span>
-                    <div class="question-text">Finden Sie in <strong>Zeile 30</strong> ein Synonym für "enttäuschend" oder "entmutigend":</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="optimistisch">
-                            <span>optimistisch</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="ernüchternd">
-                            <span>ernüchternd (ernüchternde)</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="effizient">
-                            <span>effizient</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="innovativ">
-                            <span>innovativ</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(8, 'mc', 'ernüchternd')">Überprüfen</button>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 30</strong> ein Wort, das <em>"enttäuschend"</em> oder <em>"entmutigend"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q8-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(8, 'text-synonym', ['ernüchternd', 'ernüchternde'])">Überprüfen</button>
                     <div class="feedback" id="feedback-8"></div>
                 </div>
 
                 <!-- Synonym 4 -->
                 <div class="question-block" data-question="9">
                     <span class="question-number">Frage 9</span>
-                    <div class="question-text">Finden Sie in <strong>Zeile 4</strong> ein Synonym für "ehrgeizig" oder "anspruchsvoll":</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="konkret">
-                            <span>konkret</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="separat">
-                            <span>separat</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="prekär">
-                            <span>prekär</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(9, 'mc', 'ambitioniert')">Überprüfen</button>
+                    <div class="question-text">In <strong>Zeile 34-35</strong> wird beschrieben, wie Frauen leben. Suchen Sie ein Wort/eine Formulierung, das/die <em>"schwierig"</em>, <em>"unsicher"</em> oder <em>"problematisch"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q9-input" placeholder="Ihr Wort/Formulierung aus dem Text">
+                    <p class="hint-text">Sie können auch mehrere Wörter eingeben</p>
+                    <button class="check-btn" onclick="checkQuestion(9, 'text-synonym', ['schwierigen', 'schwierigen verhältnissen', 'prekär'])">Überprüfen</button>
                     <div class="feedback" id="feedback-9"></div>
                 </div>
 
                 <!-- Synonym 5 -->
                 <div class="question-block" data-question="10">
                     <span class="question-number">Frage 10</span>
-                    <div class="question-text">Finden Sie in <strong>Zeile 25</strong> ein Synonym für "durchdacht" oder "raffiniert geplant":</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="ausgeklügelt">
-                            <span>ausgeklügelt (ausgeklügeltes)</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="benachteiligt">
-                            <span>benachteiligt</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="multiple">
-                            <span>multiple</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="separat">
-                            <span>separat</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(10, 'mc', 'ausgeklügelt')">Überprüfen</button>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 48</strong> ein Wort, das <em>"vielfach"</em> oder <em>"zahlreich"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q10-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(10, 'text-synonym', ['multiplen', 'multiple'])">Überprüfen</button>
                     <div class="feedback" id="feedback-10"></div>
                 </div>
                     <div class="mc-options">
@@ -1012,6 +928,7 @@
                 <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
                     <li>Welches der 17 SDG-Ziele finden Sie persönlich am wichtigsten und warum?</li>
                     <li>In welchen Bereichen könnte die Schweiz noch mehr tun?</li>
+                    <li>Was können Sie selbst konkret zur Agenda 2030 beitragen?</li>
                 </ul>
                 <textarea 
                     id="portfolio-text" 
@@ -1296,6 +1213,23 @@
                     });
                 }
             } else if (type === 'text') {
+                const input = document.getElementById(`q${questionNum}-input`);
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                if (userAnswer === '') {
+                    alert('Bitte geben Sie eine Antwort ein.');
+                    return;
+                }
+
+                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                isCorrect = correctAnswers.some(ans => 
+                    userAnswer === ans.toLowerCase() || 
+                    userAnswer.includes(ans.toLowerCase())
+                );
+
+                input.disabled = true;
+                input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            } else if (type === 'text-synonym') {
                 const input = document.getElementById(`q${questionNum}-input`);
                 const userAnswer = input.value.trim().toLowerCase();
                 
