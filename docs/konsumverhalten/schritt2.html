@@ -1,1 +1,1176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schritt 2: Planetare Belastungsgrenzen</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbbf24 0%, #fb923c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .lesson-content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #fb923c;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #78350f;
+        }
+
+        h2 {
+            color: #f97316;
+            margin: 30px 0 15px 0;
+            font-size: 1.6em;
+        }
+
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Video Container */
+        .video-container {
+            background: #fff7ed;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .video-container h3 {
+            color: #f97316;
+            margin-bottom: 15px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Questions Styling */
+        .questions-container {
+            background: #fff7ed;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .question-block {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice */
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mc-option {
+            background: #fef3c7;
+            border: 2px solid #fde68a;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .mc-option:hover:not(.disabled) {
+            border-color: #fb923c;
+            background: #fde68a;
+            transform: translateX(5px);
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .mc-option.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .mc-option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .mc-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Text Input */
+        .text-input-wrapper {
+            margin: 15px 0;
+        }
+
+        .text-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #fb923c;
+        }
+
+        .text-input.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .text-input.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        /* Check Button */
+        .check-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .check-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        /* Score Display */
+        .score-display {
+            background: white;
+            border: 3px solid #fb923c;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .score-display h3 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .score-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fb923c;
+        }
+
+        /* Portfolio Box */
+        .portfolio-box {
+            background: #fef3c7;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .portfolio-box h3 {
+            color: #f97316;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-box textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #fde68a;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-box textarea:focus {
+            outline: none;
+            border-color: #fb923c;
+            box-shadow: 0 0 10px rgba(251, 146, 60, 0.2);
+        }
+
+        .saved-indicator {
+            color: #f97316;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 12px 30px;
+        }
+
+        .hint-text {
+            font-size: 0.9em;
+            color: #92400e;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* Checkbox Styling */
+        .checkbox-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-option {
+            background: #fef3c7;
+            border: 2px solid #fde68a;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-option:hover:not(.disabled) {
+            border-color: #fb923c;
+            background: #fde68a;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-option.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .checkbox-option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        /* Dropdown Styling */
+        .dropdown-select {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            cursor: pointer;
+        }
+
+        .dropdown-select:focus {
+            outline: none;
+            border-color: #fb923c;
+        }
+
+        .dropdown-select.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .dropdown-select.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        /* Cloze Text Styling */
+        .cloze-text {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .cloze-input {
+            padding: 8px;
+            border: 2px solid #fde68a;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+        }
+
+        .cloze-input:focus {
+            outline: none;
+            border-color: #fb923c;
+        }
+
+        .cloze-input.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .cloze-input.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        /* Sorting Styling */
+        .sorting-area {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .sorting-instructions {
+            color: #78350f;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .sortable-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sortable-item {
+            background: white;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .sortable-item.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .sortable-item.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .item-text {
+            font-weight: bold;
+            color: #78350f;
+            flex: 1;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .sort-btn {
+            background: #fb923c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .sort-btn:hover {
+            background: #f97316;
+            transform: scale(1.1);
+        }
+
+        .sort-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header h1 {
+                font-size: 1.8em;
+            }
+
+            .lesson-content {
+                padding: 20px;
+            }
+
+            .video-container, .questions-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
+            <h1>🌍 Planetare Belastungsgrenzen</h1>
+        </div>
+
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>📋 Aufgabe:</strong> Schauen Sie sich das Video aufmerksam an und beantworten Sie anschliessend die Fragen. Hören Sie genau hin - die Antworten sind nicht immer offensichtlich!</p>
+            </div>
+
+            <div class="video-container">
+                <h3>🎥 Video: Planetare Belastungsgrenzen erklärt</h3>
+                <p style="color: #78350f; margin-bottom: 15px;">
+                    Schauen Sie sich das Video mindestens einmal vollständig an, bevor Sie mit den Fragen beginnen.
+                </p>
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/m1nBEOfNFIE" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="hint-text">💡 Tipp: Sie können das Video jederzeit zurückspulen, um Details nochmals anzuhören.</p>
+            </div>
+
+            <h2>📝 Hörverstehen: Fragen zum Video</h2>
+
+            <div class="questions-container">
+                <!-- Frage 1: Wahr/Falsch -->
+                <div class="question-block" data-question="1">
+                    <span class="question-number">Frage 1</span>
+                    <div class="question-text">Wahr oder Falsch: Die Menschheit verdankt ihre Entwicklung unter anderem einem stabilen Klima und intakter Biodiversität.</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="wahr">
+                            <span>✓ Wahr</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="falsch">
+                            <span>✗ Falsch</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(1, 'mc', 'wahr')">Überprüfen</button>
+                    <div class="feedback" id="feedback-1"></div>
+                </div>
+
+                <!-- Frage 2: Textfeld -->
+                <div class="question-block" data-question="2">
+                    <span class="question-number">Frage 2</span>
+                    <div class="question-text">Wie heißt das Konzept der Forschenden? (auf Deutsch)</div>
+                    <div class="text-input-wrapper">
+                        <input type="text" class="text-input" id="q2-input" placeholder="Planetare...">
+                        <p class="hint-text">Vollständiger deutscher Begriff</p>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(2, 'text', ['planetare belastbarkeitsgrenzen', 'planetare belastungsgrenzen', 'belastbarkeitsgrenzen'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-2"></div>
+                </div>
+
+                <!-- Frage 3: Multiple Choice -->
+                <div class="question-block" data-question="3">
+                    <span class="question-number">Frage 3</span>
+                    <div class="question-text">Wie viele Bereiche sind für das Überleben der Menschheit unerlässlich?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="7">
+                            <span>7 Bereiche</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="9">
+                            <span>9 Bereiche</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="12">
+                            <span>12 Bereiche</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(3, 'mc', '9')">Überprüfen</button>
+                    <div class="feedback" id="feedback-3"></div>
+                </div>
+
+                <!-- Frage 4: Mehrfachauswahl -->
+                <div class="question-block" data-question="4">
+                    <span class="question-number">Frage 4</span>
+                    <div class="question-text">Welche drei Belastungsgrenzen werden im Video explizit genannt? (Wählen Sie genau 3 Antworten)</div>
+                    <div class="checkbox-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="ozonloch">
+                            <span>Ozonloch</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="biodiversitaet">
+                            <span>Verlust von Biodiversität</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="klimaerwaermung">
+                            <span>Klimaerwärmung</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="wasserverbrauch">
+                            <span>Wasserverbrauch weltweit</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="ueberduengung">
+                            <span>Überdüngung der Ökosysteme</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="plastik">
+                            <span>Plastikverschmutzung</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(4, 'checkbox', ['ozonloch', 'biodiversitaet', 'klimaerwaermung'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-4"></div>
+                </div>
+
+                <!-- Frage 5: Lückentext -->
+                <div class="question-block" data-question="5">
+                    <span class="question-number">Frage 5</span>
+                    <div class="question-text">Ergänzen Sie die Lücken:</div>
+                    <div class="cloze-text">
+                        <p style="line-height: 2; color: #78350f;">
+                            "Der aktuelle Status: <input type="text" class="cloze-input" id="q5a-input" placeholder="?" style="width: 60px;"> von neun Grenzen sind überschritten. Das bedeutet, wir verlassen den sicheren <input type="text" class="cloze-input" id="q5b-input" placeholder="?" style="width: 180px;"> und setzen unsere guten Lebensbedingungen aufs Spiel."
+                        </p>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(5, 'cloze', {a: ['4', 'vier'], b: ['handlungsraum', 'handlungs raum']})">Überprüfen</button>
+                    <div class="feedback" id="feedback-5"></div>
+                </div>
+
+                <!-- Frage 6: Dropdown -->
+                <div class="question-block" data-question="6">
+                    <span class="question-number">Frage 6</span>
+                    <div class="question-text">Was passiert im Golf von Mexiko aufgrund der Überdüngung?</div>
+                    <select class="dropdown-select" id="q6-select">
+                        <option value="">-- Bitte wählen --</option>
+                        <option value="tsunami">Es entstehen häufigere Tsunamis</option>
+                        <option value="bakterien">Bakterien verbrauchen den Sauerstoff im Wasser</option>
+                        <option value="temperatur">Die Wassertemperatur steigt extrem an</option>
+                        <option value="salz">Der Salzgehalt nimmt stark zu</option>
+                    </select>
+                    <button class="check-btn" onclick="checkQuestion(6, 'dropdown', 'bakterien')">Überprüfen</button>
+                    <div class="feedback" id="feedback-6"></div>
+                </div>
+
+                <!-- Frage 7: Wahr/Falsch -->
+                <div class="question-block" data-question="7">
+                    <span class="question-number">Frage 7</span>
+                    <div class="question-text">Wahr oder Falsch: Das Ozonloch konnte durch gutes Zusammenspiel von Wissenschaft, Wirtschaft und Behörden deutlich eingedämmt werden.</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="wahr">
+                            <span>✓ Wahr</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="falsch">
+                            <span>✗ Falsch</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'wahr')">Überprüfen</button>
+                    <div class="feedback" id="feedback-7"></div>
+                </div>
+
+                <!-- Frage 8: Reihenfolge -->
+                <div class="question-block" data-question="8">
+                    <span class="question-number">Frage 8</span>
+                    <div class="question-text">Bringen Sie die vier Bereiche in die Reihenfolge, wie sie im Video genannt werden:</div>
+                    <div class="sorting-area">
+                        <div class="sorting-instructions">Klicken Sie auf die Pfeile, um die Reihenfolge zu ändern:</div>
+                        <div class="sortable-list" id="sortable-list">
+                            <div class="sortable-item" data-id="1" data-order="3">
+                                <span class="item-text">Wirtschaft</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="2" data-order="4">
+                                <span class="item-text">Gesellschaft</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="3" data-order="1">
+                                <span class="item-text">Finanzbereich</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="4" data-order="2">
+                                <span class="item-text">Politik</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(8, 'sorting', [3, 4, 1, 2])">Überprüfen</button>
+                    <div class="feedback" id="feedback-8"></div>
+                </div>
+
+                <!-- Frage 9: Mehrfachauswahl -->
+                <div class="question-block" data-question="9">
+                    <span class="question-number">Frage 9</span>
+                    <div class="question-text">Was brauchen wir laut Video, um zurück in den sicheren Handlungsraum zu kommen? (Wählen Sie alle zutreffenden)</div>
+                    <div class="checkbox-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="investitionen">
+                            <span>Investitionsentscheide, die nicht in fossile Energieträger investieren</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="technologie">
+                            <span>Ausschließlich neue Technologien</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="unternehmen">
+                            <span>Unternehmen, die ihre Geschäftsmodelle auf Belastbarkeitsgrenzen ausrichten</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="konsum">
+                            <span>Konsumenten, die sich fragen, was sie wirklich benötigen</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="verzicht">
+                            <span>Vollständigen Verzicht auf Wirtschaftswachstum</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(9, 'checkbox', ['investitionen', 'unternehmen', 'konsum'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-9"></div>
+                </div>
+
+                <!-- Frage 10: Lückentext -->
+                <div class="question-block" data-question="10">
+                    <span class="question-number">Frage 10</span>
+                    <div class="question-text">Ergänzen Sie die Schlussaussage des Videos:</div>
+                    <div class="cloze-text">
+                        <p style="line-height: 2; color: #78350f;">
+                            "Wir haben nur eine <input type="text" class="cloze-input" id="q10a-input" placeholder="?" style="width: 100px;"> und die Ressourcen dieser Erde sind begrenzt. Was hingegen unerschöpflich ist, ist unsere <input type="text" class="cloze-input" id="q10b-input" placeholder="?" style="width: 140px;"> und Innovationskraft."
+                        </p>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(10, 'cloze', {a: ['erde'], b: ['kreativität', 'kreativitaet']})">Überprüfen</button>
+                    <div class="feedback" id="feedback-10"></div>
+                </div>
+
+                <div class="score-display">
+                    <h3>Ihre Punktzahl</h3>
+                    <div class="score-number" id="scoreDisplay">0 / 10</div>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Schritt 2</h3>
+                <p style="color: #78350f; margin-bottom: 15px;">
+                    <strong>Reflexionsaufgabe:</strong>
+                </p>
+                <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
+                    <li>Welche planetare Belastungsgrenze hat Sie am meisten überrascht oder beunruhigt?</li>
+                    <li>Was bedeutet es für Sie persönlich, dass bereits 6 von 9 Grenzen überschritten sind?</li>
+                    <li>Welche Veränderungen in Wirtschaft und Gesellschaft halten Sie für am dringendsten?</li>
+                </ul>
+                <textarea 
+                    id="portfolio-text" 
+                    placeholder="Hier Ihre Notizen eintragen..."
+                    oninput="savePortfolio()"></textarea>
+                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+                
+                <button class="btn-save" onclick="savePortfolioManual()">
+                    💾 Speichern
+                </button>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
+                </button>
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    📄 PDF Schritt 2 herunterladen
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschliessen und weiter →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let answeredQuestions = new Set();
+
+        // Sorting Functions
+        function moveUp(button, event) {
+            event.preventDefault();
+            const item = button.closest('.sortable-item');
+            const prev = item.previousElementSibling;
+            if (prev) {
+                item.parentNode.insertBefore(item, prev);
+            }
+        }
+
+        function moveDown(button, event) {
+            event.preventDefault();
+            const item = button.closest('.sortable-item');
+            const next = item.nextElementSibling;
+            if (next) {
+                item.parentNode.insertBefore(next, item);
+            }
+        }
+
+        function checkQuestion(questionNum, type, correctAnswer) {
+            if (answeredQuestions.has(questionNum)) {
+                return;
+            }
+
+            const feedback = document.getElementById(`feedback-${questionNum}`);
+            const button = document.querySelector(`[data-question="${questionNum}"] .check-btn`);
+            let isCorrect = false;
+
+            if (type === 'mc') {
+                const selected = document.querySelector(`input[name="q${questionNum}"]:checked`);
+                if (!selected) {
+                    alert('Bitte wählen Sie eine Antwort aus.');
+                    return;
+                }
+                const userAnswer = selected.value;
+                isCorrect = userAnswer === correctAnswer;
+
+                const options = document.querySelectorAll(`input[name="q${questionNum}"]`);
+                options.forEach(opt => {
+                    opt.disabled = true;
+                    opt.parentElement.classList.add('disabled');
+                });
+
+                if (isCorrect) {
+                    selected.parentElement.classList.add('correct');
+                } else {
+                    selected.parentElement.classList.add('incorrect');
+                    options.forEach(opt => {
+                        if (opt.value === correctAnswer) {
+                            opt.parentElement.classList.add('correct');
+                        }
+                    });
+                }
+            } 
+            else if (type === 'text') {
+                const input = document.getElementById(`q${questionNum}-input`);
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                if (userAnswer === '') {
+                    alert('Bitte geben Sie eine Antwort ein.');
+                    return;
+                }
+
+                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                isCorrect = correctAnswers.some(ans => 
+                    userAnswer === ans.toLowerCase() || 
+                    userAnswer.includes(ans.toLowerCase())
+                );
+
+                input.disabled = true;
+                input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
+            else if (type === 'checkbox') {
+                const checked = Array.from(document.querySelectorAll(`input[name="q${questionNum}"]:checked`))
+                    .map(cb => cb.value);
+                
+                if (checked.length === 0) {
+                    alert('Bitte wählen Sie mindestens eine Antwort aus.');
+                    return;
+                }
+
+                const correctSet = new Set(correctAnswer);
+                const checkedSet = new Set(checked);
+                isCorrect = correctSet.size === checkedSet.size && 
+                           [...correctSet].every(val => checkedSet.has(val));
+
+                const allCheckboxes = document.querySelectorAll(`input[name="q${questionNum}"]`);
+                allCheckboxes.forEach(cb => {
+                    cb.disabled = true;
+                    if (correctAnswer.includes(cb.value)) {
+                        cb.parentElement.classList.add('correct');
+                    } else if (checked.includes(cb.value)) {
+                        cb.parentElement.classList.add('incorrect');
+                    }
+                });
+            }
+            else if (type === 'dropdown') {
+                const select = document.getElementById(`q${questionNum}-select`);
+                const userAnswer = select.value;
+                
+                if (userAnswer === '') {
+                    alert('Bitte wählen Sie eine Antwort aus.');
+                    return;
+                }
+
+                isCorrect = userAnswer === correctAnswer;
+                select.disabled = true;
+                select.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
+            else if (type === 'cloze') {
+                let allCorrect = true;
+                const inputs = Object.keys(correctAnswer);
+                
+                for (let key of inputs) {
+                    const input = document.getElementById(`q${questionNum}${key}-input`);
+                    const userAnswer = input.value.trim().toLowerCase();
+                    
+                    if (userAnswer === '') {
+                        alert('Bitte füllen Sie alle Lücken aus.');
+                        return;
+                    }
+
+                    const correctAnswers = Array.isArray(correctAnswer[key]) ? correctAnswer[key] : [correctAnswer[key]];
+                    const inputCorrect = correctAnswers.some(ans => 
+                        userAnswer === ans.toLowerCase()
+                    );
+
+                    input.disabled = true;
+                    input.classList.add(inputCorrect ? 'correct' : 'incorrect');
+                    
+                    if (!inputCorrect) allCorrect = false;
+                }
+                
+                isCorrect = allCorrect;
+            }
+            else if (type === 'sorting') {
+                const items = document.querySelectorAll('.sortable-item');
+                const currentOrder = Array.from(items).map(item => parseInt(item.dataset.id));
+                isCorrect = JSON.stringify(currentOrder) === JSON.stringify(correctAnswer);
+
+                items.forEach((item, index) => {
+                    const buttons = item.querySelectorAll('.sort-btn');
+                    buttons.forEach(btn => btn.disabled = true);
+                    
+                    if (parseInt(item.dataset.id) === correctAnswer[index]) {
+                        item.classList.add('correct');
+                    } else {
+                        item.classList.add('incorrect');
+                    }
+                });
+            }
+
+            if (isCorrect) {
+                score++;
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
+            } else {
+                feedback.className = 'feedback incorrect show';
+                if (type === 'text') {
+                    const correctAnswerText = Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer;
+                    feedback.innerHTML = `<strong>✗ Leider falsch.</strong> Die richtige Antwort: "${correctAnswerText}"`;
+                } else if (type === 'sorting') {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die korrekte Reihenfolge: Finanzbereich, Politik, Wirtschaft, Gesellschaft';
+                } else {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtigen Antworten wurden grün markiert.';
+                }
+            }
+
+            answeredQuestions.add(questionNum);
+            button.disabled = true;
+            document.getElementById('scoreDisplay').textContent = `${score} / 10`;
+        }
+
+        function loadPortfolio() {
+            const saved = localStorage.getItem('learningProgressKonsum');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const portfolioText = progress.texts && progress.texts['2'] ? progress.texts['2'] : '';
+                document.getElementById('portfolio-text').value = portfolioText;
+            }
+        }
+
+        function savePortfolio() {
+            const text = document.getElementById('portfolio-text').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {},
+                images: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgressKonsum');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['2'] = text;
+            
+            localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        function savePortfolioManual() {
+            const text = document.getElementById('portfolio-text').value.trim();
+            
+            if (text === '') {
+                alert('⚠️ Bitte tragen Sie zuerst Ihre Notizen ein.');
+                return;
+            }
+            
+            savePortfolio();
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            indicator.textContent = '✓ Erfolgreich gespeichert!';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+                indicator.textContent = '✓ Automatisch gespeichert';
+            }, 3000);
+        }
+
+        function downloadPDF() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (portfolioText === '') {
+                alert('Bitte tragen Sie zuerst Ihre Reflexion in das Lernjournal ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Planetare Belastungsgrenzen", 20, 20);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            doc.text(`Erreichte Punktzahl: ${score}/10`, 20, 36);
+            
+            let yPos = 50;
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Meine Reflexion:", 20, yPos);
+            yPos += 8;
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            const lines = doc.splitTextToSize(portfolioText, 170);
+            
+            for (let line of lines) {
+                if (yPos > 280) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.text(line, 20, yPos);
+                yPos += 7;
+            }
+            
+            doc.save('Lernjournal_Schritt2_Hoerverstehen.pdf');
+        }
+
+        function completeStep() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (answeredQuestions.size < 10) {
+                alert(`⚠️ Bitte beantworten Sie zuerst alle Fragen!\n\nSie haben bisher ${answeredQuestions.size} von 10 Fragen beantwortet.`);
+                return;
+            }
+            
+            if (portfolioText === '') {
+                const confirm = window.confirm('Sie haben noch nichts in Ihr Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            if (portfolioText !== '') {
+                savePortfolio();
+            }
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            
+            if (!progress.completedPoints.includes(2)) {
+                progress.completedPoints.push(2);
+                progress.currentPoint = 3;
+                localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+            }
+            
+            alert(`✓ Schritt 2 abgeschlossen!\n\nSie haben ${score} von 10 Punkten erreicht.${portfolioText !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
+            window.location.href = 'index.html';
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPortfolio();
+        });
+    </script>
+</body>
+</html>
