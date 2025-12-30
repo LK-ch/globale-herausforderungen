@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lernpfad: Globalisierung</title>
+    <title>Lernpfad Globalisierung</title>
     <style>
         * {
             margin: 0;
@@ -13,15 +13,13 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #333;
             background-image: url('images/global.avif');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         body::before {
@@ -35,205 +33,518 @@
             z-index: -1;
         }
 
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: #666;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin: 1rem 0 0 0;
-            color: #0ea5e9;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            flex: 1;
-            max-width: 1000px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem 2rem 1rem;
-        }
-
-        .intro-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .intro-box h2 {
-            color: #1e3a8a;
-            margin-bottom: 1rem;
-        }
-
-        .intro-box p {
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .learning-path {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .step-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
 
-        .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #1e3a8a 100%);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            position: relative;
         }
 
-        .step-number {
-            flex-shrink: 0;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #0ea5e9, #1e3a8a);
-            border-radius: 50%;
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) translateX(-3px);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .intro-box {
+            background: #e0f2fe;
+            border-left: 4px solid #0ea5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #0c4a6e;
+        }
+
+        .intro-box strong {
+            color: #075985;
+        }
+
+        .flowchart-container {
+            max-width: 1100px;
+            margin: 0 auto 15px;
+            padding: 10px;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        .flow-row.horizontal {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2rem;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .arrow-right {
+            font-size: 2.5em;
+            color: #0ea5e9;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+            animation: slide-right 2s infinite;
+            flex-shrink: 0;
         }
 
-        .step-content {
-            flex: 1;
+        @keyframes slide-right {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
         }
 
-        .step-icon {
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
+        .flow-card {
+            max-width: 300px;
+            min-width: 250px;
+            flex-shrink: 0;
         }
 
-        .step-title {
+        .card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 150px;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .card.active {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #0ea5e9;
+            border-width: 3px;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .card.completed {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-color: #10b981;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .card.locked {
+            background: #f5f5f5;
+            border-color: #bdbdbd;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .card.locked:hover {
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+        }
+
+        .card.highlight-final::before {
+            content: '🎯';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            font-size: 2em;
+            animation: rotate-trophy 3s infinite;
+        }
+
+        @keyframes rotate-trophy {
+            0%, 100% {
+                transform: rotate(-10deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .card-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card.active .card-number {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            animation: pulse-number 2s infinite;
+        }
+
+        .card.completed .card-number {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .card.locked .card-number {
+            background: #bdbdbd;
+        }
+
+        @keyframes pulse-number {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+            }
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.2em;
+            margin-bottom: 6px;
+        }
+
+        .card.locked .card-icon {
+            filter: grayscale(100%);
+        }
+
+        .card-title {
+            font-size: 0.95em;
+            font-weight: bold;
             color: #1e3a8a;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
 
-        .step-description {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+        .card.locked .card-title {
+            color: #757575;
         }
 
-        .step-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+        @media (max-width: 1024px) {
+            .flow-row.horizontal {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
 
-        .step-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            .arrow-right {
+                display: none;
+            }
+
+            .flow-card {
+                max-width: 250px;
+                min-width: 220px;
+            }
+
+            .card {
+                height: 160px;
+                padding: 12px;
+            }
+
+            .card-icon {
+                font-size: 2em;
+            }
+
+            .card-title {
+                font-size: 0.95em;
+            }
         }
 
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2rem;
+                font-size: 1.8em;
             }
 
-            .step-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
+            .back-button {
+                position: static;
+                transform: none;
+                margin-bottom: 15px;
+                display: inline-flex;
             }
 
-            .step-number {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+            .back-button:hover {
+                transform: translateX(-3px);
             }
 
-            .step-title {
-                font-size: 1.2rem;
+            header {
+                padding: 20px;
             }
+
+            main {
+                padding: 20px;
+            }
+        }
+
+        .progress-section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .progress-section h2 {
+            color: #1e3a8a;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #0ea5e9 0%, #1e3a8a 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success {
+            background: #0ea5e9;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🌍 Lernpfad: Globalisierung</h1>
-        <p>Schritt für Schritt die Welt der Globalisierung verstehen</p>
-        <a href="../index.html" class="back-link">← Zurück zur Hauptseite</a>
-    </header>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-button">
+                <span>←</span>
+                <span>Zurück zur Hauptseite</span>
+            </a>
+            <h1>🌍 Lernpfad: Globalisierung</h1>
+            <p>Schritt für Schritt die Welt der Globalisierung verstehen</p>
+        </header>
 
-    <main>
-        <div class="intro-box">
-            <h2>Willkommen zum Lernpfad Globalisierung</h2>
-            <p>In diesem Lernpfad lernen Sie Schritt für Schritt die wichtigsten Aspekte der Globalisierung kennen. Arbeiten Sie die Themen in der vorgegebenen Reihenfolge durch, um ein umfassendes Verständnis zu entwickeln. Viel Erfolg!</p>
-        </div>
+        <main>
+            <div class="intro-box">
+                <strong>Willkommen zum Lernpfad Globalisierung!</strong><br>
+                In diesem Lernpfad lernen Sie Schritt für Schritt die wichtigsten Aspekte der Globalisierung kennen. Arbeiten Sie die Themen in der vorgegebenen Reihenfolge durch, um ein umfassendes Verständnis zu entwickl. Viel Erfolg!
+            </div>
 
-        <div class="learning-path">
-            <!-- Schritt 1 -->
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3 class="step-title"><span class="step-icon">🌐</span>Die globalisierte Welt</h3>
-                    <p class="step-description">Entdecken und beschreiben Sie Globalisierung in Ihrem Alltag.</p>
-                    <a href="globalisierte-welt.html" class="step-button">Zum Thema →</a>
+            <div class="flowchart-container">
+                <!-- Schritte in einer Reihe -->
+                <div class="flow-row horizontal">
+                    <div class="card active flow-card" onclick="openPoint(1)" data-step="1">
+                        <div class="card-number">1</div>
+                        <div class="card-content">
+                            <div class="card-icon">🌐</div>
+                            <div class="card-title">Die globalisierte Welt</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-right">→</div>
+
+                    <div class="card flow-card" onclick="openPoint(2)" data-step="2">
+                        <div class="card-number">2</div>
+                        <div class="card-content">
+                            <div class="card-icon">📖</div>
+                            <div class="card-title">Definition Globalisierung</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-right">→</div>
+
+                    <div class="card flow-card highlight-final" onclick="openPoint(3)" data-step="3">
+                        <div class="card-number">3</div>
+                        <div class="card-content">
+                            <div class="card-icon">📊</div>
+                            <div class="card-title">Grafiken zur Globalisierung</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Schritt 2 -->
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3 class="step-title"><span class="step-icon">📖</span>Definition Globalisierung</h3>
-                    <p class="step-description">Setzen Sie sich damit auseinander, was mit Globalisierung gemeint ist.</p>
-                    <a href="globalisierung-definition.html" class="step-button">Zum Thema →</a>
+            <div class="progress-section">
+                <h2>📊 Dein Fortschritt</h2>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
                 </div>
-            </div>
 
-            <!-- Schritt 3 -->
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3 class="step-title"><span class="step-icon">📊</span>Grafiken zur Globalisierung</h3>
-                    <p class="step-description">Analysieren Sie aussagekräftige Grafiken und Diagramme, die globale Entwicklungen und Zusammenhänge deutlich machen.</p>
-                    <a href="grafiken-globalisierung.html" class="step-button">Zum Thema →</a>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="resetProgress()">🔄 Fortschritt zurücksetzen</button>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
+
+    <script>
+        let learningProgress = {
+            completedPoints: [],
+            currentPoint: 1
+        };
+
+        function loadProgress() {
+            const saved = localStorage.getItem('learningProgressGlobalisierung');
+            if (saved) {
+                learningProgress = JSON.parse(saved);
+                updateUI();
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('learningProgressGlobalisierung', JSON.stringify(learningProgress));
+        }
+
+        function openPoint(pointNumber) {
+            // Map to correct file names
+            const fileNames = {
+                1: 'globalisierte-welt.html',
+                2: 'globalisierung-definition.html',
+                3: 'grafiken-globalisierung.html'
+            };
+            
+            window.location.href = fileNames[pointNumber];
+        }
+
+        function completePoint(pointNumber) {
+            if (!learningProgress.completedPoints.includes(pointNumber)) {
+                learningProgress.completedPoints.push(pointNumber);
+                learningProgress.currentPoint = pointNumber + 1;
+                saveProgress();
+                window.location.href = 'index.html';
+            }
+        }
+
+        function updateUI() {
+            // Update card states based on completion
+            for (let i = 1; i <= 3; i++) {
+                const card = document.querySelector(`.card[data-step="${i}"]`);
+                if (!card) continue;
+                
+                // Remove all state classes first
+                card.classList.remove('active', 'completed', 'locked');
+                
+                if (learningProgress.completedPoints.includes(i)) {
+                    // Step is completed
+                    card.classList.add('completed');
+                    const number = card.querySelector('.card-number');
+                    if (number) number.textContent = '✓';
+                } else if (i === learningProgress.currentPoint) {
+                    // Step is active (current step)
+                    card.classList.add('active');
+                }
+            }
+            
+            const totalPoints = 3;
+            const completedPoints = learningProgress.completedPoints.length;
+            const progressPercent = (completedPoints / totalPoints) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
+        }
+
+        function resetProgress() {
+            if (confirm('Möchtest du wirklich deinen gesamten Fortschritt zurücksetzen?')) {
+                learningProgress = {
+                    completedPoints: [],
+                    currentPoint: 1
+                };
+                saveProgress();
+                loadProgress();
+                alert('✓ Fortschritt wurde zurückgesetzt!');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            updateUI();
+        });
+    </script>
 </body>
 </html>
