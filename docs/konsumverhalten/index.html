@@ -1,1 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernpfad Konsumverhalten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbbf24 0%, #fb923c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) translateX(-3px);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .info-notice {
+            background: #fef3c7;
+            border-left: 4px solid #fb923c;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #78350f;
+        }
+
+        .info-notice strong {
+            color: #92400e;
+        }
+
+        .flowchart-container {
+            max-width: 1100px;
+            margin: 0 auto 15px;
+            padding: 10px;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        .flow-row.horizontal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .flow-row.reverse {
+            flex-direction: row;
+        }
+
+        .arrow-right {
+            font-size: 2.5em;
+            color: #fb923c;
+            font-weight: bold;
+            animation: slide-right 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .arrow-left {
+            font-size: 2.5em;
+            color: #fb923c;
+            font-weight: bold;
+            animation: slide-left 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .arrow-turn-down {
+            text-align: right;
+            font-size: 2.5em;
+            color: #fb923c;
+            margin: 5px 0;
+            animation: bounce-down 2s infinite;
+        }
+
+        @keyframes slide-right {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        @keyframes slide-left {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-10px);
+            }
+        }
+
+        @keyframes bounce-down {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        .flow-card {
+            max-width: 280px;
+            min-width: 240px;
+            flex-shrink: 0;
+        }
+
+        .card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 150px;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .card.active {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #fb923c;
+            border-width: 3px;
+            box-shadow: 0 4px 15px rgba(251, 146, 60, 0.3);
+        }
+
+        .card.completed {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .card.highlight-final::before {
+            content: '🎯';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            font-size: 2em;
+            animation: rotate-trophy 3s infinite;
+        }
+
+        @keyframes rotate-trophy {
+            0%, 100% {
+                transform: rotate(-10deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .card-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card.active .card-number {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            animation: pulse-number 2s infinite;
+        }
+
+        .card.completed .card-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        @keyframes pulse-number {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(251, 146, 60, 0);
+            }
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.2em;
+            margin-bottom: 6px;
+        }
+
+        .card-title {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #f97316;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 1024px) {
+            .flow-row.horizontal {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .arrow-right, .arrow-left {
+                display: none;
+            }
+
+            .flow-card {
+                max-width: 250px;
+                min-width: 220px;
+            }
+
+            .card {
+                height: 160px;
+                padding: 12px;
+            }
+
+            .card-icon {
+                font-size: 2em;
+            }
+
+            .card-title {
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .back-button {
+                position: static;
+                transform: none;
+                margin-bottom: 15px;
+                display: inline-flex;
+            }
+
+            .back-button:hover {
+                transform: translateX(-3px);
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            main {
+                padding: 20px;
+            }
+        }
+
+        .progress-section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .progress-section h2 {
+            color: #f97316;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-button">
+                <span>←</span>
+                <span>Zurück zur Hauptseite</span>
+            </a>
+            <h1>🛒 Lernpfad: Konsumverhalten</h1>
+            <p>Nachhaltiges Handeln verstehen und umsetzen</p>
+        </header>
+
+        <main>
+            <div class="info-notice">
+                <strong>Willkommen zum Lernpfad!</strong><br>
+                Hinterfragen Sie Ihr Konsumverhalten kritisch und entwickeln Sie nachhaltige persönliche Verhaltensweisen. Die Aufgaben führen Sie Schritt für Schritt zu einem bewussteren Umgang mit Ressourcen.
+            </div>
+
+            <div class="flowchart-container">
+                <!-- Erste Reihe: Schritte 1, 2, 3 -->
+                <div class="flow-row horizontal">
+                    <div class="card active flow-card" onclick="openPoint(1)" data-step="1">
+                        <div class="card-number">1</div>
+                        <div class="card-content">
+                            <div class="card-icon">👣</div>
+                            <div class="card-title">Ökologischer Fussabdruck</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-right">→</div>
+
+                    <div class="card flow-card" onclick="openPoint(2)" data-step="2">
+                        <div class="card-number">2</div>
+                        <div class="card-content">
+                            <div class="card-icon">🌍</div>
+                            <div class="card-title">Planetare Belastungsgrenzen</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-right">→</div>
+
+                    <div class="card flow-card" onclick="openPoint(3)" data-step="3">
+                        <div class="card-number">3</div>
+                        <div class="card-content">
+                            <div class="card-icon">📖</div>
+                            <div class="card-title">Nachhaltige Entwicklung</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pfeil nach unten zur zweiten Reihe -->
+                <div class="arrow-turn-down">
+                    <span style="float: right; margin-right: 200px;">↓</span>
+                </div>
+
+                <!-- Zweite Reihe: Schritte 5, 4 (rückwärts) -->
+                <div class="flow-row horizontal reverse">
+                    <div class="card flow-card highlight-final" onclick="openPoint(5)" data-step="5">
+                        <div class="card-number">5</div>
+                        <div class="card-content">
+                            <div class="card-icon">🎮</div>
+                            <div class="card-title">Lernspiel Konsumverhalten</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-left">←</div>
+
+                    <div class="card flow-card" onclick="openPoint(4)" data-step="4">
+                        <div class="card-number">4</div>
+                        <div class="card-content">
+                            <div class="card-icon">♻️</div>
+                            <div class="card-title">Nachhaltiges Konsumverhalten</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h2>📊 Dein Fortschritt</h2>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="resetProgress()">🔄 Fortschritt zurücksetzen</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let learningProgress = {
+            completedPoints: [],
+            currentPoint: 1,
+            texts: {
+                '1': '',
+                '2': '',
+                '3': '',
+                '4': '',
+                '5': ''
+            },
+            images: {}
+        };
+
+        function loadProgress() {
+            const saved = localStorage.getItem('learningProgressKonsum');
+            if (saved) {
+                learningProgress = JSON.parse(saved);
+                
+                if (!learningProgress.texts) {
+                    learningProgress.texts = {
+                        '1': '', '2': '', '3': '', '4': '', '5': ''
+                    };
+                }
+                
+                updateUI();
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('learningProgressKonsum', JSON.stringify(learningProgress));
+        }
+
+        function openPoint(pointNumber) {
+            const fileNames = {
+                1: 'schritt1.html',
+                2: 'schritt2.html',
+                3: 'schritt3.html',
+                4: 'schritt4.html',
+                5: 'schritt5.html'
+            };
+            
+            window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
+        }
+
+        function completePoint(pointNumber) {
+            if (!learningProgress.completedPoints.includes(pointNumber)) {
+                learningProgress.completedPoints.push(pointNumber);
+                learningProgress.currentPoint = pointNumber + 1;
+                saveProgress();
+                window.location.href = 'index.html';
+            }
+        }
+
+        function updateUI() {
+            for (let i = 1; i <= 5; i++) {
+                const card = document.querySelector(`.card[data-step="${i}"]`);
+                if (!card) continue;
+                
+                card.classList.remove('active', 'completed');
+                
+                if (learningProgress.completedPoints.includes(i)) {
+                    card.classList.add('completed');
+                    const number = card.querySelector('.card-number');
+                    if (number) number.textContent = '✓';
+                } else if (i === learningProgress.currentPoint) {
+                    card.classList.add('active');
+                }
+            }
+            
+            const totalPoints = 5;
+            const completedPoints = learningProgress.completedPoints.length;
+            const progressPercent = (completedPoints / totalPoints) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('progress-fill').textContent = Math.round(progressPercent) + '%';
+        }
+
+        function resetProgress() {
+            if (confirm('Möchtest du wirklich deinen gesamten Fortschritt zurücksetzen?')) {
+                learningProgress = {
+                    completedPoints: [],
+                    currentPoint: 1,
+                    texts: {
+                        '1': '', '2': '', '3': '', '4': '', '5': ''
+                    },
+                    images: {}
+                };
+                saveProgress();
+                loadProgress();
+                alert('✓ Fortschritt wurde zurückgesetzt!');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            updateUI();
+        });
+    </script>
+</body>
+</html>
