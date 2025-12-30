@@ -284,24 +284,24 @@
 
         .sdg-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
             margin: 20px 0;
         }
 
         .sdg-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border: 3px solid #fb923c;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 12px 8px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
 
         .sdg-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(251, 146, 60, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(251, 146, 60, 0.3);
         }
 
         .sdg-card.selected {
@@ -311,14 +311,21 @@
         }
 
         .sdg-number {
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .sdg-title {
-            font-size: 0.9em;
+            font-size: 0.8em;
             font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .sdg-category {
+            font-size: 0.7em;
+            margin-top: 3px;
+            opacity: 0.8;
         }
 
         .scenario-box {
@@ -494,7 +501,20 @@
             }
 
             .sdg-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 8px;
+            }
+
+            .sdg-card {
+                padding: 10px 6px;
+            }
+
+            .sdg-number {
+                font-size: 1.3em;
+            }
+
+            .sdg-title {
+                font-size: 0.75em;
             }
         }
     </style>
@@ -515,95 +535,74 @@
                 <h3>📖 Lesetext: Die Agenda 2030</h3>
                 <p><strong>Wie die Welt nachhaltiger werden soll – und was die Schweiz damit zu tun hat</strong></p>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <div style="min-width: 40px; text-align: right; color: #92400e; font-size: 0.9em; line-height: 1.8;">
-                        <div>1</div>
-                        <div>2</div>
-                        <div>3</div>
-                        <div>4</div>
-                        <div style="margin-top: 15px;">5</div>
-                        <div>6</div>
-                        <div>7</div>
-                        <div>8</div>
-                        <div>9</div>
-                        <div>10</div>
-                        <div>11</div>
-                        <div style="margin-top: 15px;">12</div>
-                        <div>13</div>
-                        <div>14</div>
-                        <div>15</div>
-                        <div>16</div>
-                        <div style="margin-top: 15px;">17</div>
-                        <div>18</div>
-                        <div>19</div>
-                        <div>20</div>
-                        <div>21</div>
-                        <div>22</div>
-                        <div style="margin-top: 15px;">23</div>
-                        <div>24</div>
-                        <div>25</div>
-                        <div>26</div>
-                        <div>27</div>
-                        <div style="margin-top: 15px;">28</div>
-                        <div>29</div>
-                        <div>30</div>
-                        <div>31</div>
-                        <div style="margin-top: 15px;">32</div>
-                        <div>33</div>
-                        <div>34</div>
-                        <div>35</div>
-                        <div>36</div>
-                        <div>37</div>
-                        <div style="margin-top: 15px;">38</div>
-                        <div>39</div>
-                        <div>40</div>
-                        <div style="margin-top: 15px;">41</div>
-                        <div>42</div>
-                        <div>43</div>
-                        <div>44</div>
-                        <div>45</div>
-                        <div style="margin-top: 15px;">46</div>
-                        <div>47</div>
-                        <div>48</div>
-                    </div>
-                    <div style="flex: 1;">
-                        <p>Stell dir vor, alle Länder der Welt setzen sich gemeinsam an einen Tisch und einigen sich: Bis 2030 wollen wir unseren Planeten zu einem besseren Ort machen. Genau das ist im September 2015 passiert. Die Vereinten Nationen haben die Agenda 2030 verabschiedet – einen Plan mit 17 konkreten Zielen, der allen Menschen eine lebenswerte Zukunft ermöglichen soll. Klingt ambitioniert? Ist es auch.</p>
-                        
-                        <p><strong>Nachhaltigkeit ist mehr als Recycling</strong><br>
-                        Bevor wir tiefer einsteigen: Was bedeutet Nachhaltigkeit eigentlich? Viele denken da ans Klima oder an Mülltrennung. Das stimmt zwar, greift aber zu kurz. Echte Nachhaltigkeit funktioniert nur, wenn drei Bereiche zusammenspielen: Umwelt, Wirtschaft und Soziales. Alle drei müssen gleichzeitig berücksichtigt werden, sonst ist es keine wirkliche Nachhaltigkeit. Eine Lösung, die zwar die Umwelt schützt, aber Menschen in die Armut treibt? Nicht nachhaltig. Ein Wirtschaftsmodell, das kurzfristig Gewinn bringt, aber den Planeten zerstört? Ebenfalls nicht nachhaltig.</p>
-                        
-                        <p><strong>"Leave no one behind" – Niemand wird zurückgelassen</strong><br>
-                        Das Besondere an der Agenda 2030: Sie gilt für alle. Egal ob reiches Industrieland oder ärmeres Entwicklungsland – jedes Land hat Hausaufgaben zu machen. Das war neu. Früher gab es separate Ziele für verschiedene Ländergruppen, jetzt ziehen alle am selben Strang. Das Motto lautet "Leave no one behind". Besonders die ärmsten und benachteiligten Menschen sollen von den Veränderungen profitieren.</p>
-                        
-                        <p><strong>Und was macht die Schweiz?</strong><br>
-                        Die Schweiz hat sich wie alle UNO-Mitgliedsstaaten verpflichtet, die Agenda 2030 umzusetzen. Dafür hat der Bundesrat die "Strategie Nachhaltige Entwicklung 2030" entwickelt, die festlegt, wo die Schweiz ihre Schwerpunkte setzt. Alle vier Jahre berichtet die Schweiz der UNO, wie weit sie gekommen ist.</p>
-                        
-                        <p>In einigen Bereichen läuft es gut: Gesundheit, Bildung, Beschäftigung und Innovation sind auf gutem Weg. Aber es gibt auch Schwachstellen. Der Ressourcenverbrauch ist zu hoch, beim Klimaschutz muss mehr passieren, und das Konsumverhalten der Schweizer:innen hat negative Auswirkungen auf andere Länder – zum Beispiel durch Importe, die unter schlechten Bedingungen produziert wurden.</p>
-                        
-                        <p><strong>Konkrete Beispiele aus der Schweiz</strong><br>
-                        Es gibt aber auch positive Entwicklungen: In Köniz betreibt ein Restaurant ein ausgeklügeltes System, um Foodwaste zu vermeiden – 95 Prozent des verwendeten Gemüses ist "Zweitklassware", die sonst weggeworfen würde. Der Kanton Genf hat als erster Schweizer Kanton "Green Bonds" im Wert von 620 Millionen Franken ausgegeben, um nachhaltige Projekte zu finanzieren. Und in Bern gibt es einen "SDG Walk" – einen Rundgang durch die Stadt, der zeigt, wie die 17 Ziele konkret im Alltag aussehen können.</p>
-                        
-                        <p><strong>Die ernüchternde Halbzeitbilanz</strong><br>
-                        Wir sind jetzt bei Halbzeit angekommen – und ehrlich gesagt: Es sieht nicht gut aus. 2023 zeigte ein UN-Bericht, dass voraussichtlich nur etwa 15 Prozent der gesetzten Ziele erreicht werden. Die Corona-Pandemie hat vieles zurückgeworfen: 93 Millionen Menschen mehr leben jetzt in extremer Armut als vor der Pandemie. Etwa 147 Millionen Kinder haben in den letzten zwei Jahren mehr als die Hälfte ihres Schulunterrichts verpasst. Frauen leben vielerorts immer noch in schwierigen Verhältnissen.</p>
-                        
-                        <p>Aber: Die Ziele sind noch erreichbar. Dafür müssen Projekte, finanzielle Hilfen und politische Maßnahmen in der verbleibenden Zeit deutlich effizienter und schneller umgesetzt werden.</p>
-                        
-                        <p><strong>Was hat das mit uns zu tun?</strong><br>
-                        Du denkst jetzt vielleicht: "Klingt alles wichtig, aber was kann ich als einzelne Person schon tun?" Tatsächlich eine Menge. Jede Entscheidung zählt – ob du lokale Produkte kaufst, bewusst konsumierst oder dich fragst, ob du wirklich mehr Dinge besitzen musst oder ob das, was du hast, nachhaltiger sein sollte.</p>
-                        
-                        <p>Aber es geht nicht nur um individuelle Entscheidungen. Auch Unternehmen, die Wirtschaft und der Finanzsektor müssen umdenken. Die gute Nachricht: Immer mehr Firmen begreifen Nachhaltigkeit als Teil ihres Geschäftsmodells. Zudem fordern Kundinnen und Kunden dies zunehmend ein.</p>
-                        
-                        <p>Auch in der Bildung, Forschung und Innovation liegt großes Potenzial. Die Schweiz kann als reiches und entwickeltes Land mit innovativen Ansätzen vorangehen – und zeigen, dass nachhaltiges Wirtschaften nicht nur möglich, sondern auch zukunftsfähig ist.</p>
-                        
-                        <p><strong>Realitätscheck: Warum ist es so schwierig?</strong><br>
-                        Der Optimismus von 2015 ist heute einer gewissen Ernüchterung gewichen. Die Welt ist mit vielen Krisen konfrontiert – Pandemie, Kriege, Klimakrise. Das macht die Umsetzung der Agenda schwieriger. Aber genau deshalb ist sie so wichtig. Die Alternative wäre, weiterzumachen wie bisher – und das können wir uns schlicht nicht leisten.</p>
-                        
-                        <p>Die Agenda 2030 ist kein Nice-to-have, sondern eine Notwendigkeit. Sie zeigt, dass wir als globale Gemeinschaft verstanden haben: So geht es nicht weiter. Jetzt müssen wir nur noch entsprechend handeln – als Einzelpersonen, als Unternehmen, als Staaten. Die Zeit drängt, aber die Chance ist noch da.</p>
-                    </div>
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; overflow-x: auto;">
+                    <pre style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.95em; line-height: 1.6; color: #78350f; white-space: pre-wrap; word-wrap: normal; margin: 0;"><span style="color: #92400e;">(1)</span>  Stell dir vor, alle Länder der Welt setzen sich gemeinsam an einen Tisch und einigen sich: Bis 2030 wollen wir unseren
+<span style="color: #92400e;">(2)</span>  Planeten zu einem besseren Ort machen. Genau das ist im September 2015 passiert. Die Vereinten Nationen haben die Agenda
+<span style="color: #92400e;">(3)</span>  2030 verabschiedet – einen Plan mit 17 konkreten Zielen, der allen Menschen eine lebenswerte Zukunft ermöglichen soll.
+<span style="color: #92400e;">(4)</span>  Klingt <strong>ambitioniert</strong>? Ist es auch.
+
+<span style="color: #92400e;">(5)</span>  <strong>Nachhaltigkeit ist mehr als Recycling</strong>
+<span style="color: #92400e;">(6)</span>  Bevor wir tiefer einsteigen: Was bedeutet Nachhaltigkeit eigentlich? Viele denken da ans Klima oder an Mülltrennung. Das
+<span style="color: #92400e;">(7)</span>  stimmt zwar, greift aber zu kurz. Echte Nachhaltigkeit funktioniert nur, wenn drei Bereiche zusammenspielen: Umwelt,
+<span style="color: #92400e;">(8)</span>  Wirtschaft und Soziales. Alle drei müssen gleichzeitig berücksichtigt werden, sonst ist es keine wirkliche Nachhaltigkeit.
+<span style="color: #92400e;">(9)</span>  Eine Lösung, die zwar die Umwelt schützt, aber Menschen in die Armut treibt? Nicht nachhaltig. Ein Wirtschaftsmodell, das
+<span style="color: #92400e;">(10)</span> kurzfristig Gewinn bringt, aber den Planeten zerstört? Ebenfalls nicht nachhaltig.
+
+<span style="color: #92400e;">(11)</span> <strong>"Leave no one behind" – Niemand wird zurückgelassen</strong>
+<span style="color: #92400e;">(12)</span> Das Besondere an der Agenda 2030: Sie gilt für alle. Egal ob reiches Industrieland oder ärmeres Entwicklungsland – jedes
+<span style="color: #92400e;">(13)</span> Land hat Hausaufgaben zu machen. Das war neu. Früher gab es separate Ziele für verschiedene Ländergruppen, jetzt ziehen alle
+<span style="color: #92400e;">(14)</span> am selben Strang. Das Motto lautet "Leave no one behind". Besonders die ärmsten und benachteiligten Menschen sollen von den
+<span style="color: #92400e;">(15)</span> Veränderungen profitieren.
+
+<span style="color: #92400e;">(16)</span> <strong>Und was macht die Schweiz?</strong>
+<span style="color: #92400e;">(17)</span> Die Schweiz hat sich wie alle UNO-Mitgliedsstaaten verpflichtet, die Agenda 2030 umzusetzen. Dafür hat der Bundesrat die
+<span style="color: #92400e;">(18)</span> "Strategie Nachhaltige Entwicklung 2030" entwickelt, die festlegt, wo die Schweiz ihre Schwerpunkte setzt. Alle vier Jahre
+<span style="color: #92400e;">(19)</span> berichtet die Schweiz der UNO, wie weit sie gekommen ist.
+
+<span style="color: #92400e;">(20)</span> In einigen Bereichen läuft es gut: Gesundheit, Bildung, Beschäftigung und Innovation sind auf gutem Weg. Aber es gibt auch
+<span style="color: #92400e;">(21)</span> Schwachstellen. Der Ressourcenverbrauch ist zu hoch, beim Klimaschutz muss mehr passieren, und das Konsumverhalten der
+<span style="color: #92400e;">(22)</span> Schweizer:innen hat negative Auswirkungen auf andere Länder – zum Beispiel durch Importe, die unter schlechten Bedingungen
+<span style="color: #92400e;">(23)</span> produziert wurden.
+
+<span style="color: #92400e;">(24)</span> <strong>Konkrete Beispiele aus der Schweiz</strong>
+<span style="color: #92400e;">(25)</span> Es gibt aber auch positive Entwicklungen: In Köniz betreibt ein Restaurant ein <strong>ausgeklügeltes</strong> System, um Foodwaste zu
+<span style="color: #92400e;">(26)</span> vermeiden – 95 Prozent des verwendeten Gemüses ist "Zweitklassware", die sonst weggeworfen würde. Der Kanton Genf hat als
+<span style="color: #92400e;">(27)</span> erster Schweizer Kanton "Green Bonds" im Wert von 620 Millionen Franken ausgegeben, um nachhaltige Projekte zu finanzieren.
+<span style="color: #92400e;">(28)</span> Und in Bern gibt es einen "SDG Walk" – einen Rundgang durch die Stadt, der zeigt, wie die 17 Ziele konkret im Alltag aussehen
+<span style="color: #92400e;">(29)</span> können.
+
+<span style="color: #92400e;">(30)</span> <strong>Die <span style="text-decoration: underline;">ernüchternde</span> Halbzeitbilanz</strong>
+<span style="color: #92400e;">(31)</span> Wir sind jetzt bei Halbzeit angekommen – und ehrlich gesagt: Es sieht nicht gut aus. 2023 zeigte ein UN-Bericht, dass
+<span style="color: #92400e;">(32)</span> voraussichtlich nur etwa 15 Prozent der gesetzten Ziele erreicht werden. Die Corona-Pandemie hat vieles zurückgeworfen: 93
+<span style="color: #92400e;">(33)</span> Millionen Menschen mehr leben jetzt in extremer Armut als vor der Pandemie. Etwa 147 Millionen Kinder haben in den letzten
+<span style="color: #92400e;">(34)</span> zwei Jahren mehr als die Hälfte ihres Schulunterrichts verpasst. Frauen leben vielerorts immer noch in schwierigen
+<span style="color: #92400e;">(35)</span> Verhältnissen.
+
+<span style="color: #92400e;">(36)</span> Aber: Die Ziele sind noch erreichbar. Dafür müssen Projekte, finanzielle Hilfen und politische Maßnahmen in der
+<span style="color: #92400e;">(37)</span> verbleibenden Zeit deutlich effizienter und schneller umgesetzt werden.
+
+<span style="color: #92400e;">(38)</span> <strong>Was hat das mit uns zu tun?</strong>
+<span style="color: #92400e;">(39)</span> Du denkst jetzt vielleicht: "Klingt alles wichtig, aber was kann ich als einzelne Person schon tun?" Tatsächlich eine Menge.
+<span style="color: #92400e;">(40)</span> Jede Entscheidung zählt – ob du lokale Produkte kaufst, bewusst konsumierst oder dich fragst, ob du wirklich mehr Dinge
+<span style="color: #92400e;">(41)</span> besitzen musst oder ob das, was du hast, nachhaltiger sein sollte.
+
+<span style="color: #92400e;">(42)</span> Aber es geht nicht nur um individuelle Entscheidungen. Auch Unternehmen, die Wirtschaft und der Finanzsektor müssen umdenken.
+<span style="color: #92400e;">(43)</span> Die gute Nachricht: Immer mehr Firmen begreifen Nachhaltigkeit als Teil ihres Geschäftsmodells. Zudem fordern Kundinnen und
+<span style="color: #92400e;">(44)</span> Kunden dies zunehmend ein.
+
+<span style="color: #92400e;">(45)</span> Auch in der Bildung, Forschung und Innovation liegt großes Potenzial. Die Schweiz kann als reiches und entwickeltes Land mit
+<span style="color: #92400e;">(46)</span> innovativen Ansätzen vorangehen – und zeigen, dass nachhaltiges Wirtschaften nicht nur möglich, sondern auch zukunftsfähig ist.
+
+<span style="color: #92400e;">(47)</span> <strong>Realitätscheck: Warum ist es so schwierig?</strong>
+<span style="color: #92400e;">(48)</span> Der Optimismus von 2015 ist heute einer gewissen Ernüchterung gewichen. Die Welt ist mit <strong>multiplen</strong> Krisen konfrontiert –
+<span style="color: #92400e;">(49)</span> Pandemie, Kriege, Klimakrise. Das macht die Umsetzung der Agenda schwieriger. Aber genau deshalb ist sie so wichtig. Die
+<span style="color: #92400e;">(50)</span> Alternative wäre, weiterzumachen wie bisher – und das können wir uns schlicht nicht leisten.
+
+<span style="color: #92400e;">(51)</span> Die Agenda 2030 ist kein Nice-to-have, sondern eine Notwendigkeit. Sie zeigt, dass wir als globale Gemeinschaft verstanden
+<span style="color: #92400e;">(52)</span> haben: So geht es nicht weiter. Jetzt müssen wir nur noch entsprechend handeln – als Einzelpersonen, als Unternehmen, als
+<span style="color: #92400e;">(53)</span> Staaten. Die Zeit drängt, aber die Chance ist noch da.</pre>
                 </div>
             </div>
-
-            <h2>📝 Aufgabe 1: Leseverstehen</h2>
 
             <div class="questions-container">
                 <!-- Teil A: Detailfragen -->
@@ -714,7 +713,132 @@
                 <!-- Synonym 1 -->
                 <div class="question-block" data-question="6">
                     <span class="question-number">Frage 6</span>
-                    <div class="question-text">Synonym für "vielfach" oder "zahlreich" (siehe Zeile 46):</div>
+                    <div class="question-text">Finden Sie in <strong>Zeile 48</strong> ein Synonym für "vielfach" oder "zahlreich":</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q6" value="ambitioniert">
+                            <span>ambitioniert</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q6" value="multiple">
+                            <span>multiple (multiplen)</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q6" value="konkret">
+                            <span>konkret</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q6" value="ausgeklügelt">
+                            <span>ausgeklügelt</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(6, 'mc', 'multiple')">Überprüfen</button>
+                    <div class="feedback" id="feedback-6"></div>
+                </div>
+
+                <!-- Synonym 2 -->
+                <div class="question-block" data-question="7">
+                    <span class="question-number">Frage 7</span>
+                    <div class="question-text">In <strong>Zeile 34-35</strong> wird beschrieben, wie Frauen leben. Welches Wort ist ein Synonym für "schwierig", "unsicher" oder "problematisch"?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="ambitioniert">
+                            <span>ambitioniert</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="prekär">
+                            <span>prekär (im Text: "schwierigen Verhältnissen")</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="benachteiligt">
+                            <span>benachteiligt</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="separat">
+                            <span>separat</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'prekär')">Überprüfen</button>
+                    <div class="feedback" id="feedback-7"></div>
+                </div>
+
+                <!-- Synonym 3 -->
+                <div class="question-block" data-question="8">
+                    <span class="question-number">Frage 8</span>
+                    <div class="question-text">Finden Sie in <strong>Zeile 30</strong> ein Synonym für "enttäuschend" oder "entmutigend":</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q8" value="optimistisch">
+                            <span>optimistisch</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q8" value="ernüchternd">
+                            <span>ernüchternd (ernüchternde)</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q8" value="effizient">
+                            <span>effizient</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q8" value="innovativ">
+                            <span>innovativ</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(8, 'mc', 'ernüchternd')">Überprüfen</button>
+                    <div class="feedback" id="feedback-8"></div>
+                </div>
+
+                <!-- Synonym 4 -->
+                <div class="question-block" data-question="9">
+                    <span class="question-number">Frage 9</span>
+                    <div class="question-text">Finden Sie in <strong>Zeile 4</strong> ein Synonym für "ehrgeizig" oder "anspruchsvoll":</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q9" value="konkret">
+                            <span>konkret</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q9" value="separat">
+                            <span>separat</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q9" value="ambitioniert">
+                            <span>ambitioniert</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q9" value="prekär">
+                            <span>prekär</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(9, 'mc', 'ambitioniert')">Überprüfen</button>
+                    <div class="feedback" id="feedback-9"></div>
+                </div>
+
+                <!-- Synonym 5 -->
+                <div class="question-block" data-question="10">
+                    <span class="question-number">Frage 10</span>
+                    <div class="question-text">Finden Sie in <strong>Zeile 25</strong> ein Synonym für "durchdacht" oder "raffiniert geplant":</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q10" value="ausgeklügelt">
+                            <span>ausgeklügelt (ausgeklügeltes)</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q10" value="benachteiligt">
+                            <span>benachteiligt</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q10" value="multiple">
+                            <span>multiple</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q10" value="separat">
+                            <span>separat</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(10, 'mc', 'ausgeklügelt')">Überprüfen</button>
+                    <div class="feedback" id="feedback-10"></div>
+                </div>
                     <div class="mc-options">
                         <label class="mc-option">
                             <input type="radio" name="q6" value="ambitioniert">
@@ -740,7 +864,7 @@
                 <!-- Synonym 2 -->
                 <div class="question-block" data-question="7">
                     <span class="question-number">Frage 7</span>
-                    <div class="question-text">Synonym für "schwierig", "unsicher" oder "problematisch" - bezogen auf Lebenssituationen (siehe Zeile 35):</div>
+                    <div class="question-text">Synonym für "schwierig", "unsicher" oder "problematisch" - bezogen auf Lebenssituationen (siehe Zeile 36):</div>
                     <div class="mc-options">
                         <label class="mc-option">
                             <input type="radio" name="q7" value="ambitioniert">
@@ -818,7 +942,7 @@
                 <!-- Synonym 5 -->
                 <div class="question-block" data-question="10">
                     <span class="question-number">Frage 10</span>
-                    <div class="question-text">Synonym für "durchdacht" oder "raffiniert geplant" (siehe Zeile 29):</div>
+                    <div class="question-text">Synonym für "durchdacht" oder "raffiniert geplant" (siehe Zeile 28):</div>
                     <div class="mc-options">
                         <label class="mc-option">
                             <input type="radio" name="q10" value="ausgeklügelt">
@@ -1005,7 +1129,7 @@
                 card.innerHTML = `
                     <div class="sdg-number">${sdg.num}</div>
                     <div class="sdg-title">${sdg.title}</div>
-                    <div style="font-size: 0.8em; margin-top: 5px; color: #92400e;">${sdg.category}</div>
+                    <div class="sdg-category">${sdg.category}</div>
                 `;
                 card.onclick = () => selectSDG(sdg.num);
                 grid.appendChild(card);
