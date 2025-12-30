@@ -267,41 +267,41 @@
         .game-container {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
+            padding: 20px;
+            margin: 20px 0;
         }
 
         .game-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .game-header h3 {
             color: #f97316;
-            font-size: 1.8em;
-            margin-bottom: 10px;
+            font-size: 1.4em;
+            margin-bottom: 5px;
         }
 
         .sdg-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
         }
 
         .sdg-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border: 3px solid #fb923c;
-            border-radius: 10px;
-            padding: 12px 8px;
+            border-radius: 8px;
+            padding: 8px 5px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
 
         .sdg-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(251, 146, 60, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
         }
 
         .sdg-card.selected {
@@ -311,42 +311,42 @@
         }
 
         .sdg-number {
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .sdg-title {
-            font-size: 0.8em;
+            font-size: 0.7em;
             font-weight: bold;
-            line-height: 1.2;
+            line-height: 1.15;
         }
 
         .sdg-category {
-            font-size: 0.7em;
-            margin-top: 3px;
+            font-size: 0.6em;
+            margin-top: 2px;
             opacity: 0.8;
         }
 
         .scenario-box {
             background: #fef3c7;
             border: 3px solid #fb923c;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 12px 0;
         }
 
         .scenario-text {
-            font-size: 1.1em;
+            font-size: 1em;
             color: #78350f;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 12px;
+            line-height: 1.5;
         }
 
         .game-feedback {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 10px;
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
             display: none;
         }
 
@@ -501,20 +501,20 @@
             }
 
             .sdg-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 8px;
+                grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+                gap: 6px;
             }
 
             .sdg-card {
-                padding: 10px 6px;
+                padding: 6px 4px;
             }
 
             .sdg-number {
-                font-size: 1.3em;
+                font-size: 1.1em;
             }
 
             .sdg-title {
-                font-size: 0.75em;
+                font-size: 0.65em;
             }
         }
     </style>
@@ -753,131 +753,6 @@
                     <div class="question-text">Suchen Sie in <strong>Zeile 48</strong> ein Wort, das <em>"vielfach"</em> oder <em>"zahlreich"</em> bedeutet:</div>
                     <input type="text" class="text-input" id="q10-input" placeholder="Ihr Wort aus dem Text">
                     <button class="check-btn" onclick="checkQuestion(10, 'text-synonym', ['multiplen', 'multiple'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-10"></div>
-                </div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="multiple">
-                            <span>multiple</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="konkret">
-                            <span>konkret</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q6" value="ausgeklügelt">
-                            <span>ausgeklügelt</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(6, 'mc', 'multiple')">Überprüfen</button>
-                    <div class="feedback" id="feedback-6"></div>
-                </div>
-
-                <!-- Synonym 2 -->
-                <div class="question-block" data-question="7">
-                    <span class="question-number">Frage 7</span>
-                    <div class="question-text">Synonym für "schwierig", "unsicher" oder "problematisch" - bezogen auf Lebenssituationen (siehe Zeile 36):</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="prekär">
-                            <span>prekär</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="benachteiligt">
-                            <span>benachteiligt</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="separat">
-                            <span>separat</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'prekär')">Überprüfen</button>
-                    <div class="feedback" id="feedback-7"></div>
-                </div>
-
-                <!-- Synonym 3 -->
-                <div class="question-block" data-question="8">
-                    <span class="question-number">Frage 8</span>
-                    <div class="question-text">Synonym für "enttäuschend" oder "entmutigend" (siehe Zeile 32):</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="optimistisch">
-                            <span>optimistisch</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="ernüchternd">
-                            <span>ernüchternd</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="effizient">
-                            <span>effizient</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q8" value="innovativ">
-                            <span>innovativ</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(8, 'mc', 'ernüchternd')">Überprüfen</button>
-                    <div class="feedback" id="feedback-8"></div>
-                </div>
-
-                <!-- Synonym 4 -->
-                <div class="question-block" data-question="9">
-                    <span class="question-number">Frage 9</span>
-                    <div class="question-text">Synonym für "ehrgeizig" oder "anspruchsvoll" (siehe Zeile 4):</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="konkret">
-                            <span>konkret</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="separat">
-                            <span>separat</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="ambitioniert">
-                            <span>ambitioniert</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q9" value="prekär">
-                            <span>prekär</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(9, 'mc', 'ambitioniert')">Überprüfen</button>
-                    <div class="feedback" id="feedback-9"></div>
-                </div>
-
-                <!-- Synonym 5 -->
-                <div class="question-block" data-question="10">
-                    <span class="question-number">Frage 10</span>
-                    <div class="question-text">Synonym für "durchdacht" oder "raffiniert geplant" (siehe Zeile 28):</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="ausgeklügelt">
-                            <span>ausgeklügelt</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="benachteiligt">
-                            <span>benachteiligt</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="multiple">
-                            <span>multiple</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q10" value="separat">
-                            <span>separat</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(10, 'mc', 'ausgeklügelt')">Überprüfen</button>
                     <div class="feedback" id="feedback-10"></div>
                 </div>
 
