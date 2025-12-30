@@ -1,1 +1,962 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schritt 4: Nachhaltiges Konsumverhalten</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbbf24 0%, #fb923c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .lesson-content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #fb923c;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #78350f;
+        }
+
+        h2 {
+            color: #f97316;
+            margin: 30px 0 15px 0;
+            font-size: 1.6em;
+        }
+
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Sustainability Aspects Table */
+        .sustainability-table {
+            background: white;
+            border: 3px solid #fb923c;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .sustainability-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sustainability-table th {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        .sustainability-table td {
+            padding: 15px;
+            border-bottom: 1px solid #fde68a;
+            color: #78350f;
+        }
+
+        .sustainability-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .aspect-title {
+            font-weight: bold;
+            color: #f97316;
+            width: 200px;
+        }
+
+        /* Situation Cards */
+        .situation-container {
+            background: #fff7ed;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .situation-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .situation-number {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .situation-emoji {
+            font-size: 3em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .situation-text {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .journal-section {
+            background: #fef3c7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .journal-section h4 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .journal-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin: 10px 0;
+        }
+
+        .journal-textarea:focus {
+            outline: none;
+            border-color: #fb923c;
+            box-shadow: 0 0 10px rgba(251, 146, 60, 0.2);
+        }
+
+        /* Option Selection */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option-card {
+            background: white;
+            border: 3px solid #fde68a;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .option-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(251, 146, 60, 0.3);
+        }
+
+        .option-card.selected {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #fb923c;
+            border-width: 4px;
+        }
+
+        .option-title {
+            font-weight: bold;
+            color: #f97316;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .option-description {
+            color: #78350f;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        /* Sustainability Badges */
+        .sustainability-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .badge.ecological {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .badge.economic {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #3b82f6;
+        }
+
+        .badge.social {
+            background: #fce7f3;
+            color: #9f1239;
+            border: 2px solid #ec4899;
+        }
+
+        .badge.inactive {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border: 2px solid #d1d5db;
+            opacity: 0.5;
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #fb923c;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box h4 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .feedback-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-analyze {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .saved-indicator {
+            color: #f97316;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Score Display */
+        .progress-box {
+            background: white;
+            border: 3px solid #fb923c;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .progress-box h3 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .progress-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fb923c;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header h1 {
+                font-size: 1.8em;
+            }
+
+            .lesson-content {
+                padding: 20px;
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
+            <h1>🛒 Nachhaltiges Konsumverhalten</h1>
+        </div>
+
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>🎯 Ziel:</strong> Lernen Sie, nachhaltige Kaufentscheidungen zu treffen, die ökologische, ökonomische und soziale Aspekte berücksichtigen.</p>
+            </div>
+
+            <h2>📊 Die drei Aspekte der Nachhaltigkeit</h2>
+
+            <div class="sustainability-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Aspekte der Nachhaltigkeit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="aspect-title">🌿 Ökologische Nachhaltigkeit</td>
+                            <td>Die Natur und die Umwelt sollen für die nachkommenden Generationen erhalten bleiben. <em>Beispiele:</em> Artenvielfalt, Klimaschutz, schonender Umgang mit der natürlichen Umgebung</td>
+                        </tr>
+                        <tr>
+                            <td class="aspect-title">💰 Ökonomische Nachhaltigkeit</td>
+                            <td>Die Wirtschaft soll so angelegt sein, dass sie dauerhaft eine tragfähige Grundlage für Erwerb und Wohlstand bietet. <em>Beispiele:</em> Schutz der Ressourcen vor Ausbeutung, Schaffung von Arbeitsplätzen</td>
+                        </tr>
+                        <tr>
+                            <td class="aspect-title">👥 Soziale Nachhaltigkeit</td>
+                            <td>Die Gesellschaft soll sich so entwickeln, dass alle Mitglieder der Gemeinschaft an dieser Entwicklung teilhaben können. <em>Beispiele:</em> sozialer Ausgleich, lebenswerte Gesellschaft für alle</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>💭 Ihre Kaufsituationen</h2>
+
+            <div class="situation-container">
+                <!-- Situation 1: Smartphone -->
+                <div class="situation-card" id="situation-1">
+                    <span class="situation-number">Situation 1</span>
+                    <div class="situation-emoji">📱</div>
+                    <div class="situation-text">
+                        Ihr Smartphone macht nicht mehr die besten Fotos und der Akku hält nur noch kurz. Sie überlegen sich, was Sie tun können.
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee: Was fällt Ihnen spontan ein?</h4>
+                        <textarea class="journal-textarea" id="s1-idea" placeholder="Notieren Sie Ihre erste Idee..." oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option und analysieren Sie deren Nachhaltigkeit:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(1, 'neu')">
+                                <div class="option-title">📦 Neues Smartphone kaufen</div>
+                                <div class="option-description">Das neueste Modell mit bester Kamera</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'guenstig')">
+                                <div class="option-title">💸 Günstiges neues Gerät</div>
+                                <div class="option-description">Budget-Smartphone, 200-300 CHF</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'reparieren')">
+                                <div class="option-title">🔧 Reparieren lassen</div>
+                                <div class="option-description">Akku wechseln, eventuell Kamera reparieren</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'secondhand')">
+                                <div class="option-title">♻️ Gebrauchtes Gerät</div>
+                                <div class="option-description">Second-Hand oder refurbished kaufen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'fairphone')">
+                                <div class="option-title">🌍 Fairphone</div>
+                                <div class="option-description">Nachhaltiges, reparierbares Smartphone</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-1"></div>
+
+                        <button class="btn-analyze" onclick="analyzeChoice(1)" id="analyze-1">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion: Was haben Sie über nachhaltige Alternativen gelernt?</h4>
+                        <textarea class="journal-textarea" id="s1-reflection" placeholder="Was würden Sie jetzt tun? Welche Aspekte der Nachhaltigkeit sind Ihnen wichtig?" oninput="autoSave()"></textarea>
+                    </div>
+                </div>
+
+                <!-- Situation 2: Kleidung -->
+                <div class="situation-card" id="situation-2">
+                    <span class="situation-number">Situation 2</span>
+                    <div class="situation-emoji">🧥</div>
+                    <div class="situation-text">
+                        Sie sehen in einem Geschäft eine schicke Jacke, die Ihnen sehr gut gefällt. Sie überlegen, ob und wie Sie diese Jacke bekommen können.
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s2-idea" placeholder="Was würden Sie spontan tun?" oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(2, 'fastfashion')">
+                                <div class="option-title">🏃 Fast Fashion kaufen</div>
+                                <div class="option-description">Günstig bei H&M, Zara, Shein</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'marke')">
+                                <div class="option-title">✨ Marken-Jacke</div>
+                                <div class="option-description">Teuer, gute Qualität, lange haltbar</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'brockenstube')">
+                                <div class="option-title">🏪 Brockenstube</div>
+                                <div class="option-description">Second-Hand kaufen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'tausch')">
+                                <div class="option-title">🔄 Kleidertausch</div>
+                                <div class="option-description">Mit Freunden tauschen oder Tauschbörse</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'fairtrade')">
+                                <div class="option-title">🌱 Fair Trade Mode</div>
+                                <div class="option-description">Bio-Baumwolle, faire Arbeitsbedingungen</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-2"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(2)" id="analyze-2">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s2-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
+                </div>
+
+                <!-- Situation 3: Putzmittel -->
+                <div class="situation-card" id="situation-3">
+                    <span class="situation-number">Situation 3</span>
+                    <div class="situation-emoji">🧼</div>
+                    <div class="situation-text">
+                        Sie möchten im Haushalt putzen und brauchen Reinigungsmittel. Welche Option wählen Sie?
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s3-idea" placeholder="Welche Putzmittel würden Sie kaufen?" oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(3, 'standard')">
+                                <div class="option-title">🧴 Standard-Putzmittel</div>
+                                <div class="option-description">Günstig im Supermarkt, in Plastikflaschen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'marke-plastik')">
+                                <div class="option-title">✨ Markenprodukt</div>
+                                <div class="option-description">Teurer, gute Wirkung, Plastikverpackung</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'bio')">
+                                <div class="option-title">🌿 Bio-Putzmittel</div>
+                                <div class="option-description">Biologisch abbaubar, ohne Plastik</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'refill')">
+                                <div class="option-title">♻️ Nachfüllstation</div>
+                                <div class="option-description">Eigene Flasche auffüllen, Unverpackt-Laden</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'selbst')">
+                                <div class="option-title">🏠 Selbst herstellen</div>
+                                <div class="option-description">Mit Essig, Natron, Zitronensäure</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-3"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(3)" id="analyze-3">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s3-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
+                </div>
+
+                <!-- Situation 4: Festtagsessen -->
+                <div class="situation-card" id="situation-4">
+                    <span class="situation-number">Situation 4</span>
+                    <div class="situation-emoji">🍽️</div>
+                    <div class="situation-text">
+                        Sie planen ein leckeres Festtagsessen für Ihre Familie. Was kommt auf den Tisch?
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s4-idea" placeholder="Was würden Sie kochen?" oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(4, 'steak')">
+                                <div class="option-title">🥩 Argentinisches Steak</div>
+                                <div class="option-description">Importiertes Rindfleisch</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'bio-fleisch')">
+                                <div class="option-title">🐄 Bio-Fleisch regional</div>
+                                <div class="option-description">Vom lokalen Bauernhof</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'fisch')">
+                                <div class="option-title">🐟 Fisch</div>
+                                <div class="option-description">Lachs oder Forelle</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'vegetarisch')">
+                                <div class="option-title">🥗 Vegetarisches Menü</div>
+                                <div class="option-description">Mit lokalem Gemüse und Käse</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'vegan')">
+                                <div class="option-title">🌱 Veganes Festessen</div>
+                                <div class="option-description">Rein pflanzlich, regional und saisonal</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-4"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(4)" id="analyze-4">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s4-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-box">
+                <h3>Ihr Fortschritt</h3>
+                <div class="progress-number" id="progressDisplay">0 / 4 Situationen analysiert</div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
+                </button>
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    📄 PDF herunterladen
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschließen und weiter →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOptions = {};
+        let analyzedCount = 0;
+
+        const optionData = {
+            1: { // Smartphone
+                'neu': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Neues Smartphone</h4><p><strong>✓ Ökonomisch:</strong> Unterstützt Wirtschaft und Arbeitsplätze</p><p><strong>✗ Ökologisch:</strong> Hoher Ressourcenverbrauch, Elektroschrott, CO₂-Emissionen bei Produktion</p><p><strong>✗ Sozial:</strong> Oft problematische Arbeitsbedingungen in der Produktion</p><p><em>💡 Tipp: Ein Smartphone zu reparieren spart ca. 50kg CO₂ im Vergleich zum Neukauf!</em></p>'
+                },
+                'guenstig': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Günstiges Smartphone</h4><p><strong>✓ Ökonomisch:</strong> Kostengünstig, erschwinglich</p><p><strong>✗ Ökologisch:</strong> Oft kürzere Lebensdauer, mehr Elektroschrott</p><p><strong>✗ Sozial:</strong> Häufig schlechte Produktionsbedingungen</p><p><em>💡 Bedenken Sie: Günstige Geräte halten oft nur 1-2 Jahre und müssen dann ersetzt werden.</em></p>'
+                },
+                'reparieren': {
+                    badges: ['ecological', 'economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Reparatur</h4><p><strong>✓✓ Ökologisch:</strong> Keine neuen Ressourcen nötig, weniger Elektroschrott, geringer CO₂-Fußabdruck</p><p><strong>✓ Ökonomisch:</strong> Oft günstiger als Neukauf, lokale Reparaturbetriebe werden unterstützt</p><p><strong>~ Sozial:</strong> Unterstützt lokales Handwerk</p><p><em>💡 Sehr gute Wahl! Reparieren ist fast immer die nachhaltigste Option.</em></p>'
+                },
+                'secondhand': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Second-Hand Gerät</h4><p><strong>✓✓ Ökologisch:</strong> Keine Neuproduktion, verlängerte Lebensdauer, reduzierter Elektroschrott</p><p><strong>✓ Ökonomisch:</strong> Günstiger Preis, gutes Preis-Leistungs-Verhältnis</p><p><strong>✓ Sozial:</strong> Fördert Kreislaufwirtschaft und soziale Projekte (wenn über gemeinnützige Organisationen)</p><p><em>💡 Exzellente Wahl! Refurbished Geräte sind oft wie neu und sparen bis zu 70% CO₂.</em></p>'
+                },
+                'fairphone': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fairphone</h4><p><strong>✓✓ Ökologisch:</strong> Langlebig, reparierbar, recycelte Materialien</p><p><strong>✓ Ökonomisch:</strong> Höherer Anschaffungspreis, aber langfristig günstiger durch Reparierbarkeit</p><p><strong>✓✓ Sozial:</strong> Faire Arbeitsbedingungen, konfliktfreie Materialien</p><p><em>💡 Beste Wahl bei Neukauf! Fairphone berücksichtigt alle drei Nachhaltigkeitsaspekte.</em></p>'
+                }
+            },
+            2: { // Kleidung
+                'fastfashion': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fast Fashion</h4><p><strong>✓ Ökonomisch:</strong> Sehr günstig, erschwinglich</p><p><strong>✗✗ Ökologisch:</strong> Hoher Wasserverbrauch, Chemikalien, kurze Lebensdauer, viel Abfall</p><p><strong>✗✗ Sozial:</strong> Oft menschenunwürdige Arbeitsbedingungen, Niedrigstlöhne</p><p><em>💡 Wussten Sie? Für ein T-Shirt werden ca. 2.700 Liter Wasser benötigt!</em></p>'
+                },
+                'marke': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Marken-Jacke</h4><p><strong>✓ Ökonomisch:</strong> Langfristige Investition, gute Qualität, lange Lebensdauer</p><p><strong>~ Ökologisch:</strong> Länger nutzbar als Fast Fashion, aber trotzdem Neuproduktion</p><p><strong>~ Sozial:</strong> Variiertje nach Marke - nicht alle Marken produzieren fair</p><p><em>💡 Tipp: Achten Sie auf Nachhaltigkeits-Zertifikate wie GOTS oder Fair Wear Foundation.</em></p>'
+                },
+                'brockenstube': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Brockenstube</h4><p><strong>✓✓ Ökologisch:</strong> Keine Neuproduktion, verlängerte Lebensdauer, kein zusätzlicher Ressourcenverbrauch</p><p><strong>✓✓ Ökonomisch:</strong> Sehr günstig, gutes Preis-Leistungs-Verhältnis</p><p><strong>✓✓ Sozial:</strong> Unterstützt oft soziale Projekte und gemeinnützige Organisationen</p><p><em>💡 Hervorragende Wahl! Second-Hand-Kleidung spart bis zu 80% CO₂.</em></p>'
+                },
+                'tausch': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Kleidertausch</h4><p><strong>✓✓ Ökologisch:</strong> Perfekte Kreislaufwirtschaft, null neue Ressourcen</p><p><strong>✓ Ökonomisch:</strong> Komplett kostenlos</p><p><strong>✓✓ Sozial:</strong> Stärkt Gemeinschaft, fördert Teilen statt Besitzen</p><p><em>💡 Perfekt! Kleidertausch ist die nachhaltigste Option überhaupt.</em></p>'
+                },
+                'fairtrade': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fair Trade Mode</h4><p><strong>✓✓ Ökologisch:</strong> Bio-Materialien, umweltschonende Produktion, langlebig</p><p><strong>~ Ökonomisch:</strong> Höherer Preis, aber faire Bezahlung entlang der Lieferkette</p><p><strong>✓✓ Sozial:</strong> Faire Löhne, gute Arbeitsbedingungen, keine Kinderarbeit</p><p><em>💡 Sehr gute Wahl bei Neukauf! Fair Trade berücksichtigt Mensch und Umwelt.</em></p>'
+                }
+            },
+            3: { // Putzmittel
+                'standard': {
+                    badges: [],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Standard-Putzmittel</h4><p><strong>✓ Ökonomisch:</strong> Günstig und überall verfügbar</p><p><strong>✗✗ Ökologisch:</strong> Oft chemische Inhaltsstoffe, Plastikverpackung, belastet Gewässer</p><p><strong>✗ Sozial:</strong> Keine besonderen sozialen Aspekte</p><p><em>💡 Bedenken Sie: Viele Putzmittel enthalten Mikroplastik und schädliche Chemikalien.</em></p>'
+                },
+                'marke-plastik': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Marken-Putzmittel</h4><p><strong>✓ Ökonomisch:</strong> Gute Reinigungswirkung, ergiebig</p><p><strong>✗ Ökologisch:</strong> Plastikverpackung, oft chemische Inhaltsstoffe</p><p><strong>~ Sozial:</strong> Keine besonderen sozialen Aspekte</p><p><em>💡 Tipp: Auch teure Marken sind nicht automatisch umweltfreundlicher.</em></p>'
+                },
+                'bio': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Bio-Putzmittel</h4><p><strong>✓✓ Ökologisch:</strong> Biologisch abbaubar, keine Mikroplastik, oft ohne Plastik verpackt</p><p><strong>~ Ökonomisch:</strong> Etwas teurer, aber oft konzentrierter und ergiebiger</p><p><strong>✓ Sozial:</strong> Oft faire Produktion, gesünder für Anwender</p><p><em>💡 Sehr gute Wahl! Bio-Putzmittel schützen Gewässer und Gesundheit.</em></p>'
+                },
+                'refill': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Nachfüllstation</h4><p><strong>✓✓ Ökologisch:</strong> Kein Verpackungsmüll, reduzierter Transport, wiederverwendbare Behälter</p><p><strong>✓ Ökonomisch:</strong> Oft günstiger pro Liter, langfristig Geld sparen</p><p><strong>✓ Sozial:</strong> Unterstützt lokale Unverpackt-Läden, Zero-Waste-Bewegung</p><p><em>💡 Exzellente Wahl! Refill-Systeme vermeiden bis zu 95% Verpackungsmüll.</em></p>'
+                },
+                'selbst': {
+                    badges: ['ecological', 'economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Selbst herstellen</h4><p><strong>✓✓ Ökologisch:</strong> Natürliche Zutaten, keine Chemikalien, minimaler Verpackungsmüll</p><p><strong>✓✓ Ökonomisch:</strong> Sehr günstig, Zutaten sind preiswert</p><p><strong>✓ Sozial:</strong> Gesünder für Sie und Ihre Familie</p><p><em>💡 Perfekt! Mit Essig, Natron und Zitronensäure reinigen Sie alles natürlich und günstig.</em></p>'
+                }
+            },
+            4: { // Festessen
+                'steak': {
+                    badges: [],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Importiertes Rindfleisch</h4><p><strong>~ Ökonomisch:</strong> Unterstützt internationale Landwirtschaft</p><p><strong>✗✗ Ökologisch:</strong> Sehr hoher CO₂-Fußabdruck (15kg CO₂ pro kg Rindfleisch), langer Transport, Regenwaldabholzung</p><p><strong>✗ Sozial:</strong> Oft problematische Arbeitsbedingungen</p><p><em>💡 Wussten Sie? Rindfleisch hat den höchsten CO₂-Fußabdruck aller Lebensmittel.</em></p>'
+                },
+                'bio-fleisch': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Regionales Bio-Fleisch</h4><p><strong>✓ Ökologisch:</strong> Artgerechte Haltung, weniger Emissionen als konventionell, kurze Transportwege</p><p><strong>✓ Ökonomisch:</strong> Unterstützt lokale Bauern, höhere Qualität</p><p><strong>✓ Sozial:</strong> Faire Arbeitsbedingungen, Tierwohl</p><p><em>💡 Gute Wahl! Wenn Fleisch, dann bio und regional. Aber in Maßen genießen.</em></p>'
+                },
+                'fisch': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fisch</h4><p><strong>~ Ökonomisch:</strong> Je nach Herkunft unterschiedlich</p><p><strong>~ Ökologisch:</strong> Besser als Rindfleisch, aber: Überfischung ist ein Problem. Achten Sie auf MSC-Siegel</p><p><strong>~ Sozial:</strong> Abhängig von Fangmethode und Herkunft</p><p><em>💡 Tipp: Schweizer Forelle oder Bio-Lachs aus Europa sind bessere Optionen.</em></p>'
+                },
+                'vegetarisch': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Vegetarisches Menü</h4><p><strong>✓✓ Ökologisch:</strong> Deutlich geringerer CO₂-Fußabdruck (ca. 75% weniger als Fleisch), weniger Wasserverbrauch</p><p><strong>✓ Ökonomisch:</strong> Regionales Gemüse ist oft günstiger, unterstützt lokale Landwirtschaft</p><p><strong>✓ Sozial:</strong> Gesund, nachhaltig, tierleidfrei</p><p><em>💡 Hervorragend! Vegetarische Ernährung ist eine der wirksamsten Klimaschutz-Maßnahmen.</em></p>'
+                },
+                'vegan': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Veganes Festessen</h4><p><strong>✓✓ Ökologisch:</strong> Geringster CO₂-Fußabdruck (bis zu 90% weniger als Fleisch), minimal Wasserverbrauch, regional und saisonal</p><p><strong>✓ Ökonomisch:</strong> Saisonales Gemüse ist günstig, unterstützt lokale Bio-Landwirtschaft</p><p><strong>✓✓ Sozial:</strong> Maximal ressourcenschonend, gesund, gerecht</p><p><em>💡 Perfekt! Vegane Ernährung ist die nachhaltigste Option für Mensch, Tier und Klima.</em></p>'
+                }
+            }
+        };
+
+        function selectOption(situation, option) {
+            // Remove previous selection
+            document.querySelectorAll(`#situation-${situation} .option-card`).forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            event.target.closest('.option-card').classList.add('selected');
+
+            // Store selection
+            selectedOptions[situation] = option;
+
+            // Hide previous feedback
+            const feedbackBox = document.getElementById(`feedback-${situation}`);
+            feedbackBox.classList.remove('show');
+            feedbackBox.innerHTML = '';
+
+            // Reset and enable analyze button
+            const analyzeBtn = document.getElementById(`analyze-${situation}`);
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = 'Meine Wahl analysieren';
+            analyzeBtn.style.background = 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)';
+            
+            // If it was counted before, we need to uncount it
+            if (analyzeBtn.classList.contains('counted')) {
+                analyzeBtn.classList.remove('counted');
+                analyzedCount--;
+                updateProgress();
+            }
+        }
+
+        function analyzeChoice(situation) {
+            const option = selectedOptions[situation];
+            if (!option) {
+                alert('Bitte wählen Sie zuerst eine Option aus.');
+                return;
+            }
+
+            const data = optionData[situation][option];
+            const feedbackBox = document.getElementById(`feedback-${situation}`);
+            const analyzeBtn = document.getElementById(`analyze-${situation}`);
+
+            // Show feedback
+            feedbackBox.innerHTML = data.feedback;
+
+            // Add badges
+            const badgesHtml = `
+                <div class="sustainability-badges">
+                    <div class="badge ecological ${data.badges.includes('ecological') ? '' : 'inactive'}">🌿 Ökologisch</div>
+                    <div class="badge economic ${data.badges.includes('economic') ? '' : 'inactive'}">💰 Ökonomisch</div>
+                    <div class="badge social ${data.badges.includes('social') ? '' : 'inactive'}">👥 Sozial</div>
+                </div>
+            `;
+
+            feedbackBox.innerHTML = badgesHtml + feedbackBox.innerHTML;
+            feedbackBox.classList.add('show');
+
+            // Disable analyze button
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '✓ Analysiert';
+            analyzeBtn.style.background = '#10b981';
+
+            // Update progress
+            if (!analyzeBtn.classList.contains('counted')) {
+                analyzedCount++;
+                analyzeBtn.classList.add('counted');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progressDisplay').textContent = `${analyzedCount} / 4 Situationen analysiert`;
+        }
+
+        function autoSave() {
+            const data = {
+                s1_idea: document.getElementById('s1-idea').value,
+                s1_reflection: document.getElementById('s1-reflection').value,
+                s2_idea: document.getElementById('s2-idea').value,
+                s2_reflection: document.getElementById('s2-reflection').value,
+                s3_idea: document.getElementById('s3-idea').value,
+                s3_reflection: document.getElementById('s3-reflection').value,
+                s4_idea: document.getElementById('s4-idea').value,
+                s4_reflection: document.getElementById('s4-reflection').value,
+                selectedOptions: selectedOptions,
+                analyzedCount: analyzedCount
+            };
+
+            let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            if (!progress.texts) progress.texts = {};
+            progress.texts['4'] = JSON.stringify(data);
+            localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+        }
+
+        function loadData() {
+            const progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            if (progress.texts && progress.texts['4']) {
+                const data = JSON.parse(progress.texts['4']);
+                
+                if (data.s1_idea) document.getElementById('s1-idea').value = data.s1_idea;
+                if (data.s1_reflection) document.getElementById('s1-reflection').value = data.s1_reflection;
+                if (data.s2_idea) document.getElementById('s2-idea').value = data.s2_idea;
+                if (data.s2_reflection) document.getElementById('s2-reflection').value = data.s2_reflection;
+                if (data.s3_idea) document.getElementById('s3-idea').value = data.s3_idea;
+                if (data.s3_reflection) document.getElementById('s3-reflection').value = data.s3_reflection;
+                if (data.s4_idea) document.getElementById('s4-idea').value = data.s4_idea;
+                if (data.s4_reflection) document.getElementById('s4-reflection').value = data.s4_reflection;
+
+                if (data.selectedOptions) selectedOptions = data.selectedOptions;
+                if (data.analyzedCount) {
+                    analyzedCount = data.analyzedCount;
+                    updateProgress();
+                }
+            }
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Nachhaltiges Konsumverhalten", 20, 20);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            doc.text(`Analysierte Situationen: ${analyzedCount}/4`, 20, 36);
+
+            let yPos = 50;
+
+            const situations = [
+                {num: 1, title: 'Smartphone', idea: 's1-idea', reflection: 's1-reflection'},
+                {num: 2, title: 'Kleidung', idea: 's2-idea', reflection: 's2-reflection'},
+                {num: 3, title: 'Putzmittel', idea: 's3-idea', reflection: 's3-reflection'},
+                {num: 4, title: 'Festtagsessen', idea: 's4-idea', reflection: 's4-reflection'}
+            ];
+
+            situations.forEach(sit => {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text(`Situation ${sit.num}: ${sit.title}`, 20, yPos);
+                yPos += 8;
+
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+
+                const idea = document.getElementById(sit.idea).value;
+                if (idea) {
+                    doc.text("Erste Idee:", 20, yPos);
+                    yPos += 5;
+                    const ideaLines = doc.splitTextToSize(idea, 170);
+                    ideaLines.forEach(line => {
+                        if (yPos > 280) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, 25, yPos);
+                        yPos += 5;
+                    });
+                    yPos += 3;
+                }
+
+                const reflection = document.getElementById(sit.reflection).value;
+                if (reflection) {
+                    doc.text("Reflexion:", 20, yPos);
+                    yPos += 5;
+                    const refLines = doc.splitTextToSize(reflection, 170);
+                    refLines.forEach(line => {
+                        if (yPos > 280) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, 25, yPos);
+                        yPos += 5;
+                    });
+                }
+
+                yPos += 8;
+            });
+
+            doc.save('Lernjournal_Schritt4_Nachhaltiges_Konsumverhalten.pdf');
+        }
+
+        function completeStep() {
+            if (analyzedCount < 4) {
+                const confirm = window.confirm(`Sie haben bisher ${analyzedCount} von 4 Situationen analysiert. Möchten Sie den Schritt trotzdem abschließen?`);
+                if (!confirm) return;
+            }
+
+            autoSave();
+
+            let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+
+            if (!progress.completedPoints.includes(4)) {
+                progress.completedPoints.push(4);
+                progress.currentPoint = 5;
+                localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+            }
+
+            alert(`✓ Schritt 4 abgeschlossen!\n\nSie haben ${analyzedCount} von 4 Situationen analysiert.`);
+            window.location.href = 'index.html';
+        }
+
+        function returnToMain() {
+            autoSave();
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+    </script>
+</body>
+</html>
