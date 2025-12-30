@@ -585,6 +585,7 @@
             <div class="video-container">
                 <h3>🎥 Video: Planetare Belastungsgrenzen erklärt</h3>
                 <p style="color: #78350f; margin-bottom: 15px;">
+                    Schauen Sie sich das Video mindestens einmal vollständig an, bevor Sie mit den Fragen beginnen.
                 </p>
                 <div class="video-wrapper">
                     <iframe 
@@ -599,225 +600,12 @@
             <h2>📝 Hörverstehen: Fragen zum Video</h2>
 
             <div class="questions-container">
-                <!-- Frage 1: Wahr/Falsch -->
-                <div class="question-block" data-question="1">
-                    <span class="question-number">Frage 1</span>
-                    <div class="question-text">Wahr oder Falsch: Die Menschheit verdankt ihre Entwicklung unter anderem einem stabilen Klima und intakter Biodiversität.</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="wahr">
-                            <span>✓ Wahr</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="falsch">
-                            <span>✗ Falsch</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(1, 'mc', 'wahr')">Überprüfen</button>
-                    <div class="feedback" id="feedback-1"></div>
-                </div>
-
-                <!-- Frage 2: Textfeld -->
-                <div class="question-block" data-question="2">
-                    <span class="question-number">Frage 2</span>
-                    <div class="question-text">Wie heißt das Konzept der Forschenden? (auf Deutsch)</div>
-                    <div class="text-input-wrapper">
-                        <input type="text" class="text-input" id="q2-input" placeholder="Planetare...">
-                        <p class="hint-text">Vollständiger deutscher Begriff</p>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(2, 'text', ['planetare belastbarkeitsgrenzen', 'planetare belastungsgrenzen', 'belastbarkeitsgrenzen'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-2"></div>
-                </div>
-
-                <!-- Frage 3: Multiple Choice -->
-                <div class="question-block" data-question="3">
-                    <span class="question-number">Frage 3</span>
-                    <div class="question-text">Wie viele Bereiche sind für das Überleben der Menschheit unerlässlich?</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="7">
-                            <span>7 Bereiche</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="9">
-                            <span>9 Bereiche</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="12">
-                            <span>12 Bereiche</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(3, 'mc', '9')">Überprüfen</button>
-                    <div class="feedback" id="feedback-3"></div>
-                </div>
-
-                <!-- Frage 4: Mehrfachauswahl -->
-                <div class="question-block" data-question="4">
-                    <span class="question-number">Frage 4</span>
-                    <div class="question-text">Welche drei Belastungsgrenzen werden im Video explizit genannt? (Wählen Sie genau 3 Antworten)</div>
-                    <div class="checkbox-options">
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="ozonloch">
-                            <span>Ozonloch</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="biodiversitaet">
-                            <span>Verlust von Biodiversität</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="klimaerwaermung">
-                            <span>Klimaerwärmung</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="wasserverbrauch">
-                            <span>Wasserverbrauch weltweit</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="ueberduengung">
-                            <span>Überdüngung der Ökosysteme</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q4" value="plastik">
-                            <span>Plastikverschmutzung</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(4, 'checkbox', ['ozonloch', 'biodiversitaet', 'klimaerwaermung'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-4"></div>
-                </div>
-
-                <!-- Frage 5: Lückentext -->
-                <div class="question-block" data-question="5">
-                    <span class="question-number">Frage 5</span>
-                    <div class="question-text">Ergänzen Sie die Lücken:</div>
-                    <div class="cloze-text">
-                        <p style="line-height: 2; color: #78350f;">
-                            "Der aktuelle Status: <input type="text" class="cloze-input" id="q5a-input" placeholder="?" style="width: 60px;"> von neun Grenzen sind überschritten. Das bedeutet, wir verlassen den sicheren <input type="text" class="cloze-input" id="q5b-input" placeholder="?" style="width: 180px;"> und setzen unsere guten Lebensbedingungen aufs Spiel."
-                        </p>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(5, 'cloze', {a: ['4', 'vier'], b: ['handlungsraum', 'handlungs raum']})">Überprüfen</button>
-                    <div class="feedback" id="feedback-5"></div>
-                </div>
-
-                <!-- Frage 6: Dropdown -->
-                <div class="question-block" data-question="6">
-                    <span class="question-number">Frage 6</span>
-                    <div class="question-text">Was passiert im Golf von Mexiko aufgrund der Überdüngung?</div>
-                    <select class="dropdown-select" id="q6-select">
-                        <option value="">-- Bitte wählen --</option>
-                        <option value="tsunami">Es entstehen häufigere Tsunamis</option>
-                        <option value="bakterien">Bakterien verbrauchen den Sauerstoff im Wasser</option>
-                        <option value="temperatur">Die Wassertemperatur steigt extrem an</option>
-                        <option value="salz">Der Salzgehalt nimmt stark zu</option>
-                    </select>
-                    <button class="check-btn" onclick="checkQuestion(6, 'dropdown', 'bakterien')">Überprüfen</button>
-                    <div class="feedback" id="feedback-6"></div>
-                </div>
-
-                <!-- Frage 7: Wahr/Falsch -->
-                <div class="question-block" data-question="7">
-                    <span class="question-number">Frage 7</span>
-                    <div class="question-text">Wahr oder Falsch: Das Ozonloch konnte durch gutes Zusammenspiel von Wissenschaft, Wirtschaft und Behörden deutlich eingedämmt werden.</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="wahr">
-                            <span>✓ Wahr</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q7" value="falsch">
-                            <span>✗ Falsch</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'wahr')">Überprüfen</button>
-                    <div class="feedback" id="feedback-7"></div>
-                </div>
-
-                <!-- Frage 8: Reihenfolge -->
-                <div class="question-block" data-question="8">
-                    <span class="question-number">Frage 8</span>
-                    <div class="question-text">Bringen Sie die vier Bereiche in die Reihenfolge, wie sie im Video genannt werden:</div>
-                    <div class="sorting-area">
-                        <div class="sorting-instructions">Klicken Sie auf die Pfeile, um die Reihenfolge zu ändern:</div>
-                        <div class="sortable-list" id="sortable-list">
-                            <div class="sortable-item" data-id="1" data-order="3">
-                                <span class="item-text">Wirtschaft</span>
-                                <div class="sort-buttons">
-                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
-                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
-                                </div>
-                            </div>
-                            <div class="sortable-item" data-id="2" data-order="4">
-                                <span class="item-text">Gesellschaft</span>
-                                <div class="sort-buttons">
-                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
-                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
-                                </div>
-                            </div>
-                            <div class="sortable-item" data-id="3" data-order="1">
-                                <span class="item-text">Finanzbereich</span>
-                                <div class="sort-buttons">
-                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
-                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
-                                </div>
-                            </div>
-                            <div class="sortable-item" data-id="4" data-order="2">
-                                <span class="item-text">Politik</span>
-                                <div class="sort-buttons">
-                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
-                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(8, 'sorting', [3, 4, 1, 2])">Überprüfen</button>
-                    <div class="feedback" id="feedback-8"></div>
-                </div>
-
-                <!-- Frage 9: Mehrfachauswahl -->
-                <div class="question-block" data-question="9">
-                    <span class="question-number">Frage 9</span>
-                    <div class="question-text">Was brauchen wir laut Video, um zurück in den sicheren Handlungsraum zu kommen? (Wählen Sie alle zutreffenden)</div>
-                    <div class="checkbox-options">
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q9" value="investitionen">
-                            <span>Investitionsentscheide, die nicht in fossile Energieträger investieren</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q9" value="technologie">
-                            <span>Ausschließlich neue Technologien</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q9" value="unternehmen">
-                            <span>Unternehmen, die ihre Geschäftsmodelle auf Belastbarkeitsgrenzen ausrichten</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q9" value="konsum">
-                            <span>Konsumenten, die sich fragen, was sie wirklich benötigen</span>
-                        </label>
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="q9" value="verzicht">
-                            <span>Vollständigen Verzicht auf Wirtschaftswachstum</span>
-                        </label>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(9, 'checkbox', ['investitionen', 'unternehmen', 'konsum'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-9"></div>
-                </div>
-
-                <!-- Frage 10: Lückentext -->
-                <div class="question-block" data-question="10">
-                    <span class="question-number">Frage 10</span>
-                    <div class="question-text">Ergänzen Sie die Schlussaussage des Videos:</div>
-                    <div class="cloze-text">
-                        <p style="line-height: 2; color: #78350f;">
-                            "Wir haben nur eine <input type="text" class="cloze-input" id="q10a-input" placeholder="?" style="width: 100px;"> und die Ressourcen dieser Erde sind begrenzt. Was hingegen unerschöpflich ist, ist unsere <input type="text" class="cloze-input" id="q10b-input" placeholder="?" style="width: 140px;"> und Innovationskraft."
-                        </p>
-                    </div>
-                    <button class="check-btn" onclick="checkQuestion(10, 'cloze', {a: ['erde'], b: ['kreativität', 'kreativitaet']})">Überprüfen</button>
-                    <div class="feedback" id="feedback-10"></div>
-                </div>
+                <div id="current-question-display"></div>
 
                 <div class="score-display">
                     <h3>Ihre Punktzahl</h3>
                     <div class="score-number" id="scoreDisplay">0 / 10</div>
+                    <p style="color: #78350f; margin-top: 10px;">Frage <span id="questionProgress">1</span> von 10</p>
                 </div>
             </div>
 
@@ -828,7 +616,8 @@
                 </p>
                 <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
                     <li>Welche planetare Belastungsgrenze hat Sie am meisten überrascht oder beunruhigt?</li>
-                    <li>Welche Veränderungen in Wirtschaft, Politik und Gesellschaft halten Sie für am dringendsten?</li>
+                    <li>Was bedeutet es für Sie persönlich, dass bereits 6 von 9 Grenzen überschritten sind?</li>
+                    <li>Welche Veränderungen in Wirtschaft und Gesellschaft halten Sie für am dringendsten?</li>
                 </ul>
                 <textarea 
                     id="portfolio-text" 
@@ -1017,13 +806,31 @@
                 feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
             } else {
                 feedback.className = 'feedback incorrect show';
-                if (type === 'text') {
+                
+                // Spezifische Feedbacks für jede Frage
+                if (questionNum === 2) {
+                    feedback.innerHTML = `<strong>✗ Leider falsch.</strong> Die richtige Antwort lautet: <strong>"Planetare Belastbarkeitsgrenzen"</strong> (oder "Planetare Belastungsgrenzen")`;
+                } else if (questionNum === 4) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die drei im Video explizit genannten Grenzen sind: <strong>Ozonloch, Verlust von Biodiversität, Klimaerwärmung</strong>';
+                } else if (questionNum === 5) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort: <strong>"4"</strong> von neun Grenzen sind überschritten, wir verlassen den sicheren <strong>"Handlungsraum"</strong>';
+                } else if (questionNum === 6) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort: <strong>Bakterien verbrauchen den Sauerstoff im Wasser</strong> – dadurch sterben Meerestiere wie Fische und Krebse oder müssen abwandern';
+                } else if (questionNum === 8) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die korrekte Reihenfolge im Video: <strong>1. Finanzbereich, 2. Politik, 3. Wirtschaft, 4. Gesellschaft</strong>';
+                } else if (questionNum === 9) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die drei richtigen Antworten sind: <strong>(1)</strong> Investitionsentscheide ohne fossile Energieträger, <strong>(2)</strong> Unternehmen mit nachhaltigen Geschäftsmodellen, <strong>(3)</strong> Konsumenten, die hinterfragen was sie wirklich brauchen';
+                } else if (questionNum === 10) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort: Wir haben nur eine <strong>"Erde"</strong>, aber unsere <strong>"Kreativität"</strong> und Innovationskraft ist unerschöpflich';
+                } else if (type === 'text') {
                     const correctAnswerText = Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer;
-                    feedback.innerHTML = `<strong>✗ Leider falsch.</strong> Die richtige Antwort: "${correctAnswerText}"`;
+                    feedback.innerHTML = `<strong>✗ Leider falsch.</strong> Die richtige Antwort: <strong>"${correctAnswerText}"</strong>`;
                 } else if (type === 'sorting') {
-                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die korrekte Reihenfolge: Finanzbereich, Politik, Wirtschaft, Gesellschaft';
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die korrekte Reihenfolge: <strong>Finanzbereich, Politik, Wirtschaft, Gesellschaft</strong>';
+                } else if (type === 'checkbox') {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtigen Antworten wurden <span style="color: #10b981;">grün</span> markiert.';
                 } else {
-                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtigen Antworten wurden grün markiert.';
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort wurde <span style="color: #10b981;">grün</span> markiert.';
                 }
             }
 
