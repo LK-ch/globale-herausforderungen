@@ -399,7 +399,7 @@
             </div>
 
             <div class="flowchart-container">
-                <!-- Erste Reihe: Schritte 1, 2, 3 -->
+                <!-- Erste Reihe: Schritte 1, 2 -->
                 <div class="flow-row horizontal">
                     <div class="card active flow-card" onclick="openPoint(1)" data-step="1">
                         <div class="card-number">1</div>
@@ -418,37 +418,27 @@
                             <div class="card-title">Planetare Belastungsgrenzen</div>
                         </div>
                     </div>
-
-                    <div class="arrow-right">→</div>
-
-                    <div class="card flow-card" onclick="openPoint(3)" data-step="3">
-                        <div class="card-number">3</div>
-                        <div class="card-content">
-                            <div class="card-icon">📖</div>
-                            <div class="card-title">Nachhaltige Entwicklung</div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Pfeil nach unten zur zweiten Reihe -->
                 <div class="arrow-turn-down">
-                    <span style="float: right; margin-right: 200px;">↓</span>
+                    <span style="float: right; margin-right: 50px;">↓</span>
                 </div>
 
-                <!-- Zweite Reihe: Schritte 5, 4 (rückwärts) -->
+                <!-- Zweite Reihe: Schritte 4, 3 (rückwärts) -->
                 <div class="flow-row horizontal reverse">
-                    <div class="card flow-card highlight-final" onclick="openPoint(5)" data-step="5">
-                        <div class="card-number">5</div>
+                    <div class="card flow-card highlight-final" onclick="openPoint(4)" data-step="4">
+                        <div class="card-number">4</div>
                         <div class="card-content">
-                            <div class="card-icon">🎮</div>
-                            <div class="card-title">Lernspiel Konsumverhalten</div>
+                            <div class="card-icon">📖</div>
+                            <div class="card-title">17 Ziele für die nachhaltige Entwicklung</div>
                         </div>
                     </div>
 
                     <div class="arrow-left">←</div>
 
-                    <div class="card flow-card" onclick="openPoint(4)" data-step="4">
-                        <div class="card-number">4</div>
+                    <div class="card flow-card" onclick="openPoint(3)" data-step="3">
+                        <div class="card-number">3</div>
                         <div class="card-content">
                             <div class="card-icon">♻️</div>
                             <div class="card-title">Nachhaltiges Konsumverhalten</div>
@@ -479,8 +469,7 @@
                 '1': '',
                 '2': '',
                 '3': '',
-                '4': '',
-                '5': ''
+                '4': ''
             },
             images: {}
         };
@@ -492,7 +481,7 @@
                 
                 if (!learningProgress.texts) {
                     learningProgress.texts = {
-                        '1': '', '2': '', '3': '', '4': '', '5': ''
+                        '1': '', '2': '', '3': '', '4': ''
                     };
                 }
                 
@@ -509,8 +498,7 @@
                 1: 'schritt1.html',
                 2: 'schritt2.html',
                 3: 'schritt3.html',
-                4: 'schritt4.html',
-                5: 'schritt5.html'
+                4: 'schritt4.html'
             };
             
             window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
@@ -526,7 +514,7 @@
         }
 
         function updateUI() {
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 4; i++) {
                 const card = document.querySelector(`.card[data-step="${i}"]`);
                 if (!card) continue;
                 
@@ -541,7 +529,7 @@
                 }
             }
             
-            const totalPoints = 5;
+            const totalPoints = 4;
             const completedPoints = learningProgress.completedPoints.length;
             const progressPercent = (completedPoints / totalPoints) * 100;
             document.getElementById('progress-fill').style.width = progressPercent + '%';
@@ -554,7 +542,7 @@
                     completedPoints: [],
                     currentPoint: 1,
                     texts: {
-                        '1': '', '2': '', '3': '', '4': '', '5': ''
+                        '1': '', '2': '', '3': '', '4': ''
                     },
                     images: {}
                 };
