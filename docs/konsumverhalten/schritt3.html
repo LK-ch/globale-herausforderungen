@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schritt 3: Nachhaltige Entwicklung</title>
+    <title>Schritt 3: Spiel: Nachhaltiges Konsumverhalten</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -82,34 +82,46 @@
             transform: scale(1.05);
         }
 
-        /* Reading Text Box */
-        .reading-box {
-            background: #fff7ed;
+        /* Sustainability Aspects Table */
+        .sustainability-table {
+            background: white;
             border: 3px solid #fb923c;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            max-height: 500px;
-            overflow-y: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
         }
 
-        .reading-box h3 {
-            color: #f97316;
-            margin-bottom: 20px;
+        .sustainability-table table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .reading-box p {
+        .sustainability-table th {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        .sustainability-table td {
+            padding: 15px;
+            border-bottom: 1px solid #fde68a;
             color: #78350f;
-            margin-bottom: 15px;
-            line-height: 1.8;
         }
 
-        .reading-box strong {
+        .sustainability-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .aspect-title {
+            font-weight: bold;
             color: #f97316;
+            width: 200px;
         }
 
-        /* Questions Container */
-        .questions-container {
+        /* Situation Cards */
+        .situation-container {
             background: #fff7ed;
             border: 3px solid #fb923c;
             border-radius: 15px;
@@ -117,7 +129,7 @@
             margin: 30px 0;
         }
 
-        .question-block {
+        .situation-card {
             background: white;
             border-radius: 12px;
             padding: 25px;
@@ -125,7 +137,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .question-number {
+        .situation-number {
             background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             color: white;
             display: inline-block;
@@ -135,7 +147,13 @@
             margin-bottom: 15px;
         }
 
-        .question-text {
+        .situation-emoji {
+            font-size: 3em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .situation-text {
             font-size: 1.15em;
             font-weight: bold;
             color: #78350f;
@@ -143,293 +161,149 @@
             line-height: 1.5;
         }
 
-        /* Multiple Choice & Radio */
-        .mc-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .mc-option {
+        .journal-section {
             background: #fef3c7;
-            border: 2px solid #fde68a;
             border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-        }
-
-        .mc-option:hover:not(.disabled) {
-            border-color: #fb923c;
-            background: #fde68a;
-            transform: translateX(5px);
-        }
-
-        .mc-option input[type="radio"] {
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .mc-option.correct {
-            background: #d1fae5;
-            border-color: #10b981;
-        }
-
-        .mc-option.incorrect {
-            background: #fee2e2;
-            border-color: #ef4444;
-        }
-
-        .mc-option.disabled {
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        /* Text Input */
-        .text-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px;
-            border: 2px solid #fde68a;
-            border-radius: 8px;
-            font-size: 1em;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 10px 0;
-        }
-
-        .text-input:focus {
-            outline: none;
-            border-color: #fb923c;
-        }
-
-        .text-input.correct {
-            border-color: #10b981;
-            background: #d1fae5;
-        }
-
-        .text-input.incorrect {
-            border-color: #ef4444;
-            background: #fee2e2;
-        }
-
-        /* Check Button */
-        .check-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.2s;
-        }
-
-        .check-btn:hover:not(:disabled) {
-            transform: scale(1.05);
-        }
-
-        .check-btn:disabled {
-            background: #d1d5db;
-            cursor: not-allowed;
-        }
-
-        /* Feedback */
-        .feedback {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            display: none;
-            font-weight: bold;
-        }
-
-        .feedback.show {
-            display: block;
-        }
-
-        .feedback.correct {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .feedback.incorrect {
-            background: #fee2e2;
-            color: #991b1b;
-            border-left: 4px solid #ef4444;
-        }
-
-        /* SDG Game Styles */
-        .game-container {
-            background: white;
-            border-radius: 15px;
             padding: 20px;
-            margin: 20px 0;
-        }
-
-        .game-header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .game-header h3 {
-            color: #f97316;
-            font-size: 1.4em;
-            margin-bottom: 5px;
-        }
-
-        .sdg-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
-            gap: 8px;
             margin: 15px 0;
         }
 
-        .sdg-card {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 3px solid #fb923c;
-            border-radius: 8px;
-            padding: 8px 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .sdg-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
-        }
-
-        .sdg-card.selected {
-            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-            color: white;
-            border-color: #ea580c;
-        }
-
-        .sdg-number {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        .sdg-title {
-            font-size: 0.7em;
-            font-weight: bold;
-            line-height: 1.15;
-        }
-
-        .sdg-category {
-            font-size: 0.6em;
-            margin-top: 2px;
-            opacity: 0.8;
-        }
-
-        .scenario-box {
-            background: #fef3c7;
-            border: 3px solid #fb923c;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 12px 0;
-        }
-
-        .scenario-text {
-            font-size: 1em;
-            color: #78350f;
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-
-        .game-feedback {
-            margin-top: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .game-feedback.show {
-            display: block;
-        }
-
-        .game-feedback.correct {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .game-feedback.incorrect {
-            background: #fee2e2;
-            color: #991b1b;
-            border-left: 4px solid #ef4444;
-        }
-
-        .score-display {
-            background: white;
-            border: 3px solid #fb923c;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .score-display h3 {
+        .journal-section h4 {
             color: #f97316;
             margin-bottom: 10px;
         }
 
-        .score-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #fb923c;
-        }
-
-        /* Portfolio Box */
-        .portfolio-box {
-            background: #fef3c7;
-            border: 3px solid #fb923c;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-        }
-
-        .portfolio-box h3 {
-            color: #f97316;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-
-        .portfolio-box textarea {
+        .journal-textarea {
             width: 100%;
-            min-height: 150px;
+            min-height: 100px;
             padding: 15px;
             border: 2px solid #fde68a;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1em;
             resize: vertical;
-            margin-bottom: 15px;
+            margin: 10px 0;
         }
 
-        .portfolio-box textarea:focus {
+        .journal-textarea:focus {
             outline: none;
             border-color: #fb923c;
             box-shadow: 0 0 10px rgba(251, 146, 60, 0.2);
         }
 
-        .saved-indicator {
-            color: #f97316;
-            font-weight: bold;
-            display: none;
-            margin-top: 10px;
+        /* Option Selection */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
         }
 
+        .option-card {
+            background: white;
+            border: 3px solid #fde68a;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .option-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(251, 146, 60, 0.3);
+        }
+
+        .option-card.selected {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #fb923c;
+            border-width: 4px;
+        }
+
+        .option-title {
+            font-weight: bold;
+            color: #f97316;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .option-description {
+            color: #78350f;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        /* Sustainability Badges */
+        .sustainability-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .badge.ecological {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .badge.economic {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #3b82f6;
+        }
+
+        .badge.social {
+            background: #fce7f3;
+            color: #9f1239;
+            border: 2px solid #ec4899;
+        }
+
+        .badge.inactive {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border: 2px solid #d1d5db;
+            opacity: 0.5;
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #fb923c;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box h4 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .feedback-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
         .button-group {
             display: flex;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
@@ -465,30 +339,41 @@
         .btn-save {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 12px 30px;
         }
 
-        .hint-text {
-            font-size: 0.9em;
-            color: #92400e;
-            font-style: italic;
-            margin-top: 8px;
-        }
-
-        .next-scenario-btn {
-            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+        .btn-analyze {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            display: none;
+            width: 100%;
+            margin-top: 15px;
         }
 
-        .next-scenario-btn.show {
-            display: inline-block;
+        .saved-indicator {
+            color: #f97316;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Score Display */
+        .progress-box {
+            background: white;
+            border: 3px solid #fb923c;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .progress-box h3 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .progress-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fb923c;
         }
 
         @media (max-width: 768px) {
@@ -500,21 +385,8 @@
                 padding: 20px;
             }
 
-            .sdg-grid {
-                grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
-                gap: 6px;
-            }
-
-            .sdg-card {
-                padding: 6px 4px;
-            }
-
-            .sdg-number {
-                font-size: 1.1em;
-            }
-
-            .sdg-title {
-                font-size: 0.65em;
+            .option-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -523,293 +395,240 @@
     <div class="container">
         <div class="lesson-header">
             <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
-            <h1>📚 Nachhaltige Entwicklung & Agenda 2030</h1>
+            <h1>🛒 Nachhaltiges Konsumverhalten</h1>
         </div>
 
         <div class="lesson-content">
             <div class="info-box">
-                <p><strong>📋 Aufgabe:</strong> Lesen Sie den Text aufmerksam durch und beantworten Sie anschließend die Fragen zum Leseverstehen.</p>
+                <p><strong>🎯 Ziel:</strong> Lernen Sie, nachhaltige Kaufentscheidungen zu treffen, die ökologische, ökonomische und soziale Aspekte berücksichtigen.</p>
             </div>
 
-            <div class="reading-box">
-                <h3>📖 Lesetext: Die Agenda 2030</h3>
-                <p><strong>Wie die Welt nachhaltiger werden soll – und was die Schweiz damit zu tun hat</strong></p>
-                
-                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; overflow-x: auto;">
-                    <pre style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.95em; line-height: 1.6; color: #78350f; white-space: pre-wrap; word-wrap: normal; margin: 0;"><span style="color: #92400e;">(1)</span>  Stell dir vor, alle Länder der Welt setzen sich gemeinsam an einen Tisch und einigen sich: Bis 2030 wollen wir unseren
-<span style="color: #92400e;">(2)</span>  Planeten zu einem besseren Ort machen. Genau das ist im September 2015 passiert. Die Vereinten Nationen haben die Agenda
-<span style="color: #92400e;">(3)</span>  2030 verabschiedet – einen Plan mit 17 konkreten Zielen, der allen Menschen eine lebenswerte Zukunft ermöglichen soll.
-<span style="color: #92400e;">(4)</span>  Klingt <strong>ambitioniert</strong>? Ist es auch.
+            <h2>📊 Die drei Aspekte der Nachhaltigkeit</h2>
 
-<span style="color: #92400e;">(5)</span>  <strong>Nachhaltigkeit ist mehr als Recycling</strong>
-<span style="color: #92400e;">(6)</span>  Bevor wir tiefer einsteigen: Was bedeutet Nachhaltigkeit eigentlich? Viele denken da ans Klima oder an Mülltrennung. Das
-<span style="color: #92400e;">(7)</span>  stimmt zwar, greift aber zu kurz. Echte Nachhaltigkeit funktioniert nur, wenn drei Bereiche zusammenspielen: Umwelt,
-<span style="color: #92400e;">(8)</span>  Wirtschaft und Soziales. Alle drei müssen gleichzeitig berücksichtigt werden, sonst ist es keine wirkliche Nachhaltigkeit.
-<span style="color: #92400e;">(9)</span>  Eine Lösung, die zwar die Umwelt schützt, aber Menschen in die Armut treibt? Nicht nachhaltig. Ein Wirtschaftsmodell, das
-<span style="color: #92400e;">(10)</span> kurzfristig Gewinn bringt, aber den Planeten zerstört? Ebenfalls nicht nachhaltig.
-
-<span style="color: #92400e;">(11)</span> <strong>"Leave no one behind" – Niemand wird zurückgelassen</strong>
-<span style="color: #92400e;">(12)</span> Das Besondere an der Agenda 2030: Sie gilt für alle. Egal ob reiches Industrieland oder ärmeres Entwicklungsland – jedes
-<span style="color: #92400e;">(13)</span> Land hat Hausaufgaben zu machen. Das war neu. Früher gab es separate Ziele für verschiedene Ländergruppen, jetzt ziehen alle
-<span style="color: #92400e;">(14)</span> am selben Strang. Das Motto lautet "Leave no one behind". Besonders die ärmsten und benachteiligten Menschen sollen von den
-<span style="color: #92400e;">(15)</span> Veränderungen profitieren.
-
-<span style="color: #92400e;">(16)</span> <strong>Und was macht die Schweiz?</strong>
-<span style="color: #92400e;">(17)</span> Die Schweiz hat sich wie alle UNO-Mitgliedsstaaten verpflichtet, die Agenda 2030 umzusetzen. Dafür hat der Bundesrat die
-<span style="color: #92400e;">(18)</span> "Strategie Nachhaltige Entwicklung 2030" entwickelt, die festlegt, wo die Schweiz ihre Schwerpunkte setzt. Alle vier Jahre
-<span style="color: #92400e;">(19)</span> berichtet die Schweiz der UNO, wie weit sie gekommen ist.
-
-<span style="color: #92400e;">(20)</span> In einigen Bereichen läuft es gut: Gesundheit, Bildung, Beschäftigung und Innovation sind auf gutem Weg. Aber es gibt auch
-<span style="color: #92400e;">(21)</span> Schwachstellen. Der Ressourcenverbrauch ist zu hoch, beim Klimaschutz muss mehr passieren, und das Konsumverhalten der
-<span style="color: #92400e;">(22)</span> Schweizer:innen hat negative Auswirkungen auf andere Länder – zum Beispiel durch Importe, die unter schlechten Bedingungen
-<span style="color: #92400e;">(23)</span> produziert wurden.
-
-<span style="color: #92400e;">(24)</span> <strong>Konkrete Beispiele aus der Schweiz</strong>
-<span style="color: #92400e;">(25)</span> Es gibt aber auch positive Entwicklungen: In Köniz betreibt ein Restaurant ein <strong>ausgeklügeltes</strong> System, um Foodwaste zu
-<span style="color: #92400e;">(26)</span> vermeiden – 95 Prozent des verwendeten Gemüses ist "Zweitklassware", die sonst weggeworfen würde. Der Kanton Genf hat als
-<span style="color: #92400e;">(27)</span> erster Schweizer Kanton "Green Bonds" im Wert von 620 Millionen Franken ausgegeben, um nachhaltige Projekte zu finanzieren.
-<span style="color: #92400e;">(28)</span> Und in Bern gibt es einen "SDG Walk" – einen Rundgang durch die Stadt, der zeigt, wie die 17 Ziele konkret im Alltag aussehen
-<span style="color: #92400e;">(29)</span> können.
-
-<span style="color: #92400e;">(30)</span> <strong>Die <span style="text-decoration: underline;">ernüchternde</span> Halbzeitbilanz</strong>
-<span style="color: #92400e;">(31)</span> Wir sind jetzt bei Halbzeit angekommen – und ehrlich gesagt: Es sieht nicht gut aus. 2023 zeigte ein UN-Bericht, dass
-<span style="color: #92400e;">(32)</span> voraussichtlich nur etwa 15 Prozent der gesetzten Ziele erreicht werden. Die Corona-Pandemie hat vieles zurückgeworfen: 93
-<span style="color: #92400e;">(33)</span> Millionen Menschen mehr leben jetzt in extremer Armut als vor der Pandemie. Etwa 147 Millionen Kinder haben in den letzten
-<span style="color: #92400e;">(34)</span> zwei Jahren mehr als die Hälfte ihres Schulunterrichts verpasst. Frauen leben vielerorts immer noch in schwierigen
-<span style="color: #92400e;">(35)</span> Verhältnissen.
-
-<span style="color: #92400e;">(36)</span> Aber: Die Ziele sind noch erreichbar. Dafür müssen Projekte, finanzielle Hilfen und politische Maßnahmen in der
-<span style="color: #92400e;">(37)</span> verbleibenden Zeit deutlich effizienter und schneller umgesetzt werden.
-
-<span style="color: #92400e;">(38)</span> <strong>Was hat das mit uns zu tun?</strong>
-<span style="color: #92400e;">(39)</span> Du denkst jetzt vielleicht: "Klingt alles wichtig, aber was kann ich als einzelne Person schon tun?" Tatsächlich eine Menge.
-<span style="color: #92400e;">(40)</span> Jede Entscheidung zählt – ob du lokale Produkte kaufst, bewusst konsumierst oder dich fragst, ob du wirklich mehr Dinge
-<span style="color: #92400e;">(41)</span> besitzen musst oder ob das, was du hast, nachhaltiger sein sollte.
-
-<span style="color: #92400e;">(42)</span> Aber es geht nicht nur um individuelle Entscheidungen. Auch Unternehmen, die Wirtschaft und der Finanzsektor müssen umdenken.
-<span style="color: #92400e;">(43)</span> Die gute Nachricht: Immer mehr Firmen begreifen Nachhaltigkeit als Teil ihres Geschäftsmodells. Zudem fordern Kundinnen und
-<span style="color: #92400e;">(44)</span> Kunden dies zunehmend ein.
-
-<span style="color: #92400e;">(45)</span> Auch in der Bildung, Forschung und Innovation liegt großes Potenzial. Die Schweiz kann als reiches und entwickeltes Land mit
-<span style="color: #92400e;">(46)</span> innovativen Ansätzen vorangehen – und zeigen, dass nachhaltiges Wirtschaften nicht nur möglich, sondern auch zukunftsfähig ist.
-
-<span style="color: #92400e;">(47)</span> <strong>Realitätscheck: Warum ist es so schwierig?</strong>
-<span style="color: #92400e;">(48)</span> Der Optimismus von 2015 ist heute einer gewissen Ernüchterung gewichen. Die Welt ist mit <strong>multiplen</strong> Krisen konfrontiert –
-<span style="color: #92400e;">(49)</span> Pandemie, Kriege, Klimakrise. Das macht die Umsetzung der Agenda schwieriger. Aber genau deshalb ist sie so wichtig. Die
-<span style="color: #92400e;">(50)</span> Alternative wäre, weiterzumachen wie bisher – und das können wir uns schlicht nicht leisten.
-
-<span style="color: #92400e;">(51)</span> Die Agenda 2030 ist kein Nice-to-have, sondern eine Notwendigkeit. Sie zeigt, dass wir als globale Gemeinschaft verstanden
-<span style="color: #92400e;">(52)</span> haben: So geht es nicht weiter. Jetzt müssen wir nur noch entsprechend handeln – als Einzelpersonen, als Unternehmen, als
-<span style="color: #92400e;">(53)</span> Staaten. Die Zeit drängt, aber die Chance ist noch da.</pre>
-                </div>
+            <div class="sustainability-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Aspekte der Nachhaltigkeit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="aspect-title">🌿 Ökologische Nachhaltigkeit</td>
+                            <td>Die Natur und die Umwelt sollen für die nachkommenden Generationen erhalten bleiben. <em>Beispiele:</em> Artenvielfalt, Klimaschutz, schonender Umgang mit der natürlichen Umgebung</td>
+                        </tr>
+                        <tr>
+                            <td class="aspect-title">💰 Ökonomische Nachhaltigkeit</td>
+                            <td>Die Wirtschaft soll so angelegt sein, dass sie dauerhaft eine tragfähige Grundlage für Erwerb und Wohlstand bietet. <em>Beispiele:</em> Schutz der Ressourcen vor Ausbeutung, Schaffung von Arbeitsplätzen</td>
+                        </tr>
+                        <tr>
+                            <td class="aspect-title">👥 Soziale Nachhaltigkeit</td>
+                            <td>Die Gesellschaft soll sich so entwickeln, dass alle Mitglieder der Gemeinschaft an dieser Entwicklung teilhaben können. <em>Beispiele:</em> sozialer Ausgleich, lebenswerte Gesellschaft für alle</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="questions-container">
-                <!-- Teil A: Detailfragen -->
-                <h3 style="color: #f97316; margin-bottom: 20px;">Teil A: Fragen zum Text (5 Fragen)</h3>
+            <h2>💭 Ihre Kaufsituationen</h2>
 
-                <!-- Frage 1 -->
-                <div class="question-block" data-question="1">
-                    <span class="question-number">Frage 1</span>
-                    <div class="question-text">Wie viele konkrete Ziele umfasst die Agenda 2030?</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="12">
-                            <span>12 Ziele</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="17">
-                            <span>17 Ziele</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="20">
-                            <span>20 Ziele</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q1" value="25">
-                            <span>25 Ziele</span>
-                        </label>
+            <div class="situation-container">
+                <!-- Situation 1: Smartphone -->
+                <div class="situation-card" id="situation-1">
+                    <span class="situation-number">Situation 1</span>
+                    <div class="situation-emoji">📱</div>
+                    <div class="situation-text">
+                        Ihr Smartphone macht nicht mehr die besten Fotos und der Akku hält nur noch kurz. Sie überlegen sich, was Sie tun können.
                     </div>
-                    <button class="check-btn" onclick="checkQuestion(1, 'mc', '17')">Überprüfen</button>
-                    <div class="feedback" id="feedback-1"></div>
-                </div>
 
-                <!-- Frage 2 -->
-                <div class="question-block" data-question="2">
-                    <span class="question-number">Frage 2</span>
-                    <div class="question-text">Welche drei Bereiche müssen laut Text zusammenspielen, damit echte Nachhaltigkeit funktioniert?</div>
-                    <input type="text" class="text-input" id="q2-input" placeholder="z.B. Bereich 1, Bereich 2, Bereich 3">
-                    <p class="hint-text">Geben Sie alle drei Bereiche ein (Reihenfolge egal)</p>
-                    <button class="check-btn" onclick="checkQuestion(2, 'text', ['umwelt wirtschaft soziales', 'umwelt soziales wirtschaft', 'wirtschaft umwelt soziales', 'wirtschaft soziales umwelt', 'soziales umwelt wirtschaft', 'soziales wirtschaft umwelt'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-2"></div>
-                </div>
-
-                <!-- Frage 3 -->
-                <div class="question-block" data-question="3">
-                    <span class="question-number">Frage 3</span>
-                    <div class="question-text">Was ist laut Text neu an der Agenda 2030 im Vergleich zu früheren Zielsetzungen?</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="nur17">
-                            <span>Sie umfasst nur 17 statt mehr Ziele</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="alle">
-                            <span>Sie gilt für alle Länder, nicht nur für bestimmte Ländergruppen</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="schweiz">
-                            <span>Die Schweiz muss zum ersten Mal mitmachen</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q3" value="freiwillig">
-                            <span>Die Teilnahme ist freiwillig</span>
-                        </label>
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee: Was fällt Ihnen spontan ein?</h4>
+                        <textarea class="journal-textarea" id="s1-idea" placeholder="Notieren Sie Ihre erste Idee..." oninput="autoSave()"></textarea>
                     </div>
-                    <button class="check-btn" onclick="checkQuestion(3, 'mc', 'alle')">Überprüfen</button>
-                    <div class="feedback" id="feedback-3"></div>
-                </div>
 
-                <!-- Frage 4 -->
-                <div class="question-block" data-question="4">
-                    <span class="question-number">Frage 4</span>
-                    <div class="question-text">Wie viel Prozent der gesetzten Ziele werden laut UN-Bericht von 2023 voraussichtlich erreicht?</div>
-                    <input type="text" class="text-input" id="q4-input" placeholder="Zahl eingeben" style="max-width: 100px;">
-                    <p class="hint-text">Nur die Zahl eingeben (ohne %)</p>
-                    <button class="check-btn" onclick="checkQuestion(4, 'text', ['15', 'fünfzehn'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-4"></div>
-                </div>
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option und analysieren Sie deren Nachhaltigkeit:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(1, 'neu')">
+                                <div class="option-title">📦 Neues Smartphone kaufen</div>
+                                <div class="option-description">Das neueste Modell mit bester Kamera</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'guenstig')">
+                                <div class="option-title">💸 Günstiges neues Gerät</div>
+                                <div class="option-description">Budget-Smartphone, 200-300 CHF</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'reparieren')">
+                                <div class="option-title">🔧 Reparieren lassen</div>
+                                <div class="option-description">Akku wechseln, eventuell Kamera reparieren</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'secondhand')">
+                                <div class="option-title">♻️ Gebrauchtes Gerät</div>
+                                <div class="option-description">Second-Hand oder refurbished kaufen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1, 'fairphone')">
+                                <div class="option-title">🌍 Fairphone</div>
+                                <div class="option-description">Nachhaltiges, reparierbares Smartphone</div>
+                            </div>
+                        </div>
 
-                <!-- Frage 5: Global -->
-                <div class="question-block" data-question="5">
-                    <span class="question-number">Frage 5</span>
-                    <div class="question-text">Was ist die Hauptaussage des Textes?</div>
-                    <div class="mc-options">
-                        <label class="mc-option">
-                            <input type="radio" name="q5" value="recycling">
-                            <span>Recycling ist der wichtigste Schritt zur Nachhaltigkeit</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q5" value="schweiz">
-                            <span>Die Schweiz ist Vorreiter bei nachhaltiger Entwicklung</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q5" value="global">
-                            <span>Die Agenda 2030 ist ein globaler Plan für nachhaltige Entwicklung, der dringend umgesetzt werden muss</span>
-                        </label>
-                        <label class="mc-option">
-                            <input type="radio" name="q5" value="unmöglich">
-                            <span>Die Ziele der Agenda 2030 sind nicht mehr erreichbar</span>
-                        </label>
+                        <div class="feedback-box" id="feedback-1"></div>
+
+                        <button class="btn-analyze" onclick="analyzeChoice(1)" id="analyze-1">Meine Wahl analysieren</button>
                     </div>
-                    <button class="check-btn" onclick="checkQuestion(5, 'mc', 'global')">Überprüfen</button>
-                    <div class="feedback" id="feedback-5"></div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion: Was haben Sie über nachhaltige Alternativen gelernt?</h4>
+                        <textarea class="journal-textarea" id="s1-reflection" placeholder="Was würden Sie jetzt tun? Welche Aspekte der Nachhaltigkeit sind Ihnen wichtig?" oninput="autoSave()"></textarea>
+                    </div>
                 </div>
 
-                <!-- Teil B: Synonyme -->
-                <h3 style="color: #f97316; margin: 50px 0 20px 0; font-size: 1.4em; padding-top: 30px; border-top: 3px solid #fde68a;">Teil B: Wortschatz - Welches Wort steht im Text?</h3>
-                <p style="color: #78350f; margin-bottom: 20px; font-size: 1.05em;"><strong>Suchen Sie in den angegebenen Zeilen nach einem Wort mit der beschriebenen Bedeutung:</strong></p>
+                <!-- Situation 2: Kleidung -->
+                <div class="situation-card" id="situation-2">
+                    <span class="situation-number">Situation 2</span>
+                    <div class="situation-emoji">🧥</div>
+                    <div class="situation-text">
+                        Sie sehen in einem Geschäft eine schicke Jacke, die Ihnen sehr gut gefällt. Sie überlegen, ob und wie Sie diese Jacke bekommen können.
+                    </div>
 
-                <!-- Synonym 1 -->
-                <div class="question-block" data-question="6">
-                    <span class="question-number">Frage 6</span>
-                    <div class="question-text">Suchen Sie in <strong>Zeile 4</strong> ein Wort, das <em>"ehrgeizig"</em> oder <em>"anspruchsvoll"</em> bedeutet:</div>
-                    <input type="text" class="text-input" id="q6-input" placeholder="Ihr Wort aus dem Text">
-                    <button class="check-btn" onclick="checkQuestion(6, 'text-synonym', ['ambitioniert'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-6"></div>
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s2-idea" placeholder="Was würden Sie spontan tun?" oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(2, 'fastfashion')">
+                                <div class="option-title">🏃 Fast Fashion kaufen</div>
+                                <div class="option-description">Günstig bei H&M, Zara, Shein</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'marke')">
+                                <div class="option-title">✨ Marken-Jacke</div>
+                                <div class="option-description">Teuer, gute Qualität, lange haltbar</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'brockenstube')">
+                                <div class="option-title">🏪 Brockenstube</div>
+                                <div class="option-description">Second-Hand kaufen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'tausch')">
+                                <div class="option-title">🔄 Kleidertausch</div>
+                                <div class="option-description">Mit Freunden tauschen oder Tauschbörse</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2, 'fairtrade')">
+                                <div class="option-title">🌱 Fair Trade Mode</div>
+                                <div class="option-description">Bio-Baumwolle, faire Arbeitsbedingungen</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-2"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(2)" id="analyze-2">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s2-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
                 </div>
 
-                <!-- Synonym 2 -->
-                <div class="question-block" data-question="7">
-                    <span class="question-number">Frage 7</span>
-                    <div class="question-text">Suchen Sie in <strong>Zeile 25</strong> ein Wort, das <em>"durchdacht"</em> oder <em>"raffiniert geplant"</em> bedeutet:</div>
-                    <input type="text" class="text-input" id="q7-input" placeholder="Ihr Wort aus dem Text">
-                    <button class="check-btn" onclick="checkQuestion(7, 'text-synonym', ['ausgeklügelt', 'ausgeklügeltes'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-7"></div>
+                <!-- Situation 3: Putzmittel -->
+                <div class="situation-card" id="situation-3">
+                    <span class="situation-number">Situation 3</span>
+                    <div class="situation-emoji">🧼</div>
+                    <div class="situation-text">
+                        Sie möchten im Haushalt putzen und brauchen Reinigungsmittel. Welche Option wählen Sie?
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s3-idea" placeholder="Welche Putzmittel würden Sie kaufen?" oninput="autoSave()"></textarea>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(3, 'standard')">
+                                <div class="option-title">🧴 Standard-Putzmittel</div>
+                                <div class="option-description">Günstig im Supermarkt, in Plastikflaschen</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'marke-plastik')">
+                                <div class="option-title">✨ Markenprodukt</div>
+                                <div class="option-description">Teurer, gute Wirkung, Plastikverpackung</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'bio')">
+                                <div class="option-title">🌿 Bio-Putzmittel</div>
+                                <div class="option-description">Biologisch abbaubar, ohne Plastik</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'refill')">
+                                <div class="option-title">♻️ Nachfüllstation</div>
+                                <div class="option-description">Eigene Flasche auffüllen, Unverpackt-Laden</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3, 'selbst')">
+                                <div class="option-title">🏠 Selbst herstellen</div>
+                                <div class="option-description">Mit Essig, Natron, Zitronensäure</div>
+                            </div>
+                        </div>
+
+                        <div class="feedback-box" id="feedback-3"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(3)" id="analyze-3">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s3-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
                 </div>
 
-                <!-- Synonym 3 -->
-                <div class="question-block" data-question="8">
-                    <span class="question-number">Frage 8</span>
-                    <div class="question-text">Suchen Sie in <strong>Zeile 30</strong> ein Wort, das <em>"enttäuschend"</em> oder <em>"entmutigend"</em> bedeutet:</div>
-                    <input type="text" class="text-input" id="q8-input" placeholder="Ihr Wort aus dem Text">
-                    <button class="check-btn" onclick="checkQuestion(8, 'text-synonym', ['ernüchternd', 'ernüchternde'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-8"></div>
-                </div>
+                <!-- Situation 4: Festtagsessen -->
+                <div class="situation-card" id="situation-4">
+                    <span class="situation-number">Situation 4</span>
+                    <div class="situation-emoji">🍽️</div>
+                    <div class="situation-text">
+                        Sie planen ein leckeres Festtagsessen für Ihre Familie. Was kommt auf den Tisch?
+                    </div>
 
-                <!-- Synonym 4 -->
-                <div class="question-block" data-question="9">
-                    <span class="question-number">Frage 9</span>
-                    <div class="question-text">In <strong>Zeile 34-35</strong> wird beschrieben, wie Frauen leben. Suchen Sie ein Wort/eine Formulierung, das/die <em>"schwierig"</em>, <em>"unsicher"</em> oder <em>"problematisch"</em> bedeutet:</div>
-                    <input type="text" class="text-input" id="q9-input" placeholder="Ihr Wort/Formulierung aus dem Text">
-                    <p class="hint-text">Sie können auch mehrere Wörter eingeben</p>
-                    <button class="check-btn" onclick="checkQuestion(9, 'text-synonym', ['schwierigen', 'schwierigen verhältnissen', 'prekär'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-9"></div>
-                </div>
+                    <div class="journal-section">
+                        <h4>1. Ihre erste Idee:</h4>
+                        <textarea class="journal-textarea" id="s4-idea" placeholder="Was würden Sie kochen?" oninput="autoSave()"></textarea>
+                    </div>
 
-                <!-- Synonym 5 -->
-                <div class="question-block" data-question="10">
-                    <span class="question-number">Frage 10</span>
-                    <div class="question-text">Suchen Sie in <strong>Zeile 48</strong> ein Wort, das <em>"vielfach"</em> oder <em>"zahlreich"</em> bedeutet:</div>
-                    <input type="text" class="text-input" id="q10-input" placeholder="Ihr Wort aus dem Text">
-                    <button class="check-btn" onclick="checkQuestion(10, 'text-synonym', ['multiplen', 'multiple'])">Überprüfen</button>
-                    <div class="feedback" id="feedback-10"></div>
-                </div>
+                    <div class="journal-section">
+                        <h4>2. Wählen Sie eine Option:</h4>
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectOption(4, 'steak')">
+                                <div class="option-title">🥩 Argentinisches Steak</div>
+                                <div class="option-description">Importiertes Rindfleisch</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'bio-fleisch')">
+                                <div class="option-title">🐄 Bio-Fleisch regional</div>
+                                <div class="option-description">Vom lokalen Bauernhof</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'fisch')">
+                                <div class="option-title">🐟 Fisch</div>
+                                <div class="option-description">Lachs oder Forelle</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'vegetarisch')">
+                                <div class="option-title">🥗 Vegetarisches Menü</div>
+                                <div class="option-description">Mit lokalem Gemüse und Käse</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(4, 'vegan')">
+                                <div class="option-title">🌱 Veganes Festessen</div>
+                                <div class="option-description">Rein pflanzlich, regional und saisonal</div>
+                            </div>
+                        </div>
 
-                <div class="score-display">
-                    <h3>Ihre Punktzahl - Aufgabe 1</h3>
-                    <div class="score-number" id="scoreDisplay">0 / 10</div>
+                        <div class="feedback-box" id="feedback-4"></div>
+                        <button class="btn-analyze" onclick="analyzeChoice(4)" id="analyze-4">Meine Wahl analysieren</button>
+                    </div>
+
+                    <div class="journal-section">
+                        <h4>3. Ihre Reflexion:</h4>
+                        <textarea class="journal-textarea" id="s4-reflection" placeholder="Was haben Sie gelernt?" oninput="autoSave()"></textarea>
+                    </div>
                 </div>
             </div>
 
-            <h2>🎮 Aufgabe 2: Interaktives SDG-Spiel</h2>
-
-            <div class="info-box">
-                <p><strong>🎯 Spielanleitung:</strong> Ihnen werden verschiedene Alltagssituationen präsentiert. Ordnen Sie jede Situation dem passenden SDG-Ziel (Sustainable Development Goal) zu. Lernen Sie die 17 Ziele und die 5 Ps kennen!</p>
-            </div>
-
-            <div class="game-container">
-                <div class="game-header">
-                    <h3>🌍 Die 17 SDG-Ziele kennenlernen</h3>
-                    <p style="color: #78350f;">Welches Ziel passt zur Situation?</p>
-                </div>
-
-                <div id="scenario-container">
-                    <!-- Scenarios will be loaded here -->
-                </div>
-
-                <div class="sdg-grid" id="sdg-grid">
-                    <!-- SDG cards will be loaded here -->
-                </div>
-
-                <div class="game-feedback" id="game-feedback"></div>
-
-                <div class="score-display">
-                    <h3>Ihre Punktzahl - Aufgabe 2</h3>
-                    <div class="score-number" id="gameScore">0 / 8</div>
-                    <p style="color: #78350f; margin-top: 10px;">Situation <span id="scenarioProgress">1</span> von 8</p>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <h3>📝 Mein Lernjournal: Schritt 3</h3>
-                <p style="color: #78350f; margin-bottom: 15px;">
-                    <strong>Reflexionsaufgabe:</strong>
-                </p>
-                <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
-                    <li>Welches der 17 SDG-Ziele finden Sie persönlich am wichtigsten und warum?</li>
-                    <li>In welchen Bereichen könnte die Schweiz noch mehr tun?</li>
-                    <li>Was können Sie selbst konkret zur Agenda 2030 beitragen?</li>
-                </ul>
-                <textarea 
-                    id="portfolio-text" 
-                    placeholder="Hier Ihre Notizen eintragen..."
-                    oninput="savePortfolio()"></textarea>
-                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
-                
-                <button class="btn-save" onclick="savePortfolioManual()">
-                    💾 Speichern
-                </button>
+            <div class="progress-box">
+                <h3>Ihr Fortschritt</h3>
+                <div class="progress-number" id="progressDisplay">0 / 4 Situationen analysiert</div>
             </div>
 
             <div class="button-group">
@@ -817,7 +636,7 @@
                     ← Zurück zur Übersicht
                 </button>
                 <button class="btn-pdf" onclick="downloadPDF()">
-                    📄 PDF Schritt 3 herunterladen
+                    📄 PDF herunterladen
                 </button>
                 <button class="btn-complete" onclick="completeStep()">
                     Schritt abschließen und weiter →
@@ -827,475 +646,316 @@
     </div>
 
     <script>
-        let score = 0;
-        let answeredQuestions = new Set();
-        let gameScore = 0;
-        let currentScenario = 0;
+        let selectedOptions = {};
+        let analyzedCount = 0;
 
-        // SDG Data
-        const sdgs = [
-            { num: 1, title: "Keine Armut", category: "People" },
-            { num: 2, title: "Kein Hunger", category: "People" },
-            { num: 3, title: "Gesundheit", category: "People" },
-            { num: 4, title: "Bildung", category: "People" },
-            { num: 5, title: "Geschlechter-gleichheit", category: "People" },
-            { num: 6, title: "Sauberes Wasser", category: "Planet" },
-            { num: 7, title: "Erneuerbare Energie", category: "Planet" },
-            { num: 8, title: "Gute Arbeit", category: "Prosperity" },
-            { num: 9, title: "Innovation", category: "Prosperity" },
-            { num: 10, title: "Weniger Ungleichheit", category: "Peace" },
-            { num: 11, title: "Nachhaltige Städte", category: "Planet" },
-            { num: 12, title: "Verantwortungs-voller Konsum", category: "Planet" },
-            { num: 13, title: "Klimaschutz", category: "Planet" },
-            { num: 14, title: "Leben im Wasser", category: "Planet" },
-            { num: 15, title: "Leben an Land", category: "Planet" },
-            { num: 16, title: "Frieden & Gerechtigkeit", category: "Peace" },
-            { num: 17, title: "Partnerschaften", category: "Partnership" }
-        ];
-
-        // Game Scenarios
-        const scenarios = [
-            {
-                text: "Sarah kauft ihre Kleider nur noch Second Hand oder von fair trade zertifizierten Marken. Sie achtet darauf, dass die Arbeiter:innen fair bezahlt werden.",
-                correctSDG: 12,
-                explanation: "SDG 12 'Verantwortungsvoller Konsum' passt perfekt! Es geht um nachhaltigen Konsum und faire Produktionsbedingungen.",
-                category: "Planet"
+        const optionData = {
+            1: { // Smartphone
+                'neu': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Neues Smartphone</h4><p><strong>✓ Ökonomisch:</strong> Unterstützt Wirtschaft und Arbeitsplätze</p><p><strong>✗ Ökologisch:</strong> Hoher Ressourcenverbrauch, Elektroschrott, CO₂-Emissionen bei Produktion</p><p><strong>✗ Sozial:</strong> Oft problematische Arbeitsbedingungen in der Produktion</p><p><em>💡 Tipp: Ein Smartphone zu reparieren spart ca. 50kg CO₂ im Vergleich zum Neukauf!</em></p>'
+                },
+                'guenstig': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Günstiges Smartphone</h4><p><strong>✓ Ökonomisch:</strong> Kostengünstig, erschwinglich</p><p><strong>✗ Ökologisch:</strong> Oft kürzere Lebensdauer, mehr Elektroschrott</p><p><strong>✗ Sozial:</strong> Häufig schlechte Produktionsbedingungen</p><p><em>💡 Bedenken Sie: Günstige Geräte halten oft nur 1-2 Jahre und müssen dann ersetzt werden.</em></p>'
+                },
+                'reparieren': {
+                    badges: ['ecological', 'economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Reparatur</h4><p><strong>✓✓ Ökologisch:</strong> Keine neuen Ressourcen nötig, weniger Elektroschrott, geringer CO₂-Fußabdruck</p><p><strong>✓ Ökonomisch:</strong> Oft günstiger als Neukauf, lokale Reparaturbetriebe werden unterstützt</p><p><strong>~ Sozial:</strong> Unterstützt lokales Handwerk</p><p><em>💡 Sehr gute Wahl! Reparieren ist fast immer die nachhaltigste Option.</em></p>'
+                },
+                'secondhand': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Second-Hand Gerät</h4><p><strong>✓✓ Ökologisch:</strong> Keine Neuproduktion, verlängerte Lebensdauer, reduzierter Elektroschrott</p><p><strong>✓ Ökonomisch:</strong> Günstiger Preis, gutes Preis-Leistungs-Verhältnis</p><p><strong>✓ Sozial:</strong> Fördert Kreislaufwirtschaft und soziale Projekte (wenn über gemeinnützige Organisationen)</p><p><em>💡 Exzellente Wahl! Refurbished Geräte sind oft wie neu und sparen bis zu 70% CO₂.</em></p>'
+                },
+                'fairphone': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fairphone</h4><p><strong>✓✓ Ökologisch:</strong> Langlebig, reparierbar, recycelte Materialien</p><p><strong>✓ Ökonomisch:</strong> Höherer Anschaffungspreis, aber langfristig günstiger durch Reparierbarkeit</p><p><strong>✓✓ Sozial:</strong> Faire Arbeitsbedingungen, konfliktfreie Materialien</p><p><em>💡 Beste Wahl bei Neukauf! Fairphone berücksichtigt alle drei Nachhaltigkeitsaspekte.</em></p>'
+                }
             },
-            {
-                text: "Die Gemeinde installiert Solarpanels auf allen öffentlichen Gebäuden und fördert den Umstieg von fossilen Brennstoffen auf erneuerbare Energien.",
-                correctSDG: 7,
-                explanation: "SDG 7 'Erneuerbare Energie' ist richtig! Dieses Ziel fördert den Zugang zu bezahlbarer und sauberer Energie.",
-                category: "Planet"
+            2: { // Kleidung
+                'fastfashion': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fast Fashion</h4><p><strong>✓ Ökonomisch:</strong> Sehr günstig, erschwinglich</p><p><strong>✗✗ Ökologisch:</strong> Hoher Wasserverbrauch, Chemikalien, kurze Lebensdauer, viel Abfall</p><p><strong>✗✗ Sozial:</strong> Oft menschenunwürdige Arbeitsbedingungen, Niedrigstlöhne</p><p><em>💡 Wussten Sie? Für ein T-Shirt werden ca. 2.700 Liter Wasser benötigt!</em></p>'
+                },
+                'marke': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Marken-Jacke</h4><p><strong>✓ Ökonomisch:</strong> Langfristige Investition, gute Qualität, lange Lebensdauer</p><p><strong>~ Ökologisch:</strong> Länger nutzbar als Fast Fashion, aber trotzdem Neuproduktion</p><p><strong>~ Sozial:</strong> Variiertje nach Marke - nicht alle Marken produzieren fair</p><p><em>💡 Tipp: Achten Sie auf Nachhaltigkeits-Zertifikate wie GOTS oder Fair Wear Foundation.</em></p>'
+                },
+                'brockenstube': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Brockenstube</h4><p><strong>✓✓ Ökologisch:</strong> Keine Neuproduktion, verlängerte Lebensdauer, kein zusätzlicher Ressourcenverbrauch</p><p><strong>✓✓ Ökonomisch:</strong> Sehr günstig, gutes Preis-Leistungs-Verhältnis</p><p><strong>✓✓ Sozial:</strong> Unterstützt oft soziale Projekte und gemeinnützige Organisationen</p><p><em>💡 Hervorragende Wahl! Second-Hand-Kleidung spart bis zu 80% CO₂.</em></p>'
+                },
+                'tausch': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Kleidertausch</h4><p><strong>✓✓ Ökologisch:</strong> Perfekte Kreislaufwirtschaft, null neue Ressourcen</p><p><strong>✓ Ökonomisch:</strong> Komplett kostenlos</p><p><strong>✓✓ Sozial:</strong> Stärkt Gemeinschaft, fördert Teilen statt Besitzen</p><p><em>💡 Perfekt! Kleidertausch ist die nachhaltigste Option überhaupt.</em></p>'
+                },
+                'fairtrade': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fair Trade Mode</h4><p><strong>✓✓ Ökologisch:</strong> Bio-Materialien, umweltschonende Produktion, langlebig</p><p><strong>~ Ökonomisch:</strong> Höherer Preis, aber faire Bezahlung entlang der Lieferkette</p><p><strong>✓✓ Sozial:</strong> Faire Löhne, gute Arbeitsbedingungen, keine Kinderarbeit</p><p><em>💡 Sehr gute Wahl bei Neukauf! Fair Trade berücksichtigt Mensch und Umwelt.</em></p>'
+                }
             },
-            {
-                text: "Marc engagiert sich in einem Projekt, das Jugendlichen aus benachteiligten Familien kostenlose Nachhilfe und Unterstützung bietet.",
-                correctSDG: 4,
-                explanation: "SDG 4 'Bildung' ist die richtige Antwort! Chancengleiche und hochwertige Bildung für alle ist das Ziel.",
-                category: "People"
+            3: { // Putzmittel
+                'standard': {
+                    badges: [],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Standard-Putzmittel</h4><p><strong>✓ Ökonomisch:</strong> Günstig und überall verfügbar</p><p><strong>✗✗ Ökologisch:</strong> Oft chemische Inhaltsstoffe, Plastikverpackung, belastet Gewässer</p><p><strong>✗ Sozial:</strong> Keine besonderen sozialen Aspekte</p><p><em>💡 Bedenken Sie: Viele Putzmittel enthalten Mikroplastik und schädliche Chemikalien.</em></p>'
+                },
+                'marke-plastik': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Marken-Putzmittel</h4><p><strong>✓ Ökonomisch:</strong> Gute Reinigungswirkung, ergiebig</p><p><strong>✗ Ökologisch:</strong> Plastikverpackung, oft chemische Inhaltsstoffe</p><p><strong>~ Sozial:</strong> Keine besonderen sozialen Aspekte</p><p><em>💡 Tipp: Auch teure Marken sind nicht automatisch umweltfreundlicher.</em></p>'
+                },
+                'bio': {
+                    badges: ['ecological', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Bio-Putzmittel</h4><p><strong>✓✓ Ökologisch:</strong> Biologisch abbaubar, keine Mikroplastik, oft ohne Plastik verpackt</p><p><strong>~ Ökonomisch:</strong> Etwas teurer, aber oft konzentrierter und ergiebiger</p><p><strong>✓ Sozial:</strong> Oft faire Produktion, gesünder für Anwender</p><p><em>💡 Sehr gute Wahl! Bio-Putzmittel schützen Gewässer und Gesundheit.</em></p>'
+                },
+                'refill': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Nachfüllstation</h4><p><strong>✓✓ Ökologisch:</strong> Kein Verpackungsmüll, reduzierter Transport, wiederverwendbare Behälter</p><p><strong>✓ Ökonomisch:</strong> Oft günstiger pro Liter, langfristig Geld sparen</p><p><strong>✓ Sozial:</strong> Unterstützt lokale Unverpackt-Läden, Zero-Waste-Bewegung</p><p><em>💡 Exzellente Wahl! Refill-Systeme vermeiden bis zu 95% Verpackungsmüll.</em></p>'
+                },
+                'selbst': {
+                    badges: ['ecological', 'economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Selbst herstellen</h4><p><strong>✓✓ Ökologisch:</strong> Natürliche Zutaten, keine Chemikalien, minimaler Verpackungsmüll</p><p><strong>✓✓ Ökonomisch:</strong> Sehr günstig, Zutaten sind preiswert</p><p><strong>✓ Sozial:</strong> Gesünder für Sie und Ihre Familie</p><p><em>💡 Perfekt! Mit Essig, Natron und Zitronensäure reinigen Sie alles natürlich und günstig.</em></p>'
+                }
             },
-            {
-                text: "Ein Unternehmen führt flexible Arbeitszeiten und gleichen Lohn für Männer und Frauen ein. Zudem werden Führungspositionen gezielt auch an Frauen vergeben.",
-                correctSDG: 5,
-                explanation: "SDG 5 'Geschlechtergleichheit' trifft zu! Es geht um gleiche Rechte und Chancen für alle Geschlechter.",
-                category: "People"
-            },
-            {
-                text: "Die Stadt Zürich baut mehr Velowegenetz aus, fördert den ÖV und schafft autofreie Zonen. Dadurch sinken die CO₂-Emissionen deutlich.",
-                correctSDG: 13,
-                explanation: "SDG 13 'Klimaschutz' ist korrekt! Maßnahmen zur Bekämpfung des Klimawandels sind zentral.",
-                category: "Planet"
-            },
-            {
-                text: "Eine NGO setzt sich dafür ein, dass Flüchtlinge Zugang zu medizinischer Versorgung, Sprachkursen und Arbeitsmöglichkeiten erhalten.",
-                correctSDG: 10,
-                explanation: "SDG 10 'Weniger Ungleichheit' passt! Es geht um die Verringerung von Ungleichheiten innerhalb und zwischen Ländern.",
-                category: "Peace"
-            },
-            {
-                text: "Ein Landwirt stellt auf biologische Landwirtschaft um, verzichtet auf Pestizide und schützt dadurch Bienen und andere Insekten.",
-                correctSDG: 15,
-                explanation: "SDG 15 'Leben an Land' ist richtig! Dieses Ziel schützt Ökosysteme, Wälder und die Artenvielfalt.",
-                category: "Planet"
-            },
-            {
-                text: "Die Schweiz und andere Länder arbeiten zusammen, um Impfstoffe gerecht weltweit zu verteilen und ärmere Länder finanziell zu unterstützen.",
-                correctSDG: 17,
-                explanation: "SDG 17 'Partnerschaften' ist die beste Antwort! Globale Zusammenarbeit ist entscheidend für die Erreichung aller Ziele.",
-                category: "Partnership"
+            4: { // Festessen
+                'steak': {
+                    badges: [],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Importiertes Rindfleisch</h4><p><strong>~ Ökonomisch:</strong> Unterstützt internationale Landwirtschaft</p><p><strong>✗✗ Ökologisch:</strong> Sehr hoher CO₂-Fußabdruck (15kg CO₂ pro kg Rindfleisch), langer Transport, Regenwaldabholzung</p><p><strong>✗ Sozial:</strong> Oft problematische Arbeitsbedingungen</p><p><em>💡 Wussten Sie? Rindfleisch hat den höchsten CO₂-Fußabdruck aller Lebensmittel.</em></p>'
+                },
+                'bio-fleisch': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Regionales Bio-Fleisch</h4><p><strong>✓ Ökologisch:</strong> Artgerechte Haltung, weniger Emissionen als konventionell, kurze Transportwege</p><p><strong>✓ Ökonomisch:</strong> Unterstützt lokale Bauern, höhere Qualität</p><p><strong>✓ Sozial:</strong> Faire Arbeitsbedingungen, Tierwohl</p><p><em>💡 Gute Wahl! Wenn Fleisch, dann bio und regional. Aber in Maßen genießen.</em></p>'
+                },
+                'fisch': {
+                    badges: ['economic'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Fisch</h4><p><strong>~ Ökonomisch:</strong> Je nach Herkunft unterschiedlich</p><p><strong>~ Ökologisch:</strong> Besser als Rindfleisch, aber: Überfischung ist ein Problem. Achten Sie auf MSC-Siegel</p><p><strong>~ Sozial:</strong> Abhängig von Fangmethode und Herkunft</p><p><em>💡 Tipp: Schweizer Forelle oder Bio-Lachs aus Europa sind bessere Optionen.</em></p>'
+                },
+                'vegetarisch': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Vegetarisches Menü</h4><p><strong>✓✓ Ökologisch:</strong> Deutlich geringerer CO₂-Fußabdruck (ca. 75% weniger als Fleisch), weniger Wasserverbrauch</p><p><strong>✓ Ökonomisch:</strong> Regionales Gemüse ist oft günstiger, unterstützt lokale Landwirtschaft</p><p><strong>✓ Sozial:</strong> Gesund, nachhaltig, tierleidfrei</p><p><em>💡 Hervorragend! Vegetarische Ernährung ist eine der wirksamsten Klimaschutz-Maßnahmen.</em></p>'
+                },
+                'vegan': {
+                    badges: ['ecological', 'economic', 'social'],
+                    feedback: '<h4>📊 Nachhaltigkeits-Analyse: Veganes Festessen</h4><p><strong>✓✓ Ökologisch:</strong> Geringster CO₂-Fußabdruck (bis zu 90% weniger als Fleisch), minimal Wasserverbrauch, regional und saisonal</p><p><strong>✓ Ökonomisch:</strong> Saisonales Gemüse ist günstig, unterstützt lokale Bio-Landwirtschaft</p><p><strong>✓✓ Sozial:</strong> Maximal ressourcenschonend, gesund, gerecht</p><p><em>💡 Perfekt! Vegane Ernährung ist die nachhaltigste Option für Mensch, Tier und Klima.</em></p>'
+                }
             }
-        ];
+        };
 
-        function renderSDGGrid() {
-            const grid = document.getElementById('sdg-grid');
-            grid.innerHTML = '';
-            
-            sdgs.forEach(sdg => {
-                const card = document.createElement('div');
-                card.className = 'sdg-card';
-                card.dataset.sdg = sdg.num;
-                card.innerHTML = `
-                    <div class="sdg-number">${sdg.num}</div>
-                    <div class="sdg-title">${sdg.title}</div>
-                    <div class="sdg-category">${sdg.category}</div>
-                `;
-                card.onclick = () => selectSDG(sdg.num);
-                grid.appendChild(card);
-            });
-        }
-
-        function renderScenario() {
-            if (currentScenario >= scenarios.length) {
-                showGameResult();
-                return;
-            }
-
-            const scenario = scenarios[currentScenario];
-            const container = document.getElementById('scenario-container');
-            
-            container.innerHTML = `
-                <div class="scenario-box">
-                    <div style="font-weight: bold; color: #f97316; margin-bottom: 10px;">
-                        Situation ${currentScenario + 1} von ${scenarios.length}
-                    </div>
-                    <div class="scenario-text">${scenario.text}</div>
-                    <div style="font-weight: bold; color: #78350f; margin-top: 15px;">
-                        → Welches SDG-Ziel passt am besten zu dieser Situation?
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('scenarioProgress').textContent = currentScenario + 1;
-            document.getElementById('game-feedback').classList.remove('show');
-            document.getElementById('next-scenario-btn').classList.remove('show');
-
-            // Reset SDG selection
-            document.querySelectorAll('.sdg-card').forEach(card => {
+        function selectOption(situation, option) {
+            // Remove previous selection
+            document.querySelectorAll(`#situation-${situation} .option-card`).forEach(card => {
                 card.classList.remove('selected');
-                card.style.pointerEvents = 'auto';
-            });
-        }
-
-        function selectSDG(selectedNum) {
-            const scenario = scenarios[currentScenario];
-            const feedback = document.getElementById('game-feedback');
-            const isCorrect = selectedNum === scenario.correctSDG;
-
-            // Disable all cards
-            document.querySelectorAll('.sdg-card').forEach(card => {
-                card.style.pointerEvents = 'none';
             });
 
-            // Highlight selected
-            const selectedCard = document.querySelector(`.sdg-card[data-sdg="${selectedNum}"]`);
-            selectedCard.classList.add('selected');
+            // Add selection to clicked card
+            event.target.closest('.option-card').classList.add('selected');
 
-            if (isCorrect) {
-                gameScore++;
-                feedback.className = 'game-feedback correct show';
-                feedback.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 250px;">
-                            <strong>✓ Richtig!</strong> ${scenario.explanation}<br>
-                            <span style="font-size: 0.9em; margin-top: 10px; display: inline-block;">
-                                💡 Dieses Ziel gehört zur Kategorie der <strong>"${scenario.category}"</strong> (${getCategoryExplanation(scenario.category)})
-                            </span>
-                        </div>
-                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            Nächste Situation →
-                        </button>
-                    </div>
-                `;
-            } else {
-                const correctSDG = sdgs.find(s => s.num === scenario.correctSDG);
-                feedback.className = 'game-feedback incorrect show';
-                feedback.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 250px;">
-                            <strong>✗ Leider falsch.</strong> Die richtige Antwort wäre <strong>SDG ${scenario.correctSDG}: ${correctSDG.title}</strong>.<br>
-                            ${scenario.explanation}
-                        </div>
-                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            Nächste Situation →
-                        </button>
-                    </div>
-                `;
+            // Store selection
+            selectedOptions[situation] = option;
+
+            // Hide previous feedback
+            const feedbackBox = document.getElementById(`feedback-${situation}`);
+            feedbackBox.classList.remove('show');
+            feedbackBox.innerHTML = '';
+
+            // Reset and enable analyze button
+            const analyzeBtn = document.getElementById(`analyze-${situation}`);
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = 'Meine Wahl analysieren';
+            analyzeBtn.style.background = 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)';
+            
+            // If it was counted before, we need to uncount it
+            if (analyzeBtn.classList.contains('counted')) {
+                analyzeBtn.classList.remove('counted');
+                analyzedCount--;
+                updateProgress();
+            }
+        }
+
+        function analyzeChoice(situation) {
+            const option = selectedOptions[situation];
+            if (!option) {
+                alert('Bitte wählen Sie zuerst eine Option aus.');
+                return;
             }
 
-            document.getElementById('gameScore').textContent = `${gameScore} / ${scenarios.length}`;
-        }
+            const data = optionData[situation][option];
+            const feedbackBox = document.getElementById(`feedback-${situation}`);
+            const analyzeBtn = document.getElementById(`analyze-${situation}`);
 
-        function getCategoryExplanation(category) {
-            const explanations = {
-                "People": "Menschen",
-                "Planet": "Planet",
-                "Prosperity": "Wohlstand",
-                "Peace": "Frieden",
-                "Partnership": "Partnerschaft"
-            };
-            return explanations[category] || category;
-        }
+            // Show feedback
+            feedbackBox.innerHTML = data.feedback;
 
-        function nextScenario() {
-            currentScenario++;
-            renderScenario();
-        }
-
-        function showGameResult() {
-            const container = document.getElementById('scenario-container');
-            const percentage = (gameScore / scenarios.length) * 100;
-            let emoji, message;
-
-            if (percentage >= 80) {
-                emoji = '🌟';
-                message = 'Hervorragend! Sie kennen die SDGs sehr gut!';
-            } else if (percentage >= 60) {
-                emoji = '😊';
-                message = 'Gut gemacht! Sie haben ein solides Verständnis der SDGs.';
-            } else {
-                emoji = '💪';
-                message = 'Das war ein guter Anfang! Schauen Sie sich die 17 Ziele nochmal genau an.';
-            }
-
-            container.innerHTML = `
-                <div class="scenario-box" style="text-align: center; padding: 40px;">
-                    <div style="font-size: 5em; margin-bottom: 20px;">${emoji}</div>
-                    <h2 style="color: #f97316; margin-bottom: 15px;">Spiel beendet!</h2>
-                    <div style="font-size: 2em; font-weight: bold; color: #fb923c; margin: 20px 0;">
-                        ${gameScore} / ${scenarios.length}
-                    </div>
-                    <p style="font-size: 1.2em; color: #78350f;">${message}</p>
-                    
-                    <div style="margin-top: 30px; text-align: left; background: #fef3c7; padding: 20px; border-radius: 10px;">
-                        <h4 style="color: #f97316; margin-bottom: 15px;">📚 Die 5 Ps der Agenda 2030:</h4>
-                        <ul style="color: #78350f; line-height: 1.8;">
-                            <li><strong>People (Menschen):</strong> SDGs 1-5 – Armut, Hunger, Gesundheit, Bildung, Gleichberechtigung</li>
-                            <li><strong>Planet:</strong> SDGs 6, 12-15 – Wasser, Konsum, Klima, Biodiversität</li>
-                            <li><strong>Prosperity (Wohlstand):</strong> SDGs 7-11 – Energie, Arbeit, Innovation, Infrastruktur, Städte</li>
-                            <li><strong>Peace (Frieden):</strong> SDG 16 – Rechtsstaatlichkeit, Gerechtigkeit</li>
-                            <li><strong>Partnership (Partnerschaft):</strong> SDG 17 – Globale Zusammenarbeit</li>
-                        </ul>
-                    </div>
+            // Add badges
+            const badgesHtml = `
+                <div class="sustainability-badges">
+                    <div class="badge ecological ${data.badges.includes('ecological') ? '' : 'inactive'}">🌿 Ökologisch</div>
+                    <div class="badge economic ${data.badges.includes('economic') ? '' : 'inactive'}">💰 Ökonomisch</div>
+                    <div class="badge social ${data.badges.includes('social') ? '' : 'inactive'}">👥 Sozial</div>
                 </div>
             `;
 
-            document.getElementById('sdg-grid').style.display = 'none';
-            document.getElementById('next-scenario-btn').style.display = 'none';
-            document.getElementById('game-feedback').classList.remove('show');
-        }
+            feedbackBox.innerHTML = badgesHtml + feedbackBox.innerHTML;
+            feedbackBox.classList.add('show');
 
-        function checkQuestion(questionNum, type, correctAnswer) {
-            if (answeredQuestions.has(questionNum)) {
-                return;
-            }
+            // Disable analyze button
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '✓ Analysiert';
+            analyzeBtn.style.background = '#10b981';
 
-            const feedback = document.getElementById(`feedback-${questionNum}`);
-            const button = document.querySelector(`[data-question="${questionNum}"] .check-btn`);
-            let isCorrect = false;
-
-            if (type === 'mc') {
-                const selected = document.querySelector(`input[name="q${questionNum}"]:checked`);
-                if (!selected) {
-                    alert('Bitte wählen Sie eine Antwort aus.');
-                    return;
-                }
-                isCorrect = selected.value === correctAnswer;
-
-                const options = document.querySelectorAll(`input[name="q${questionNum}"]`);
-                options.forEach(opt => {
-                    opt.disabled = true;
-                    opt.parentElement.classList.add('disabled');
-                });
-
-                if (isCorrect) {
-                    selected.parentElement.classList.add('correct');
-                } else {
-                    selected.parentElement.classList.add('incorrect');
-                    options.forEach(opt => {
-                        if (opt.value === correctAnswer) {
-                            opt.parentElement.classList.add('correct');
-                        }
-                    });
-                }
-            } else if (type === 'text') {
-                const input = document.getElementById(`q${questionNum}-input`);
-                const userAnswer = input.value.trim().toLowerCase();
-                
-                if (userAnswer === '') {
-                    alert('Bitte geben Sie eine Antwort ein.');
-                    return;
-                }
-
-                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
-                isCorrect = correctAnswers.some(ans => 
-                    userAnswer === ans.toLowerCase() || 
-                    userAnswer.includes(ans.toLowerCase())
-                );
-
-                input.disabled = true;
-                input.classList.add(isCorrect ? 'correct' : 'incorrect');
-            } else if (type === 'text-synonym') {
-                const input = document.getElementById(`q${questionNum}-input`);
-                const userAnswer = input.value.trim().toLowerCase();
-                
-                if (userAnswer === '') {
-                    alert('Bitte geben Sie eine Antwort ein.');
-                    return;
-                }
-
-                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
-                isCorrect = correctAnswers.some(ans => 
-                    userAnswer === ans.toLowerCase() || 
-                    userAnswer.includes(ans.toLowerCase())
-                );
-
-                input.disabled = true;
-                input.classList.add(isCorrect ? 'correct' : 'incorrect');
-            }
-
-            if (isCorrect) {
-                score++;
-                feedback.className = 'feedback correct show';
-                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
-            } else {
-                feedback.className = 'feedback incorrect show';
-                
-                // Spezifische Feedbacks
-                if (questionNum === 2) {
-                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die drei Bereiche sind: <strong>Umwelt, Wirtschaft und Soziales</strong>';
-                } else if (questionNum === 4) {
-                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Laut UN-Bericht von 2023 werden voraussichtlich nur etwa <strong>15 Prozent</strong> der Ziele erreicht';
-                } else {
-                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort wurde <span style="color: #10b981;">grün</span> markiert.';
-                }
-            }
-
-            answeredQuestions.add(questionNum);
-            button.disabled = true;
-            document.getElementById('scoreDisplay').textContent = `${score} / 10`;
-        }
-
-        function loadPortfolio() {
-            const saved = localStorage.getItem('learningProgressKonsum');
-            if (saved) {
-                const progress = JSON.parse(saved);
-                const portfolioText = progress.texts && progress.texts['3'] ? progress.texts['3'] : '';
-                document.getElementById('portfolio-text').value = portfolioText;
+            // Update progress
+            if (!analyzeBtn.classList.contains('counted')) {
+                analyzedCount++;
+                analyzeBtn.classList.add('counted');
+                updateProgress();
             }
         }
 
-        function savePortfolio() {
-            const text = document.getElementById('portfolio-text').value;
-            
-            let progress = {
-                completedPoints: [],
-                currentPoint: 1,
-                texts: {},
-                images: {}
+        function updateProgress() {
+            document.getElementById('progressDisplay').textContent = `${analyzedCount} / 4 Situationen analysiert`;
+        }
+
+        function autoSave() {
+            const data = {
+                s1_idea: document.getElementById('s1-idea').value,
+                s1_reflection: document.getElementById('s1-reflection').value,
+                s2_idea: document.getElementById('s2-idea').value,
+                s2_reflection: document.getElementById('s2-reflection').value,
+                s3_idea: document.getElementById('s3-idea').value,
+                s3_reflection: document.getElementById('s3-reflection').value,
+                s4_idea: document.getElementById('s4-idea').value,
+                s4_reflection: document.getElementById('s4-reflection').value,
+                selectedOptions: selectedOptions,
+                analyzedCount: analyzedCount
             };
-            
-            const saved = localStorage.getItem('learningProgressKonsum');
-            if (saved) {
-                progress = JSON.parse(saved);
-            }
-            
-            if (!progress.texts) {
-                progress.texts = {};
-            }
-            
-            progress.texts['3'] = text;
-            
+
+            let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            if (!progress.texts) progress.texts = {};
+            progress.texts['4'] = JSON.stringify(data);
             localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
-            
-            const indicator = document.getElementById('saved-indicator');
-            indicator.style.display = 'block';
-            setTimeout(() => {
-                indicator.style.display = 'none';
-            }, 2000);
         }
 
-        function savePortfolioManual() {
-            const text = document.getElementById('portfolio-text').value.trim();
-            
-            if (text === '') {
-                alert('⚠️ Bitte tragen Sie zuerst Ihre Notizen ein.');
-                return;
+        function loadData() {
+            const progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            if (progress.texts && progress.texts['4']) {
+                const data = JSON.parse(progress.texts['4']);
+                
+                if (data.s1_idea) document.getElementById('s1-idea').value = data.s1_idea;
+                if (data.s1_reflection) document.getElementById('s1-reflection').value = data.s1_reflection;
+                if (data.s2_idea) document.getElementById('s2-idea').value = data.s2_idea;
+                if (data.s2_reflection) document.getElementById('s2-reflection').value = data.s2_reflection;
+                if (data.s3_idea) document.getElementById('s3-idea').value = data.s3_idea;
+                if (data.s3_reflection) document.getElementById('s3-reflection').value = data.s3_reflection;
+                if (data.s4_idea) document.getElementById('s4-idea').value = data.s4_idea;
+                if (data.s4_reflection) document.getElementById('s4-reflection').value = data.s4_reflection;
+
+                if (data.selectedOptions) selectedOptions = data.selectedOptions;
+                if (data.analyzedCount) {
+                    analyzedCount = data.analyzedCount;
+                    updateProgress();
+                }
             }
-            
-            savePortfolio();
-            
-            const indicator = document.getElementById('saved-indicator');
-            indicator.style.display = 'block';
-            indicator.textContent = '✓ Erfolgreich gespeichert!';
-            setTimeout(() => {
-                indicator.style.display = 'none';
-                indicator.textContent = '✓ Automatisch gespeichert';
-            }, 3000);
         }
 
         function downloadPDF() {
-            const portfolioText = document.getElementById('portfolio-text').value.trim();
-            
-            if (portfolioText === '') {
-                alert('Bitte tragen Sie zuerst Ihre Reflexion in das Lernjournal ein.');
-                return;
-            }
-            
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
+
             doc.setFont("helvetica", "bold");
             doc.setFontSize(20);
-            doc.text("Lernjournal: Nachhaltige Entwicklung", 20, 20);
-            
+            doc.text("Lernjournal: Nachhaltiges Konsumverhalten", 20, 20);
+
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
             doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
-            doc.text(`Leseverstehen: ${score}/10 Punkte`, 20, 36);
-            doc.text(`SDG-Spiel: ${gameScore}/${scenarios.length} Punkte`, 20, 42);
-            
-            let yPos = 56;
-            
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.text("Meine Reflexion:", 20, yPos);
-            yPos += 8;
-            
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(11);
-            const lines = doc.splitTextToSize(portfolioText, 170);
-            
-            for (let line of lines) {
-                if (yPos > 280) {
+            doc.text(`Analysierte Situationen: ${analyzedCount}/4`, 20, 36);
+
+            let yPos = 50;
+
+            const situations = [
+                {num: 1, title: 'Smartphone', idea: 's1-idea', reflection: 's1-reflection'},
+                {num: 2, title: 'Kleidung', idea: 's2-idea', reflection: 's2-reflection'},
+                {num: 3, title: 'Putzmittel', idea: 's3-idea', reflection: 's3-reflection'},
+                {num: 4, title: 'Festtagsessen', idea: 's4-idea', reflection: 's4-reflection'}
+            ];
+
+            situations.forEach(sit => {
+                if (yPos > 250) {
                     doc.addPage();
                     yPos = 20;
                 }
-                doc.text(line, 20, yPos);
-                yPos += 7;
-            }
-            
-            doc.save('Lernjournal_Schritt3_Nachhaltige_Entwicklung.pdf');
+
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text(`Situation ${sit.num}: ${sit.title}`, 20, yPos);
+                yPos += 8;
+
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+
+                const idea = document.getElementById(sit.idea).value;
+                if (idea) {
+                    doc.text("Erste Idee:", 20, yPos);
+                    yPos += 5;
+                    const ideaLines = doc.splitTextToSize(idea, 170);
+                    ideaLines.forEach(line => {
+                        if (yPos > 280) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, 25, yPos);
+                        yPos += 5;
+                    });
+                    yPos += 3;
+                }
+
+                const reflection = document.getElementById(sit.reflection).value;
+                if (reflection) {
+                    doc.text("Reflexion:", 20, yPos);
+                    yPos += 5;
+                    const refLines = doc.splitTextToSize(reflection, 170);
+                    refLines.forEach(line => {
+                        if (yPos > 280) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        doc.text(line, 25, yPos);
+                        yPos += 5;
+                    });
+                }
+
+                yPos += 8;
+            });
+
+            doc.save('Lernjournal_Schritt4_Nachhaltiges_Konsumverhalten.pdf');
         }
 
         function completeStep() {
-            const portfolioText = document.getElementById('portfolio-text').value.trim();
-            
-            if (answeredQuestions.size < 10) {
-                alert(`⚠️ Hinweis: Sie haben bisher ${answeredQuestions.size} von 10 Leseverständnisfragen beantwortet.\n\nSie können den Schritt trotzdem abschließen.`);
-            }
-            
-            if (portfolioText === '') {
-                const confirm = window.confirm('Sie haben noch nichts in Ihr Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
+            if (analyzedCount < 4) {
+                const confirm = window.confirm(`Sie haben bisher ${analyzedCount} von 4 Situationen analysiert. Möchten Sie den Schritt trotzdem abschließen?`);
                 if (!confirm) return;
             }
-            
-            if (portfolioText !== '') {
-                savePortfolio();
-            }
-            
+
+            autoSave();
+
             let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
-            
-            if (!progress.completedPoints.includes(3)) {
-                progress.completedPoints.push(3);
-                progress.currentPoint = 4;
+
+            if (!progress.completedPoints.includes(4)) {
+                progress.completedPoints.push(4);
+                progress.currentPoint = 5;
                 localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
             }
-            
-            alert(`✓ Schritt 3 abgeschlossen!\n\nLeseverstehen: ${score}/10 Punkte\nSDG-Spiel: ${gameScore}/${scenarios.length} Punkte${portfolioText !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
+
+            alert(`✓ Schritt 4 abgeschlossen!\n\nSie haben ${analyzedCount} von 4 Situationen analysiert.`);
             window.location.href = 'index.html';
         }
 
         function returnToMain() {
+            autoSave();
             window.location.href = 'index.html';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM geladen');
-            loadPortfolio();
-            console.log('Rendering SDG Grid...');
-            renderSDGGrid();
-            console.log('Rendering Scenario...');
-            renderScenario();
-            console.log('Initialisierung abgeschlossen');
+            loadData();
         });
     </script>
 </body>
