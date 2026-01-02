@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klimaschutz-Quiz Schweiz</title>
+    <title>Schritt 3: Nachhaltige Entwicklung</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,567 +14,1289 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbbf24 0%, #fb923c 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #333;
-            position: relative;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 20px;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3CradialGradient id='globe' cx='50%25' cy='40%25'%3E%3Cstop offset='0%25' style='stop-color:%234a90e2;stop-opacity:1' /%3E%3Cstop offset='70%25' style='stop-color:%232c5aa0;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%231a3a6b;stop-opacity:1' /%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='400' cy='400' r='300' fill='url(%23globe)' opacity='0.3'/%3E%3Cg fill='%2334d399' opacity='0.4'%3E%3Cpath d='M 400 300 Q 420 310 425 340 Q 430 370 420 400 Q 410 430 400 450 Q 390 430 385 400 Q 380 360 390 330 Q 395 310 400 300 Z'/%3E%3Cpath d='M 380 260 Q 390 255 400 260 Q 410 265 415 275 Q 410 285 400 285 Q 390 285 385 280 Q 378 272 380 260 Z'/%3E%3Cpath d='M 430 250 Q 470 260 500 280 Q 520 300 530 330 Q 535 360 525 390 Q 515 410 500 420 Q 480 410 465 395 Q 450 375 445 350 Q 440 320 445 290 Q 440 270 430 250 Z'/%3E%3Cpath d='M 280 250 Q 300 240 320 245 Q 340 255 350 275 Q 355 300 345 325 Q 335 345 320 355 Q 305 350 295 335 Q 285 315 280 290 Q 275 270 280 250 Z'/%3E%3Cpath d='M 320 370 Q 330 365 340 375 Q 345 395 340 420 Q 335 450 325 475 Q 315 485 310 475 Q 305 455 308 430 Q 312 400 315 385 Q 318 375 320 370 Z'/%3E%3Cpath d='M 520 480 Q 540 475 555 485 Q 565 500 560 515 Q 550 525 535 522 Q 520 515 515 500 Q 513 487 520 480 Z'/%3E%3C/g%3E%3Cg stroke='%23ffffff' stroke-width='1' fill='none' opacity='0.15'%3E%3Cellipse cx='400' cy='400' rx='300' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='240'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='180'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='120'/%3E%3Cellipse cx='400' cy='400' rx='300' ry='60'/%3E%3Cellipse cx='400' cy='400' rx='240' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='180' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='120' ry='300'/%3E%3Cellipse cx='400' cy='400' rx='60' ry='300'/%3E%3Cline x1='400' y1='100' x2='400' y2='700'/%3E%3Cline x1='100' y1='400' x2='700' y2='400'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: #059669;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: #666;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin: 1rem 0 0 0;
-            color: #10b981;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            flex: 1;
-            max-width: 800px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .score-board {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .score-board h3 {
-            color: #059669;
-            font-size: 1.3rem;
-        }
-
-        .score {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #10b981;
-        }
-
-        .question-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .question-card.active {
-            display: block;
-            animation: slideIn 0.4s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .question-number {
-            color: #059669;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .question-text {
-            font-size: 1.3rem;
-            color: #333;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .answer-btn {
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
             background: white;
-            border: 2px solid #d1d5db;
-            padding: 1.2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        .answer-btn:hover {
-            border-color: #10b981;
-            background: #f0fdf4;
-            transform: translateX(5px);
-        }
-
-        .answer-btn.correct {
-            border-color: #10b981;
-            background: #d1fae5;
-            animation: pulse 0.5s;
-        }
-
-        .answer-btn.wrong {
-            border-color: #ef4444;
-            background: #fee2e2;
-            animation: shake 0.5s;
-        }
-
-        .answer-btn:disabled {
-            cursor: not-allowed;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .explanation {
-            background: #f0fdf4;
-            border-left: 4px solid #10b981;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-top: 1.5rem;
-            display: none;
-            line-height: 1.6;
-        }
-
-        .explanation.wrong {
-            background: #fee2e2;
-            border-left: 4px solid #ef4444;
-        }
-
-        .explanation.show {
-            display: block;
-            animation: slideIn 0.4s ease;
-        }
-
-        .explanation strong {
-            color: #059669;
-        }
-
-        .explanation.wrong strong {
-            color: #ef4444;
-        }
-
-        .next-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
+        .lesson-header {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            display: none;
-            transition: transform 0.2s;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
         }
 
-        .next-btn.show {
-            display: inline-block;
+        .lesson-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
 
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
-        }
-
-        .result-screen {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 3rem 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            display: none;
-        }
-
-        .result-screen.show {
-            display: block;
-            animation: slideIn 0.4s ease;
-        }
-
-        .result-screen h2 {
-            font-size: 2.5rem;
-            color: #059669;
-            margin-bottom: 1rem;
-        }
-
-        .final-score {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #10b981;
-            margin: 2rem 0;
-        }
-
-        .result-message {
-            font-size: 1.2rem;
-            color: #555;
+        .lesson-content {
+            padding: 40px;
             line-height: 1.8;
-            margin: 2rem 0;
-        }
-
-        .restart-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 2rem;
-            transition: transform 0.2s;
-        }
-
-        .restart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
         }
 
         .info-box {
-            background: rgba(254, 243, 199, 0.95);
-            border-left: 4px solid #f59e0b;
-            padding: 1rem;
+            background: #fef3c7;
+            border-left: 4px solid #fb923c;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .info-box p {
+            color: #78350f;
+        }
+
+        h2 {
+            color: #f97316;
+            margin: 30px 0 15px 0;
+            font-size: 1.6em;
+        }
+
+        .btn-back-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Reading Text Box */
+        .reading-box {
+            background: #fff7ed;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .reading-box h3 {
+            color: #f97316;
+            margin-bottom: 20px;
+        }
+
+        .reading-box p {
+            color: #78350f;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .reading-box strong {
+            color: #f97316;
+        }
+
+        /* Questions Container */
+        .questions-container {
+            background: #fff7ed;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .question-block {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Multiple Choice & Radio */
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mc-option {
+            background: #fef3c7;
+            border: 2px solid #fde68a;
             border-radius: 10px;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .mc-option:hover:not(.disabled) {
+            border-color: #fb923c;
+            background: #fde68a;
+            transform: translateX(5px);
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .mc-option.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .mc-option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .mc-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Text Input */
+        .text-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 10px 0;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #fb923c;
+        }
+
+        .text-input.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .text-input.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        /* Check Button */
+        .check-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .check-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .check-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        /* SDG Game Styles */
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .game-header h3 {
+            color: #f97316;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .sdg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .sdg-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #fb923c;
+            border-radius: 8px;
+            padding: 8px 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .sdg-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
+        }
+
+        .sdg-card.selected {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            border-color: #ea580c;
+        }
+
+        .sdg-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .sdg-title {
+            font-size: 0.7em;
+            font-weight: bold;
+            line-height: 1.15;
+        }
+
+        .sdg-category {
+            font-size: 0.6em;
+            margin-top: 2px;
+            opacity: 0.8;
+        }
+
+        .scenario-box {
+            background: #fef3c7;
+            border: 3px solid #fb923c;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 12px 0;
+        }
+
+        .scenario-text {
+            font-size: 1em;
+            color: #78350f;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .game-feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .game-feedback.show {
+            display: block;
+        }
+
+        .game-feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .game-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .score-display {
+            background: white;
+            border: 3px solid #fb923c;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .score-display h3 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .score-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fb923c;
+        }
+
+        /* Portfolio Box */
+        .portfolio-box {
+            background: #fef3c7;
+            border: 3px solid #fb923c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .portfolio-box h3 {
+            color: #f97316;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .portfolio-box textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #fde68a;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-box textarea:focus {
+            outline: none;
+            border-color: #fb923c;
+            box-shadow: 0 0 10px rgba(251, 146, 60, 0.2);
+        }
+
+        .saved-indicator {
+            color: #f97316;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 12px 30px;
+        }
+
+        .hint-text {
+            font-size: 0.9em;
+            color: #92400e;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .next-scenario-btn {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .next-scenario-btn.show {
+            display: inline-block;
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+            .lesson-header h1 {
+                font-size: 1.8em;
             }
 
-            .question-card {
-                padding: 1.5rem;
+            .lesson-content {
+                padding: 20px;
             }
 
-            .answer-btn {
-                padding: 1rem;
-                font-size: 1rem;
+            .sdg-grid {
+                grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+                gap: 6px;
+            }
+
+            .sdg-card {
+                padding: 6px 4px;
+            }
+
+            .sdg-number {
+                font-size: 1.1em;
+            }
+
+            .sdg-title {
+                font-size: 0.65em;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🌱 Klimaschutz-Quiz</h1>
-        <p>Teste dein Wissen über CO₂ und Klimaschutz in der Schweiz</p>
-        <a href="../" class="back-link">← Zurück zur Startseite</a>
-    </header>
-
-    <main>
-        <div class="info-box">
-            💡 <strong>Gut zu wissen:</strong> Die Schweiz verbraucht deutlich mehr Ressourcen, als uns für ein ganzes Jahr zur Verfügung stehen. Testen Sie Ihr Wissen dazu mit diesem Quiz.
+    <div class="container">
+        <div class="lesson-header">
+            <button class="btn-back-header" onclick="returnToMain()">← Zurück zur Übersicht</button>
+            <h1>📚 Nachhaltige Entwicklung & Agenda 2030</h1>
         </div>
 
-        <div class="score-board">
-            <h3>Deine Punkte</h3>
-            <div class="score"><span id="score">0</span> / <span id="total">0</span></div>
-        </div>
+        <div class="lesson-content">
+            <div class="info-box">
+                <p><strong>📋 Aufgabe:</strong> Lesen Sie den Text aufmerksam durch und beantworten Sie anschließend die Fragen zum Leseverstehen.</p>
+            </div>
 
-        <div id="quiz-container"></div>
+            <div class="reading-box">
+                <h3>📖 Lesetext: Die Agenda 2030</h3>
+                <p><strong>Wie die Welt nachhaltiger werden soll – und was die Schweiz damit zu tun hat</strong></p>
+                
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px; overflow-x: auto;">
+                    <pre style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.95em; line-height: 1.6; color: #78350f; white-space: pre-wrap; word-wrap: normal; margin: 0;"><span style="color: #92400e;">(1)</span>  Stell dir vor, alle Länder der Welt setzen sich gemeinsam an einen Tisch und einigen sich: Bis 2030 wollen wir unseren
+<span style="color: #92400e;">(2)</span>  Planeten zu einem besseren Ort machen. Genau das ist im September 2015 passiert. Die Vereinten Nationen haben die Agenda
+<span style="color: #92400e;">(3)</span>  2030 verabschiedet – einen Plan mit 17 konkreten Zielen, der allen Menschen eine lebenswerte Zukunft ermöglichen soll.
+<span style="color: #92400e;">(4)</span>  Klingt <strong>ambitioniert</strong>? Ist es auch.
 
-        <div class="result-screen" id="result-screen">
-            <h2>🎉 Quiz abgeschlossen!</h2>
-            <div class="final-score" id="final-score">0/10</div>
-            <div class="result-message" id="result-message"></div>
-            <button class="restart-btn" onclick="restartQuiz()">🔄 Nochmal spielen</button>
+<span style="color: #92400e;">(5)</span>  <strong>Nachhaltigkeit ist mehr als Recycling</strong>
+<span style="color: #92400e;">(6)</span>  Bevor wir tiefer einsteigen: Was bedeutet Nachhaltigkeit eigentlich? Viele denken da ans Klima oder an Mülltrennung. Das
+<span style="color: #92400e;">(7)</span>  stimmt zwar, greift aber zu kurz. Echte Nachhaltigkeit funktioniert nur, wenn drei Bereiche zusammenspielen: Umwelt,
+<span style="color: #92400e;">(8)</span>  Wirtschaft und Soziales. Alle drei müssen gleichzeitig berücksichtigt werden, sonst ist es keine wirkliche Nachhaltigkeit.
+<span style="color: #92400e;">(9)</span>  Eine Lösung, die zwar die Umwelt schützt, aber Menschen in die Armut treibt? Nicht nachhaltig. Ein Wirtschaftsmodell, das
+<span style="color: #92400e;">(10)</span> kurzfristig Gewinn bringt, aber den Planeten zerstört? Ebenfalls nicht nachhaltig.
+
+<span style="color: #92400e;">(11)</span> <strong>"Leave no one behind" – Niemand wird zurückgelassen</strong>
+<span style="color: #92400e;">(12)</span> Das Besondere an der Agenda 2030: Sie gilt für alle. Egal ob reiches Industrieland oder ärmeres Entwicklungsland – jedes
+<span style="color: #92400e;">(13)</span> Land hat Hausaufgaben zu machen. Das war neu. Früher gab es separate Ziele für verschiedene Ländergruppen, jetzt ziehen alle
+<span style="color: #92400e;">(14)</span> am selben Strang. Das Motto lautet "Leave no one behind". Besonders die ärmsten und benachteiligten Menschen sollen von den
+<span style="color: #92400e;">(15)</span> Veränderungen profitieren.
+
+<span style="color: #92400e;">(16)</span> <strong>Und was macht die Schweiz?</strong>
+<span style="color: #92400e;">(17)</span> Die Schweiz hat sich wie alle UNO-Mitgliedsstaaten verpflichtet, die Agenda 2030 umzusetzen. Dafür hat der Bundesrat die
+<span style="color: #92400e;">(18)</span> "Strategie Nachhaltige Entwicklung 2030" entwickelt, die festlegt, wo die Schweiz ihre Schwerpunkte setzt. Alle vier Jahre
+<span style="color: #92400e;">(19)</span> berichtet die Schweiz der UNO, wie weit sie gekommen ist.
+
+<span style="color: #92400e;">(20)</span> In einigen Bereichen läuft es gut: Gesundheit, Bildung, Beschäftigung und Innovation sind auf gutem Weg. Aber es gibt auch
+<span style="color: #92400e;">(21)</span> Schwachstellen. Der Ressourcenverbrauch ist zu hoch, beim Klimaschutz muss mehr passieren, und das Konsumverhalten der
+<span style="color: #92400e;">(22)</span> Schweizer:innen hat negative Auswirkungen auf andere Länder – zum Beispiel durch Importe, die unter schlechten Bedingungen
+<span style="color: #92400e;">(23)</span> produziert wurden.
+
+<span style="color: #92400e;">(24)</span> <strong>Konkrete Beispiele aus der Schweiz</strong>
+<span style="color: #92400e;">(25)</span> Es gibt aber auch positive Entwicklungen: In Köniz betreibt ein Restaurant ein <strong>ausgeklügeltes</strong> System, um Foodwaste zu
+<span style="color: #92400e;">(26)</span> vermeiden – 95 Prozent des verwendeten Gemüses ist "Zweitklassware", die sonst weggeworfen würde. Der Kanton Genf hat als
+<span style="color: #92400e;">(27)</span> erster Schweizer Kanton "Green Bonds" im Wert von 620 Millionen Franken ausgegeben, um nachhaltige Projekte zu finanzieren.
+<span style="color: #92400e;">(28)</span> Und in Bern gibt es einen "SDG Walk" – einen Rundgang durch die Stadt, der zeigt, wie die 17 Ziele konkret im Alltag aussehen
+<span style="color: #92400e;">(29)</span> können.
+
+<span style="color: #92400e;">(30)</span> <strong>Die <span style="text-decoration: underline;">ernüchternde</span> Halbzeitbilanz</strong>
+<span style="color: #92400e;">(31)</span> Wir sind jetzt bei Halbzeit angekommen – und ehrlich gesagt: Es sieht nicht gut aus. 2023 zeigte ein UN-Bericht, dass
+<span style="color: #92400e;">(32)</span> voraussichtlich nur etwa 15 Prozent der gesetzten Ziele erreicht werden. Die Corona-Pandemie hat vieles zurückgeworfen: 93
+<span style="color: #92400e;">(33)</span> Millionen Menschen mehr leben jetzt in extremer Armut als vor der Pandemie. Etwa 147 Millionen Kinder haben in den letzten
+<span style="color: #92400e;">(34)</span> zwei Jahren mehr als die Hälfte ihres Schulunterrichts verpasst. Frauen leben vielerorts immer noch in schwierigen
+<span style="color: #92400e;">(35)</span> Verhältnissen.
+
+<span style="color: #92400e;">(36)</span> Aber: Die Ziele sind noch erreichbar. Dafür müssen Projekte, finanzielle Hilfen und politische Maßnahmen in der
+<span style="color: #92400e;">(37)</span> verbleibenden Zeit deutlich effizienter und schneller umgesetzt werden.
+
+<span style="color: #92400e;">(38)</span> <strong>Was hat das mit uns zu tun?</strong>
+<span style="color: #92400e;">(39)</span> Du denkst jetzt vielleicht: "Klingt alles wichtig, aber was kann ich als einzelne Person schon tun?" Tatsächlich eine Menge.
+<span style="color: #92400e;">(40)</span> Jede Entscheidung zählt – ob du lokale Produkte kaufst, bewusst konsumierst oder dich fragst, ob du wirklich mehr Dinge
+<span style="color: #92400e;">(41)</span> besitzen musst oder ob das, was du hast, nachhaltiger sein sollte.
+
+<span style="color: #92400e;">(42)</span> Aber es geht nicht nur um individuelle Entscheidungen. Auch Unternehmen, die Wirtschaft und der Finanzsektor müssen umdenken.
+<span style="color: #92400e;">(43)</span> Die gute Nachricht: Immer mehr Firmen begreifen Nachhaltigkeit als Teil ihres Geschäftsmodells. Zudem fordern Kundinnen und
+<span style="color: #92400e;">(44)</span> Kunden dies zunehmend ein.
+
+<span style="color: #92400e;">(45)</span> Auch in der Bildung, Forschung und Innovation liegt großes Potenzial. Die Schweiz kann als reiches und entwickeltes Land mit
+<span style="color: #92400e;">(46)</span> innovativen Ansätzen vorangehen – und zeigen, dass nachhaltiges Wirtschaften nicht nur möglich, sondern auch zukunftsfähig ist.
+
+<span style="color: #92400e;">(47)</span> <strong>Realitätscheck: Warum ist es so schwierig?</strong>
+<span style="color: #92400e;">(48)</span> Der Optimismus von 2015 ist heute einer gewissen Ernüchterung gewichen. Die Welt ist mit <strong>multiplen</strong> Krisen konfrontiert –
+<span style="color: #92400e;">(49)</span> Pandemie, Kriege, Klimakrise. Das macht die Umsetzung der Agenda schwieriger. Aber genau deshalb ist sie so wichtig. Die
+<span style="color: #92400e;">(50)</span> Alternative wäre, weiterzumachen wie bisher – und das können wir uns schlicht nicht leisten.
+
+<span style="color: #92400e;">(51)</span> Die Agenda 2030 ist kein Nice-to-have, sondern eine Notwendigkeit. Sie zeigt, dass wir als globale Gemeinschaft verstanden
+<span style="color: #92400e;">(52)</span> haben: So geht es nicht weiter. Jetzt müssen wir nur noch entsprechend handeln – als Einzelpersonen, als Unternehmen, als
+<span style="color: #92400e;">(53)</span> Staaten. Die Zeit drängt, aber die Chance ist noch da.</pre>
+                </div>
+            </div>
+
+            <div class="questions-container">
+                <!-- Teil A: Detailfragen -->
+                <h3 style="color: #f97316; margin-bottom: 20px;">Teil A: Fragen zum Text (5 Fragen)</h3>
+
+                <!-- Frage 1 -->
+                <div class="question-block" data-question="1">
+                    <span class="question-number">Frage 1</span>
+                    <div class="question-text">Wie viele konkrete Ziele umfasst die Agenda 2030?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="12">
+                            <span>12 Ziele</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="17">
+                            <span>17 Ziele</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="20">
+                            <span>20 Ziele</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="25">
+                            <span>25 Ziele</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(1, 'mc', '17')">Überprüfen</button>
+                    <div class="feedback" id="feedback-1"></div>
+                </div>
+
+                <!-- Frage 2 -->
+                <div class="question-block" data-question="2">
+                    <span class="question-number">Frage 2</span>
+                    <div class="question-text">Welche drei Bereiche müssen laut Text zusammenspielen, damit echte Nachhaltigkeit funktioniert?</div>
+                    <input type="text" class="text-input" id="q2-input" placeholder="z.B. Bereich 1, Bereich 2, Bereich 3">
+                    <p class="hint-text">Geben Sie alle drei Bereiche ein (Reihenfolge egal)</p>
+                    <button class="check-btn" onclick="checkQuestion(2, 'text', ['umwelt wirtschaft soziales', 'umwelt soziales wirtschaft', 'wirtschaft umwelt soziales', 'wirtschaft soziales umwelt', 'soziales umwelt wirtschaft', 'soziales wirtschaft umwelt'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-2"></div>
+                </div>
+
+                <!-- Frage 3 -->
+                <div class="question-block" data-question="3">
+                    <span class="question-number">Frage 3</span>
+                    <div class="question-text">Was ist laut Text neu an der Agenda 2030 im Vergleich zu früheren Zielsetzungen?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="nur17">
+                            <span>Sie umfasst nur 17 statt mehr Ziele</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="alle">
+                            <span>Sie gilt für alle Länder, nicht nur für bestimmte Ländergruppen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="schweiz">
+                            <span>Die Schweiz muss zum ersten Mal mitmachen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="freiwillig">
+                            <span>Die Teilnahme ist freiwillig</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(3, 'mc', 'alle')">Überprüfen</button>
+                    <div class="feedback" id="feedback-3"></div>
+                </div>
+
+                <!-- Frage 4 -->
+                <div class="question-block" data-question="4">
+                    <span class="question-number">Frage 4</span>
+                    <div class="question-text">Wie viel Prozent der gesetzten Ziele werden laut UN-Bericht von 2023 voraussichtlich erreicht?</div>
+                    <input type="text" class="text-input" id="q4-input" placeholder="Zahl eingeben" style="max-width: 100px;">
+                    <p class="hint-text">Nur die Zahl eingeben (ohne %)</p>
+                    <button class="check-btn" onclick="checkQuestion(4, 'text', ['15', 'fünfzehn'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-4"></div>
+                </div>
+
+                <!-- Frage 5: Global -->
+                <div class="question-block" data-question="5">
+                    <span class="question-number">Frage 5</span>
+                    <div class="question-text">Was ist die Hauptaussage des Textes?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q5" value="recycling">
+                            <span>Recycling ist der wichtigste Schritt zur Nachhaltigkeit</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q5" value="schweiz">
+                            <span>Die Schweiz ist Vorreiter bei nachhaltiger Entwicklung</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q5" value="global">
+                            <span>Die Agenda 2030 ist ein globaler Plan für nachhaltige Entwicklung, der dringend umgesetzt werden muss</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q5" value="unmöglich">
+                            <span>Die Ziele der Agenda 2030 sind nicht mehr erreichbar</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(5, 'mc', 'global')">Überprüfen</button>
+                    <div class="feedback" id="feedback-5"></div>
+                </div>
+
+                <!-- Teil B: Synonyme -->
+                <h3 style="color: #f97316; margin: 50px 0 20px 0; font-size: 1.4em; padding-top: 30px; border-top: 3px solid #fde68a;">Teil B: Wortschatz - Welches Wort steht im Text?</h3>
+                <p style="color: #78350f; margin-bottom: 20px; font-size: 1.05em;"><strong>Suchen Sie in den angegebenen Zeilen nach einem Wort mit der beschriebenen Bedeutung:</strong></p>
+
+                <!-- Synonym 1 -->
+                <div class="question-block" data-question="6">
+                    <span class="question-number">Frage 6</span>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 4</strong> ein Wort, das <em>"ehrgeizig"</em> oder <em>"anspruchsvoll"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q6-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(6, 'text-synonym', ['ambitioniert'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-6"></div>
+                </div>
+
+                <!-- Synonym 2 -->
+                <div class="question-block" data-question="7">
+                    <span class="question-number">Frage 7</span>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 25</strong> ein Wort, das <em>"durchdacht"</em> oder <em>"raffiniert geplant"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q7-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(7, 'text-synonym', ['ausgeklügelt', 'ausgeklügeltes'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-7"></div>
+                </div>
+
+                <!-- Synonym 3 -->
+                <div class="question-block" data-question="8">
+                    <span class="question-number">Frage 8</span>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 30</strong> ein Wort, das <em>"enttäuschend"</em> oder <em>"entmutigend"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q8-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(8, 'text-synonym', ['ernüchternd', 'ernüchternde'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-8"></div>
+                </div>
+
+                <!-- Synonym 4 -->
+                <div class="question-block" data-question="9">
+                    <span class="question-number">Frage 9</span>
+                    <div class="question-text">In <strong>Zeile 34-35</strong> wird beschrieben, wie Frauen leben. Suchen Sie ein Wort/eine Formulierung, das/die <em>"schwierig"</em>, <em>"unsicher"</em> oder <em>"problematisch"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q9-input" placeholder="Ihr Wort/Formulierung aus dem Text">
+                    <p class="hint-text">Sie können auch mehrere Wörter eingeben</p>
+                    <button class="check-btn" onclick="checkQuestion(9, 'text-synonym', ['schwierigen', 'schwierigen verhältnissen', 'prekär'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-9"></div>
+                </div>
+
+                <!-- Synonym 5 -->
+                <div class="question-block" data-question="10">
+                    <span class="question-number">Frage 10</span>
+                    <div class="question-text">Suchen Sie in <strong>Zeile 48</strong> ein Wort, das <em>"vielfach"</em> oder <em>"zahlreich"</em> bedeutet:</div>
+                    <input type="text" class="text-input" id="q10-input" placeholder="Ihr Wort aus dem Text">
+                    <button class="check-btn" onclick="checkQuestion(10, 'text-synonym', ['multiplen', 'multiple'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-10"></div>
+                </div>
+
+                <div class="score-display">
+                    <h3>Ihre Punktzahl - Aufgabe 1</h3>
+                    <div class="score-number" id="scoreDisplay">0 / 10</div>
+                </div>
+            </div>
+
+            <h2>🎮 Aufgabe 2: Interaktives SDG-Spiel</h2>
+
+            <div class="info-box">
+                <p><strong>🎯 Spielanleitung:</strong> Ihnen werden verschiedene Alltagssituationen präsentiert. Ordnen Sie jede Situation dem passenden SDG-Ziel (Sustainable Development Goal) zu. Lernen Sie die 17 Ziele und die 5 Ps kennen!</p>
+            </div>
+
+            <div class="game-container">
+                <div class="game-header">
+                    <h3>🌍 Die 17 SDG-Ziele kennenlernen</h3>
+                    <p style="color: #78350f;">Welches Ziel passt zur Situation?</p>
+                </div>
+
+                <div id="scenario-container">
+                    <!-- Scenarios will be loaded here -->
+                </div>
+
+                <div class="sdg-grid" id="sdg-grid">
+                    <!-- SDG cards will be loaded here -->
+                </div>
+
+                <div class="game-feedback" id="game-feedback"></div>
+
+                <div class="score-display">
+                    <h3>Ihre Punktzahl - Aufgabe 2</h3>
+                    <div class="score-number" id="gameScore">0 / 8</div>
+                    <p style="color: #78350f; margin-top: 10px;">Situation <span id="scenarioProgress">1</span> von 8</p>
+                </div>
+            </div>
+
+            <div class="portfolio-box">
+                <h3>📝 Mein Lernjournal: Schritt 3</h3>
+                <p style="color: #78350f; margin-bottom: 15px;">
+                    <strong>Reflexionsaufgabe:</strong>
+                </p>
+                <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
+                    <li>Welches der 17 SDG-Ziele finden Sie persönlich am wichtigsten und warum?</li>
+                    <li>In welchen Bereichen könnte die Schweiz noch mehr tun?</li>
+                    <li>Was können Sie selbst konkret zur Agenda 2030 beitragen?</li>
+                </ul>
+                <textarea 
+                    id="portfolio-text" 
+                    placeholder="Hier Ihre Notizen eintragen..."
+                    oninput="savePortfolio()"></textarea>
+                <div class="saved-indicator" id="saved-indicator">✓ Automatisch gespeichert</div>
+                
+                <button class="btn-save" onclick="savePortfolioManual()">
+                    💾 Speichern
+                </button>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-back" onclick="returnToMain()">
+                    ← Zurück zur Übersicht
+                </button>
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    📄 PDF Schritt 3 herunterladen
+                </button>
+                <button class="btn-complete" onclick="completeStep()">
+                    Schritt abschließen und weiter →
+                </button>
+            </div>
         </div>
-    </main>
+    </div>
 
     <script>
-        const questions = [
+        let score = 0;
+        let answeredQuestions = new Set();
+        let gameScore = 0;
+        let currentScenario = 0;
+
+        // SDG Data
+        const sdgs = [
+            { num: 1, title: "Keine Armut", category: "People" },
+            { num: 2, title: "Kein Hunger", category: "People" },
+            { num: 3, title: "Gesundheit", category: "People" },
+            { num: 4, title: "Bildung", category: "People" },
+            { num: 5, title: "Geschlechter-gleichheit", category: "People" },
+            { num: 6, title: "Sauberes Wasser", category: "Planet" },
+            { num: 7, title: "Erneuerbare Energie", category: "Planet" },
+            { num: 8, title: "Gute Arbeit", category: "Prosperity" },
+            { num: 9, title: "Innovation", category: "Prosperity" },
+            { num: 10, title: "Weniger Ungleichheit", category: "Peace" },
+            { num: 11, title: "Nachhaltige Städte", category: "Planet" },
+            { num: 12, title: "Verantwortungs-voller Konsum", category: "Planet" },
+            { num: 13, title: "Klimaschutz", category: "Planet" },
+            { num: 14, title: "Leben im Wasser", category: "Planet" },
+            { num: 15, title: "Leben an Land", category: "Planet" },
+            { num: 16, title: "Frieden & Gerechtigkeit", category: "Peace" },
+            { num: 17, title: "Partnerschaften", category: "Partnership" }
+        ];
+
+        // Game Scenarios
+        const scenarios = [
             {
-                question: "Wie viele Erden bräuchte es, wenn alle Menschen so leben würden wie wir in der Schweiz?",
-                answers: [
-                    "1,5 Erden",
-                    "2,8 Erden",
-                    "4,2 Erden",
-                    "Nur 1 Erde würde reichen"
-                ],
-                correct: 1,
-                explanation: "<strong>Richtig!</strong> Würden alle Menschen so leben wie die Schweizer Bevölkerung, bräuchte es <strong>2,8 Erden</strong>. Das zeigt: Wir leben deutlich über unsere Verhältnisse und auf Kosten kommender Generationen. 🌍<br><br><em>Quelle: WWF Schweiz & Global Footprint Network</em>"
+                text: "Sarah kauft ihre Kleider nur noch Second Hand oder von fair trade zertifizierten Marken. Sie achtet darauf, dass die Arbeiter:innen fair bezahlt werden.",
+                correctSDG: 12,
+                explanation: "SDG 12 'Verantwortungsvoller Konsum' passt perfekt! Es geht um nachhaltigen Konsum und faire Produktionsbedingungen.",
+                category: "Planet"
             },
             {
-                question: "Welches Verkehrsmittel ist am klimafreundlichsten für deinen Weg zur Schule?",
-                answers: [
-                    "Elektroauto",
-                    "Bus",
-                    "Velo oder zu Fuss",
-                    "Roller mit Benzinmotor"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> <strong>Velo oder zu Fuss</strong> sind unschlagbar! Sie verursachen praktisch keine CO₂-Emissionen und sind auch noch gesund. Der Bus ist auch gut (20-50x klimafreundlicher als Autofahren alleine), aber Muskelkraft ist am besten! 🚴‍♀️<br><br><em>Quelle: WWF Schweiz</em>"
+                text: "Die Gemeinde installiert Solarpanels auf allen öffentlichen Gebäuden und fördert den Umstieg von fossilen Brennstoffen auf erneuerbare Energien.",
+                correctSDG: 7,
+                explanation: "SDG 7 'Erneuerbare Energie' ist richtig! Dieses Ziel fördert den Zugang zu bezahlbarer und sauberer Energie.",
+                category: "Planet"
             },
             {
-                question: "Wie viel CO₂ spart man pro Jahr, wenn man von durchschnittlichem Fleischkonsum auf vegetarisch umstellt?",
-                answers: [
-                    "Etwa 5% vom Ernährungs-Fussabdruck",
-                    "Etwa 15% vom Ernährungs-Fussabdruck",
-                    "Etwa 25% vom Ernährungs-Fussabdruck",
-                    "Fast nichts"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> Eine vegetarische Ernährung reduziert den Fussabdruck um <strong>etwa 25%</strong>, vegan sogar um 35-40%! Fleisch und Milchprodukte belasten die Umwelt in der Schweiz am stärksten. Schon eine Reduktion des Fleischkonsums hilft. 🥗<br><br><em>Quelle: WWF Schweiz</em>"
+                text: "Marc engagiert sich in einem Projekt, das Jugendlichen aus benachteiligten Familien kostenlose Nachhilfe und Unterstützung bietet.",
+                correctSDG: 4,
+                explanation: "SDG 4 'Bildung' ist die richtige Antwort! Chancengleiche und hochwertige Bildung für alle ist das Ziel.",
+                category: "People"
             },
             {
-                question: "Wie oft fliegen Schweizerinnen und Schweizer im Vergleich zu unseren Nachbarländern?",
-                answers: [
-                    "Etwa gleich oft",
-                    "Etwa doppelt so oft",
-                    "Etwa halb so oft",
-                    "Deutlich weniger"
-                ],
-                correct: 1,
-                explanation: "<strong>Richtig!</strong> Die Schweizer Bevölkerung fliegt <strong>doppelt so oft</strong> wie Personen in den Nachbarländern – sogar öfter als die USA! Der Flugverkehr macht über 18% unseres Fussabdrucks aus. Ferien in der Schweiz oder mit dem Zug ins nahe Ausland sind 10x klimafreundlicher! ✈️➡️🚂<br><br><em>Quelle: BAFU & WWF Schweiz</em>"
+                text: "Ein Unternehmen führt flexible Arbeitszeiten und gleichen Lohn für Männer und Frauen ein. Zudem werden Führungspositionen gezielt auch an Frauen vergeben.",
+                correctSDG: 5,
+                explanation: "SDG 5 'Geschlechtergleichheit' trifft zu! Es geht um gleiche Rechte und Chancen für alle Geschlechter.",
+                category: "People"
             },
             {
-                question: "Wofür braucht die Schweiz am meisten Energie und CO₂ im Wohnbereich?",
-                answers: [
-                    "Für Licht und Elektrogeräte",
-                    "Fürs Heizen",
-                    "Fürs Kochen",
-                    "Für Warmwasser"
-                ],
-                correct: 1,
-                explanation: "<strong>Richtig!</strong> Rund <strong>40% des gesamten Energieverbrauchs und der CO₂-Emissionen</strong> in der Schweiz entfallen aufs Heizen! Deshalb ist der Ersatz von Öl- und Gasheizungen durch Wärmepumpen oder andere klimaschonende Systeme so wichtig. 🏠<br><br><em>Quelle: WWF Schweiz & BAFU</em>"
+                text: "Die Stadt Zürich baut mehr Velowegenetz aus, fördert den ÖV und schafft autofreie Zonen. Dadurch sinken die CO₂-Emissionen deutlich.",
+                correctSDG: 13,
+                explanation: "SDG 13 'Klimaschutz' ist korrekt! Maßnahmen zur Bekämpfung des Klimawandels sind zentral.",
+                category: "Planet"
             },
             {
-                question: "Wie viel CO₂ stösst ein durchschnittlicher Schweizer pro Jahr aus (nur im Inland)?",
-                answers: [
-                    "1 Tonne",
-                    "5 Tonnen",
-                    "13 Tonnen",
-                    "20 Tonnen"
-                ],
-                correct: 1,
-                explanation: "<strong>Richtig!</strong> Im Inland (auf Schweizer Territorium) sind es <strong>5 Tonnen CO₂</strong> pro Person. Zählt man aber alle Importe dazu (graue Emissionen), sind es sogar <strong>13 Tonnen</strong>! Die planetare Grenze liegt bei unter 0,6 Tonnen. 📊<br><br><em>Quelle: BAFU 2023</em>"
+                text: "Eine NGO setzt sich dafür ein, dass Flüchtlinge Zugang zu medizinischer Versorgung, Sprachkursen und Arbeitsmöglichkeiten erhalten.",
+                correctSDG: 10,
+                explanation: "SDG 10 'Weniger Ungleichheit' passt! Es geht um die Verringerung von Ungleichheiten innerhalb und zwischen Ländern.",
+                category: "Peace"
             },
             {
-                question: "Was hilft dem Klima am meisten beim Essen?",
-                answers: [
-                    "Nur Bio-Produkte kaufen",
-                    "Auf Plastikverpackungen verzichten",
-                    "Weniger tierische, mehr pflanzliche Produkte essen",
-                    "Nur regionale Produkte kaufen"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> Der größte Hebel ist: <strong>Mehr pflanzlich, weniger tierisch</strong> essen. Das bringt viel mehr als Verpackungen oder Bio! Die Reihenfolge laut WWF: 1. Pflanzliche Ernährung, 2. Saisonal & regional, 3. Bio, 4. Nicht mit Flugzeug transportiert. 🌱<br><br><em>Quelle: WWF Schweiz</em>"
+                text: "Ein Landwirt stellt auf biologische Landwirtschaft um, verzichtet auf Pestizide und schützt dadurch Bienen und andere Insekten.",
+                correctSDG: 15,
+                explanation: "SDG 15 'Leben an Land' ist richtig! Dieses Ziel schützt Ökosysteme, Wälder und die Artenvielfalt.",
+                category: "Planet"
             },
             {
-                question: "Wie klimafreundlich ist der Zug im Vergleich zum Flugzeug?",
-                answers: [
-                    "Etwa gleich",
-                    "Etwa 3x klimafreundlicher",
-                    "Etwa 10x klimafreundlicher",
-                    "Nur minimal besser"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> Mit dem Zug reist du etwa <strong>10x klimafreundlicher</strong> als mit dem Flugzeug! Zürich-Dakar retour mit dem Flugzeug: ca. 1200 kg CO₂. Die gleiche Strecke mit dem Zug: nur 70 kg CO₂. 🚂<br><br><em>Quelle: BAFU</em>"
-            },
-            {
-                question: "Welcher Tipp ist am wichtigsten, um deinen CO₂-Fussabdruck zu verkleinern?",
-                answers: [
-                    "Mülltrennung und Recycling",
-                    "LED-Lampen verwenden",
-                    "Die großen Bereiche angehen: Mobilität, Heizen und Ernährung",
-                    "Weniger duschen"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> Die <strong>drei großen Hebel</strong> sind: Mobilität, Heizen und Ernährung. Zusammen machen sie den Großteil deines Fussabdrucks aus. Recycling und LED-Lampen sind gut, aber haben viel weniger Einfluss. 🎯<br><br><em>Quelle: WWF Schweiz</em>"
-            },
-            {
-                question: "Was ist besser fürs Klima: Ein neues Elektroauto kaufen oder das alte Auto weiterfahren?",
-                answers: [
-                    "Immer sofort ein neues E-Auto kaufen",
-                    "Das alte Auto so lange wie möglich nutzen",
-                    "Es kommt darauf an: Erst wenn das alte Auto kaputt ist, lohnt sich ein E-Auto",
-                    "E-Autos sind nie besser fürs Klima"
-                ],
-                correct: 2,
-                explanation: "<strong>Richtig!</strong> <strong>Erst wenn dein altes Auto am Ende ist</strong>, lohnt sich ein E-Auto – denn die Herstellung verursacht auch CO₂. Am besten fürs Klima: Velo, ÖV oder Car-Sharing! Wenn Auto nötig ist: Kleine, effiziente E-Autos sind am klimaschonendsten. 🚗➡️🚲<br><br><em>Quelle: WWF Schweiz</em>"
+                text: "Die Schweiz und andere Länder arbeiten zusammen, um Impfstoffe gerecht weltweit zu verteilen und ärmere Länder finanziell zu unterstützen.",
+                correctSDG: 17,
+                explanation: "SDG 17 'Partnerschaften' ist die beste Antwort! Globale Zusammenarbeit ist entscheidend für die Erreichung aller Ziele.",
+                category: "Partnership"
             }
         ];
 
-        let currentQuestion = 0;
-        let score = 0;
-        let answered = false;
-
-        function initQuiz() {
-            document.getElementById('total').textContent = questions.length;
-            renderQuestion();
+        function renderSDGGrid() {
+            const grid = document.getElementById('sdg-grid');
+            grid.innerHTML = '';
+            
+            sdgs.forEach(sdg => {
+                const card = document.createElement('div');
+                card.className = 'sdg-card';
+                card.dataset.sdg = sdg.num;
+                card.innerHTML = `
+                    <div class="sdg-number">${sdg.num}</div>
+                    <div class="sdg-title">${sdg.title}</div>
+                    <div class="sdg-category">${sdg.category}</div>
+                `;
+                card.onclick = () => selectSDG(sdg.num);
+                grid.appendChild(card);
+            });
         }
 
-        function renderQuestion() {
-            const container = document.getElementById('quiz-container');
-            const q = questions[currentQuestion];
+        function renderScenario() {
+            if (currentScenario >= scenarios.length) {
+                showGameResult();
+                return;
+            }
+
+            const scenario = scenarios[currentScenario];
+            const container = document.getElementById('scenario-container');
             
-            let html = `
-                <div class="question-card active">
-                    <div class="question-number">Frage ${currentQuestion + 1} von ${questions.length}</div>
-                    <div class="question-text">${q.question}</div>
-                    <div class="answers">
-            `;
-            
-            q.answers.forEach((answer, index) => {
-                html += `<button class="answer-btn" onclick="checkAnswer(${index})">${answer}</button>`;
-            });
-            
-            html += `
+            container.innerHTML = `
+                <div class="scenario-box">
+                    <div style="font-weight: bold; color: #f97316; margin-bottom: 10px;">
+                        Situation ${currentScenario + 1} von ${scenarios.length}
                     </div>
-                    <div class="explanation" id="explanation"></div>
-                    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Nächste Frage →</button>
+                    <div class="scenario-text">${scenario.text}</div>
+                    <div style="font-weight: bold; color: #78350f; margin-top: 15px;">
+                        → Welches SDG-Ziel passt am besten zu dieser Situation?
+                    </div>
                 </div>
             `;
-            
-            container.innerHTML = html;
-            answered = false;
-        }
 
-        function checkAnswer(selected) {
-            if (answered) return;
-            answered = true;
+            document.getElementById('scenarioProgress').textContent = currentScenario + 1;
+            document.getElementById('game-feedback').classList.remove('show');
+            document.getElementById('next-scenario-btn').classList.remove('show');
 
-            const q = questions[currentQuestion];
-            const buttons = document.querySelectorAll('.answer-btn');
-            const explanation = document.getElementById('explanation');
-            const nextBtn = document.getElementById('next-btn');
-            
-            buttons.forEach((btn, index) => {
-                btn.disabled = true;
-                if (index === q.correct) {
-                    btn.classList.add('correct');
-                }
-                if (index === selected && index !== q.correct) {
-                    btn.classList.add('wrong');
-                }
+            // Reset SDG selection
+            document.querySelectorAll('.sdg-card').forEach(card => {
+                card.classList.remove('selected');
+                card.style.pointerEvents = 'auto';
             });
-            
-            if (selected === q.correct) {
-                score++;
-                document.getElementById('score').textContent = score;
-                explanation.innerHTML = '<strong style="color: #10b981;">✓ RICHTIG!</strong> ' + q.explanation.replace('<strong>Richtig!</strong> ', '');
-            } else {
-                explanation.innerHTML = '<strong style="color: #ef4444;">✗ FALSCH!</strong> ' + q.explanation.replace('<strong>Richtig!</strong> ', '');
-                explanation.classList.add('wrong');
-            }
-            
-            explanation.classList.add('show');
-            nextBtn.classList.add('show');
         }
 
-        function nextQuestion() {
-            currentQuestion++;
-            
-            if (currentQuestion < questions.length) {
-                renderQuestion();
+        function selectSDG(selectedNum) {
+            const scenario = scenarios[currentScenario];
+            const feedback = document.getElementById('game-feedback');
+            const isCorrect = selectedNum === scenario.correctSDG;
+
+            // Disable all cards
+            document.querySelectorAll('.sdg-card').forEach(card => {
+                card.style.pointerEvents = 'none';
+            });
+
+            // Highlight selected
+            const selectedCard = document.querySelector(`.sdg-card[data-sdg="${selectedNum}"]`);
+            selectedCard.classList.add('selected');
+
+            if (isCorrect) {
+                gameScore++;
+                feedback.className = 'game-feedback correct show';
+                feedback.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <strong>✓ Richtig!</strong> ${scenario.explanation}<br>
+                            <span style="font-size: 0.9em; margin-top: 10px; display: inline-block;">
+                                💡 Dieses Ziel gehört zur Kategorie der <strong>"${scenario.category}"</strong> (${getCategoryExplanation(scenario.category)})
+                            </span>
+                        </div>
+                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Nächste Situation →
+                        </button>
+                    </div>
+                `;
             } else {
-                showResults();
+                const correctSDG = sdgs.find(s => s.num === scenario.correctSDG);
+                feedback.className = 'game-feedback incorrect show';
+                feedback.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <strong>✗ Leider falsch.</strong> Die richtige Antwort wäre <strong>SDG ${scenario.correctSDG}: ${correctSDG.title}</strong>.<br>
+                            ${scenario.explanation}
+                        </div>
+                        <button onclick="nextScenario()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 0.95em; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Nächste Situation →
+                        </button>
+                    </div>
+                `;
             }
+
+            document.getElementById('gameScore').textContent = `${gameScore} / ${scenarios.length}`;
         }
 
-        function showResults() {
-            const container = document.getElementById('quiz-container');
-            container.style.display = 'none';
-            
-            const resultScreen = document.getElementById('result-screen');
-            const finalScore = document.getElementById('final-score');
-            const resultMessage = document.getElementById('result-message');
-            
-            finalScore.textContent = `${score} / ${questions.length}`;
-            
-            let message = '';
-            const percentage = (score / questions.length) * 100;
-            
-            if (percentage === 100) {
-                message = '🌟 <strong>Perfekt!</strong> Du bist ein echter Klimaschutz-Profi! Du weisst genau, wo die grossen Hebel liegen und wie wir alle gemeinsam unseren Fussabdruck verkleinern können. Teile dein Wissen mit anderen! 🌍';
-            } else if (percentage >= 80) {
-                message = '👏 <strong>Sehr gut!</strong> Du kennst dich richtig gut aus mit Klimaschutz. Du weisst, dass Mobilität, Heizen und Ernährung die wichtigsten Bereiche sind. Weiter so!';
+        function getCategoryExplanation(category) {
+            const explanations = {
+                "People": "Menschen",
+                "Planet": "Planet",
+                "Prosperity": "Wohlstand",
+                "Peace": "Frieden",
+                "Partnership": "Partnerschaft"
+            };
+            return explanations[category] || category;
+        }
+
+        function nextScenario() {
+            currentScenario++;
+            renderScenario();
+        }
+
+        function showGameResult() {
+            const container = document.getElementById('scenario-container');
+            const percentage = (gameScore / scenarios.length) * 100;
+            let emoji, message;
+
+            if (percentage >= 80) {
+                emoji = '🌟';
+                message = 'Hervorragend! Sie kennen die SDGs sehr gut!';
             } else if (percentage >= 60) {
-                message = '👍 <strong>Gut gemacht!</strong> Du hast schon einiges über Klimaschutz gelernt. Vielleicht hilft dir der <a href="../co2-rechner.html" style="color: #059669; font-weight: bold;">CO₂-Rechner</a>, deinen eigenen Fussabdruck besser zu verstehen.';
-            } else if (percentage >= 40) {
-                message = '📚 <strong>Nicht schlecht!</strong> Du bist auf dem richtigen Weg. Schau dir die Erklärungen nochmal an – da stecken viele spannende Fakten drin. Jeder Schritt zählt!';
+                emoji = '😊';
+                message = 'Gut gemacht! Sie haben ein solides Verständnis der SDGs.';
             } else {
-                message = '🌱 <strong>Das wird schon!</strong> Klimaschutz ist komplex, aber du lernst dazu. Probier das Quiz nochmal oder besuche die Seiten von <a href="https://www.wwf.ch" target="_blank" style="color: #059669; font-weight: bold;">WWF Schweiz</a> für mehr Infos!';
+                emoji = '💪';
+                message = 'Das war ein guter Anfang! Schauen Sie sich die 17 Ziele nochmal genau an.';
+            }
+
+            container.innerHTML = `
+                <div class="scenario-box" style="text-align: center; padding: 40px;">
+                    <div style="font-size: 5em; margin-bottom: 20px;">${emoji}</div>
+                    <h2 style="color: #f97316; margin-bottom: 15px;">Spiel beendet!</h2>
+                    <div style="font-size: 2em; font-weight: bold; color: #fb923c; margin: 20px 0;">
+                        ${gameScore} / ${scenarios.length}
+                    </div>
+                    <p style="font-size: 1.2em; color: #78350f;">${message}</p>
+                    
+                    <div style="margin-top: 30px; text-align: left; background: #fef3c7; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #f97316; margin-bottom: 15px;">📚 Die 5 Ps der Agenda 2030:</h4>
+                        <ul style="color: #78350f; line-height: 1.8;">
+                            <li><strong>People (Menschen):</strong> SDGs 1-5 – Armut, Hunger, Gesundheit, Bildung, Gleichberechtigung</li>
+                            <li><strong>Planet:</strong> SDGs 6, 12-15 – Wasser, Konsum, Klima, Biodiversität</li>
+                            <li><strong>Prosperity (Wohlstand):</strong> SDGs 7-11 – Energie, Arbeit, Innovation, Infrastruktur, Städte</li>
+                            <li><strong>Peace (Frieden):</strong> SDG 16 – Rechtsstaatlichkeit, Gerechtigkeit</li>
+                            <li><strong>Partnership (Partnerschaft):</strong> SDG 17 – Globale Zusammenarbeit</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('sdg-grid').style.display = 'none';
+            document.getElementById('next-scenario-btn').style.display = 'none';
+            document.getElementById('game-feedback').classList.remove('show');
+        }
+
+        function checkQuestion(questionNum, type, correctAnswer) {
+            if (answeredQuestions.has(questionNum)) {
+                return;
+            }
+
+            const feedback = document.getElementById(`feedback-${questionNum}`);
+            const button = document.querySelector(`[data-question="${questionNum}"] .check-btn`);
+            let isCorrect = false;
+
+            if (type === 'mc') {
+                const selected = document.querySelector(`input[name="q${questionNum}"]:checked`);
+                if (!selected) {
+                    alert('Bitte wählen Sie eine Antwort aus.');
+                    return;
+                }
+                isCorrect = selected.value === correctAnswer;
+
+                const options = document.querySelectorAll(`input[name="q${questionNum}"]`);
+                options.forEach(opt => {
+                    opt.disabled = true;
+                    opt.parentElement.classList.add('disabled');
+                });
+
+                if (isCorrect) {
+                    selected.parentElement.classList.add('correct');
+                } else {
+                    selected.parentElement.classList.add('incorrect');
+                    options.forEach(opt => {
+                        if (opt.value === correctAnswer) {
+                            opt.parentElement.classList.add('correct');
+                        }
+                    });
+                }
+            } else if (type === 'text') {
+                const input = document.getElementById(`q${questionNum}-input`);
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                if (userAnswer === '') {
+                    alert('Bitte geben Sie eine Antwort ein.');
+                    return;
+                }
+
+                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                isCorrect = correctAnswers.some(ans => 
+                    userAnswer === ans.toLowerCase() || 
+                    userAnswer.includes(ans.toLowerCase())
+                );
+
+                input.disabled = true;
+                input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            } else if (type === 'text-synonym') {
+                const input = document.getElementById(`q${questionNum}-input`);
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                if (userAnswer === '') {
+                    alert('Bitte geben Sie eine Antwort ein.');
+                    return;
+                }
+
+                const correctAnswers = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                isCorrect = correctAnswers.some(ans => 
+                    userAnswer === ans.toLowerCase() || 
+                    userAnswer.includes(ans.toLowerCase())
+                );
+
+                input.disabled = true;
+                input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
+
+            if (isCorrect) {
+                score++;
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '<strong>✓ Richtig!</strong> Sehr gut!';
+            } else {
+                feedback.className = 'feedback incorrect show';
+                
+                // Spezifische Feedbacks
+                if (questionNum === 2) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die drei Bereiche sind: <strong>Umwelt, Wirtschaft und Soziales</strong>';
+                } else if (questionNum === 4) {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Laut UN-Bericht von 2023 werden voraussichtlich nur etwa <strong>15 Prozent</strong> der Ziele erreicht';
+                } else {
+                    feedback.innerHTML = '<strong>✗ Leider falsch.</strong> Die richtige Antwort wurde <span style="color: #10b981;">grün</span> markiert.';
+                }
+            }
+
+            answeredQuestions.add(questionNum);
+            button.disabled = true;
+            document.getElementById('scoreDisplay').textContent = `${score} / 10`;
+        }
+
+        function loadPortfolio() {
+            const saved = localStorage.getItem('learningProgressKonsum');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const portfolioText = progress.texts && progress.texts['3'] ? progress.texts['3'] : '';
+                document.getElementById('portfolio-text').value = portfolioText;
+            }
+        }
+
+        function savePortfolio() {
+            const text = document.getElementById('portfolio-text').value;
+            
+            let progress = {
+                completedPoints: [],
+                currentPoint: 1,
+                texts: {},
+                images: {}
+            };
+            
+            const saved = localStorage.getItem('learningProgressKonsum');
+            if (saved) {
+                progress = JSON.parse(saved);
             }
             
-            resultMessage.innerHTML = message;
-            resultScreen.classList.add('show');
+            if (!progress.texts) {
+                progress.texts = {};
+            }
+            
+            progress.texts['3'] = text;
+            
+            localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
         }
 
-        function restartQuiz() {
-            currentQuestion = 0;
-            score = 0;
-            answered = false;
+        function savePortfolioManual() {
+            const text = document.getElementById('portfolio-text').value.trim();
             
-            document.getElementById('score').textContent = '0';
-            document.getElementById('result-screen').classList.remove('show');
-            document.getElementById('quiz-container').style.display = 'block';
+            if (text === '') {
+                alert('⚠️ Bitte tragen Sie zuerst Ihre Notizen ein.');
+                return;
+            }
             
-            renderQuestion();
+            savePortfolio();
+            
+            const indicator = document.getElementById('saved-indicator');
+            indicator.style.display = 'block';
+            indicator.textContent = '✓ Erfolgreich gespeichert!';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+                indicator.textContent = '✓ Automatisch gespeichert';
+            }, 3000);
         }
 
-        // Quiz starten
-        initQuiz();
+        function downloadPDF() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (portfolioText === '') {
+                alert('Bitte tragen Sie zuerst Ihre Reflexion in das Lernjournal ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Lernjournal: Nachhaltige Entwicklung", 20, 20);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            doc.text(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 20, 30);
+            doc.text(`Leseverstehen: ${score}/10 Punkte`, 20, 36);
+            doc.text(`SDG-Spiel: ${gameScore}/${scenarios.length} Punkte`, 20, 42);
+            
+            let yPos = 56;
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Meine Reflexion:", 20, yPos);
+            yPos += 8;
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            const lines = doc.splitTextToSize(portfolioText, 170);
+            
+            for (let line of lines) {
+                if (yPos > 280) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.text(line, 20, yPos);
+                yPos += 7;
+            }
+            
+            doc.save('Lernjournal_Schritt3_Nachhaltige_Entwicklung.pdf');
+        }
+
+        function completeStep() {
+            const portfolioText = document.getElementById('portfolio-text').value.trim();
+            
+            if (answeredQuestions.size < 10) {
+                alert(`⚠️ Hinweis: Sie haben bisher ${answeredQuestions.size} von 10 Leseverständnisfragen beantwortet.\n\nSie können den Schritt trotzdem abschließen.`);
+            }
+            
+            if (portfolioText === '') {
+                const confirm = window.confirm('Sie haben noch nichts in Ihr Lernjournal eingetragen. Möchten Sie trotzdem fortfahren?');
+                if (!confirm) return;
+            }
+            
+            if (portfolioText !== '') {
+                savePortfolio();
+            }
+            
+            let progress = JSON.parse(localStorage.getItem('learningProgressKonsum') || '{"completedPoints":[],"currentPoint":1,"texts":{},"images":{}}');
+            
+            if (!progress.completedPoints.includes(3)) {
+                progress.completedPoints.push(3);
+                progress.currentPoint = 4;
+                localStorage.setItem('learningProgressKonsum', JSON.stringify(progress));
+            }
+            
+            alert(`✓ Schritt 3 abgeschlossen!\n\nLeseverstehen: ${score}/10 Punkte\nSDG-Spiel: ${gameScore}/${scenarios.length} Punkte${portfolioText !== '' ? '\nIhr Lernjournal-Eintrag wurde gespeichert.' : ''}`);
+            window.location.href = 'index.html';
+        }
+
+        function returnToMain() {
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM geladen');
+            loadPortfolio();
+            console.log('Rendering SDG Grid...');
+            renderSDGGrid();
+            console.log('Rendering Scenario...');
+            renderScenario();
+            console.log('Initialisierung abgeschlossen');
+        });
     </script>
 </body>
 </html>
