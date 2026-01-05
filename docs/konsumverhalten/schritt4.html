@@ -906,7 +906,13 @@
         ];
 
         function renderSDGGrid() {
+            console.log('Rendering SDG Grid...');
             const grid = document.getElementById('sdg-grid');
+            if (!grid) {
+                console.error('SDG grid element not found!');
+                return;
+            }
+            
             grid.innerHTML = '';
             
             sdgs.forEach(sdg => {
@@ -921,9 +927,12 @@
                 card.onclick = () => selectSDG(sdg.num);
                 grid.appendChild(card);
             });
+            
+            console.log('SDG Grid rendered with', sdgs.length, 'cards');
         }
 
         function renderScenario() {
+            console.log('Rendering scenario', currentScenario);
             if (currentScenario >= scenarios.length) {
                 showGameResult();
                 return;
@@ -931,6 +940,11 @@
 
             const scenario = scenarios[currentScenario];
             const container = document.getElementById('scenario-container');
+            
+            if (!container) {
+                console.error('Scenario container not found!');
+                return;
+            }
             
             container.innerHTML = `
                 <div class="scenario-box">
@@ -945,19 +959,31 @@
             `;
 
             document.getElementById('scenarioProgress').textContent = currentScenario + 1;
-            document.getElementById('game-feedback').classList.remove('show');
-            document.getElementById('next-scenario-btn').classList.remove('show');
+            
+            const feedback = document.getElementById('game-feedback');
+            if (feedback) {
+                feedback.classList.remove('show');
+            }
 
             // Reset SDG selection
             document.querySelectorAll('.sdg-card').forEach(card => {
                 card.classList.remove('selected');
                 card.style.pointerEvents = 'auto';
             });
+            
+            console.log('Scenario rendered successfully');
         }
 
         function selectSDG(selectedNum) {
+            console.log('SDG selected:', selectedNum);
             const scenario = scenarios[currentScenario];
             const feedback = document.getElementById('game-feedback');
+            
+            if (!feedback) {
+                console.error('Feedback element not found!');
+                return;
+            }
+            
             const isCorrect = selectedNum === scenario.correctSDG;
 
             // Disable all cards
@@ -967,7 +993,9 @@
 
             // Highlight selected
             const selectedCard = document.querySelector(`.sdg-card[data-sdg="${selectedNum}"]`);
-            selectedCard.classList.add('selected');
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
 
             if (isCorrect) {
                 gameScore++;
@@ -1001,7 +1029,12 @@
                 `;
             }
 
-            document.getElementById('gameScore').textContent = `${gameScore} / ${scenarios.length}`;
+            const scoreElement = document.getElementById('gameScore');
+            if (scoreElement) {
+                scoreElement.textContent = `${gameScore} / ${scenarios.length}`;
+            }
+            
+            console.log('Current game score:', gameScore);
         }
 
         function getCategoryExplanation(category) {
@@ -1016,12 +1049,19 @@
         }
 
         function nextScenario() {
+            console.log('Moving to next scenario');
             currentScenario++;
             renderScenario();
         }
 
         function showGameResult() {
+            console.log('Showing game results');
             const container = document.getElementById('scenario-container');
+            if (!container) {
+                console.error('Scenario container not found!');
+                return;
+            }
+            
             const percentage = (gameScore / scenarios.length) * 100;
             let emoji, message;
 
@@ -1058,9 +1098,15 @@
                 </div>
             `;
 
-            document.getElementById('sdg-grid').style.display = 'none';
-            document.getElementById('next-scenario-btn').style.display = 'none';
-            document.getElementById('game-feedback').classList.remove('show');
+            const grid = document.getElementById('sdg-grid');
+            if (grid) {
+                grid.style.display = 'none';
+            }
+            
+            const feedback = document.getElementById('game-feedback');
+            if (feedback) {
+                feedback.classList.remove('show');
+            }
         }
 
         function checkQuestion(questionNum, type, correctAnswer) {
@@ -1288,14 +1334,24 @@
             window.location.href = 'index.html';
         }
 
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM geladen');
-            loadPortfolio();
-            console.log('Rendering SDG Grid...');
-            renderSDGGrid();
-            console.log('Rendering Scenario...');
-            renderScenario();
-            console.log('Initialisierung abgeschlossen');
+            console.log('=== Page initialization started ===');
+            
+            try {
+                loadPortfolio();
+                console.log('Portfolio loaded');
+                
+                renderSDGGrid();
+                console.log('SDG Grid initialized');
+                
+                renderScenario();
+                console.log('First scenario initialized');
+                
+                console.log('=== Page initialization completed successfully ===');
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
         });
     </script>
 </body>
