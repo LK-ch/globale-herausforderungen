@@ -617,8 +617,11 @@
             yPos += 5;
             
             // Einzelne Schritte mit Inhalten - KOMPAKT auf wenigen Seiten
+            // WICHTIG: Reihenfolge im PDF ist 1, 2, 4, 3 (Schritt 4 kommt vor Schritt 3)
             let firstEntry = true;
-            for (let step = 1; step <= 4; step++) {
+            const pdfOrder = [1, 2, 4, 3]; // Schritt 4 und 3 getauscht nur für PDF
+            
+            for (let step of pdfOrder) {
                 let text = progress.texts[step] || '';
                 
                 // Spezielle Behandlung für Schritt 4 (JSON-Format)
