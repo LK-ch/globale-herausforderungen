@@ -492,6 +492,27 @@
                     };
                 }
                 
+                // MIGRATION: Tausche texts[3] und texts[4] wenn nötig
+                // Erkenne ob Migration nötig ist: texts[3] enthält JSON (Konsumverhalten war falsch in 4)
+                if (learningProgress.texts['4'] && learningProgress.texts['4'].includes('s1_idea')) {
+                    // Alte Daten: texts[4] hat JSON, texts[3] hat normalen Text
+                    // Tausche sie
+                    const temp = learningProgress.texts['3'];
+                    learningProgress.texts['3'] = learningProgress.texts['4'];
+                    learningProgress.texts['4'] = temp;
+                    
+                    // Tausche auch completedPoints
+                    const has3 = learningProgress.completedPoints.includes(3);
+                    const has4 = learningProgress.completedPoints.includes(4);
+                    learningProgress.completedPoints = learningProgress.completedPoints.filter(p => p !== 3 && p !== 4);
+                    if (has3) learningProgress.completedPoints.push(4);
+                    if (has4) learningProgress.completedPoints.push(3);
+                    
+                    // Speichere migrierte Daten
+                    localStorage.setItem('learningProgressKonsum', JSON.stringify(learningProgress));
+                    console.log('Migration durchgeführt: Schritte 3 und 4 getauscht');
+                }
+                
                 updateUI();
             }
         }
