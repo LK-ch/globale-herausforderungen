@@ -619,7 +619,38 @@
             // Einzelne Schritte mit Inhalten - KOMPAKT auf wenigen Seiten
             let firstEntry = true;
             for (let step = 1; step <= 4; step++) {
-                const text = progress.texts[step] || '';
+                let text = progress.texts[step] || '';
+                
+                // Spezielle Behandlung für Schritt 4 (JSON-Format)
+                if (step === 4 && text.trim() !== '') {
+                    try {
+                        const step4Data = JSON.parse(text);
+                        // Formatiere die Daten leserlich
+                        let formattedText = '';
+                        
+                        for (let i = 1; i <= 4; i++) {
+                            const idea = step4Data[`s${i}_idea`] || '';
+                            const reflection = step4Data[`s${i}_reflection`] || '';
+                            
+                            if (idea || reflection) {
+                                const situationTitles = {
+                                    1: 'Smartphone',
+                                    2: 'Kleidung',
+                                    3: 'Putzmittel',
+                                    4: 'Festtagsessen'
+                                };
+                                
+                                formattedText += `\n${situationTitles[i]}:\n`;
+                                if (idea) formattedText += `Erste Idee: ${idea}\n`;
+                                if (reflection) formattedText += `Reflexion: ${reflection}\n`;
+                            }
+                        }
+                        
+                        text = formattedText.trim();
+                    } catch (e) {
+                        // Falls kein JSON, nutze Text wie er ist
+                    }
+                }
                 
                 if (text.trim() === '') {
                     continue; // Überspringe leere Einträge
