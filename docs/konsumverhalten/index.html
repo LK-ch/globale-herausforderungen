@@ -602,8 +602,8 @@
             const stepTitles = {
                 '1': 'Schritt 1: Ökologischer Fussabdruck',
                 '2': 'Schritt 2: Planetare Belastungsgrenzen',
-                '3': 'Schritt 3: 17 Ziele für nachhaltige Entwicklung',
-                '4': 'Schritt 4: Nachhaltiges Konsumverhalten'
+                '3': 'Schritt 3: Nachhaltiges Konsumverhalten',
+                '4': 'Schritt 4: 17 Ziele für nachhaltige Entwicklung'
             };
             
             // Separate Titel für PDF mit getauschten Nummern
@@ -627,9 +627,9 @@
             yPos += 5;
             
             // Einzelne Schritte mit Inhalten - KOMPAKT auf wenigen Seiten
-            // WICHTIG: Reihenfolge im PDF ist 1, 2, 4, 3 (Schritt 4 kommt vor Schritt 3)
+            // WICHTIG: Reihenfolge im PDF ist 1, 2, 3, 4
             let firstEntry = true;
-            const pdfOrder = [1, 2, 4, 3]; // Schritt 4 und 3 getauscht nur für PDF
+            const pdfOrder = [1, 2, 3, 4];
             
             for (let step of pdfOrder) {
                 let text = progress.texts[step] || '';
