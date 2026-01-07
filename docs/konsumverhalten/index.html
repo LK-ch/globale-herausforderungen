@@ -436,8 +436,8 @@
                     <div class="card flow-card highlight-final" onclick="openPoint(4)" data-step="4">
                         <div class="card-number">4</div>
                         <div class="card-content">
-                            <div class="card-icon">🛒</div>
-                            <div class="card-title">Nachhaltiges Konsumverhalten</div>
+                            <div class="card-icon">📚</div>
+                            <div class="card-title">17 Ziele für nachhaltige Entwicklung</div>
                         </div>
                     </div>
 
@@ -446,8 +446,8 @@
                     <div class="card flow-card" onclick="openPoint(3)" data-step="3">
                         <div class="card-number">3</div>
                         <div class="card-content">
-                            <div class="card-icon">📚</div>
-                            <div class="card-title">17 Ziele für nachhaltige Entwicklung</div>
+                            <div class="card-icon">🛒</div>
+                            <div class="card-title">Nachhaltiges Konsumverhalten</div>
                         </div>
                     </div>
                 </div>
@@ -502,10 +502,10 @@
 
         function openPoint(pointNumber) {
             const fileNames = {
-                1: 'konsumverhalten_schritt1.html',
-                2: 'konsumverhalten_schritt2.html',
-                3: 'konsumverhalten_schritt3.html',
-                4: 'konsumverhalten_schritt4.html'
+                1: 'schritt1.html',
+                2: 'schritt2.html',
+                3: 'schritt3.html',
+                4: 'schritt4.html'
             };
             
             window.location.href = fileNames[pointNumber];
@@ -516,7 +516,7 @@
                 learningProgress.completedPoints.push(pointNumber);
                 learningProgress.currentPoint = pointNumber + 1;
                 saveProgress();
-                window.location.href = 'konsumverhalten_index_final.html';
+                window.location.href = 'index.html';
             }
         }
 
@@ -614,7 +614,10 @@
                 yPos += 7;
             }
             
-            // Einzelne Schritte mit Inhalten
+            yPos += 5;
+            
+            // Einzelne Schritte mit Inhalten - KOMPAKT auf wenigen Seiten
+            let firstEntry = true;
             for (let step = 1; step <= 4; step++) {
                 const text = progress.texts[step] || '';
                 
@@ -622,34 +625,32 @@
                     continue; // Überspringe leere Einträge
                 }
                 
-                doc.addPage();
-                yPos = 20;
+                // Nur neue Seite wenn nicht genug Platz (nicht für jeden Schritt)
+                if (!firstEntry && yPos > 200) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                firstEntry = false;
                 
-                // Schritt-Titel
+                // Abstand zum vorherigen Eintrag
+                if (yPos > 100) {
+                    yPos += 10;
+                }
+                
+                // Schritt-Titel - kompakter
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(16);
+                doc.setFontSize(13);
                 doc.text(stepTitles[step], 20, yPos);
-                yPos += 10;
+                yPos += 7;
                 
-                // Linie unter Titel
-                doc.setDrawColor(251, 146, 60);
-                doc.setLineWidth(0.5);
-                doc.line(20, yPos, 190, yPos);
-                yPos += 10;
-                
-                // Status
+                // Status - kompakter
                 doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
+                doc.setFontSize(9);
                 const isCompleted = progress.completedPoints.includes(step);
-                doc.text(`Status: ${isCompleted ? '✓ Abgeschlossen' : '○ In Bearbeitung'}`, 20, yPos);
-                yPos += 12;
-                
-                // Journal-Inhalt
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(12);
-                doc.text("Meine Reflexion:", 20, yPos);
+                doc.text(`(${isCompleted ? 'Abgeschlossen' : 'In Bearbeitung'})`, 20, yPos);
                 yPos += 8;
                 
+                // Journal-Inhalt - ohne extra Überschrift
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(10);
                 
@@ -661,8 +662,10 @@
                         yPos = 20;
                     }
                     doc.text(line, 20, yPos);
-                    yPos += 6;
+                    yPos += 5.5;
                 }
+                
+                yPos += 5; // Abstand zum nächsten Schritt
             }
             
             // Schlussseite
