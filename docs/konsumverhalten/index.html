@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lernpfad Konsumverhalten</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -379,6 +380,11 @@
             background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             color: white;
         }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -430,8 +436,8 @@
                     <div class="card flow-card highlight-final" onclick="openPoint(4)" data-step="4">
                         <div class="card-number">4</div>
                         <div class="card-content">
-                            <div class="card-icon">📖</div>
-                            <div class="card-title">17 Ziele für die nachhaltige Entwicklung</div>
+                            <div class="card-icon">🛒</div>
+                            <div class="card-title">Nachhaltiges Konsumverhalten</div>
                         </div>
                     </div>
 
@@ -440,8 +446,8 @@
                     <div class="card flow-card" onclick="openPoint(3)" data-step="3">
                         <div class="card-number">3</div>
                         <div class="card-content">
-                            <div class="card-icon">♻️</div>
-                            <div class="card-title">Nachhaltiges Konsumverhalten</div>
+                            <div class="card-icon">📚</div>
+                            <div class="card-title">17 Ziele für nachhaltige Entwicklung</div>
                         </div>
                     </div>
                 </div>
@@ -456,6 +462,7 @@
 
                 <div class="button-group">
                     <button class="btn-primary" onclick="resetProgress()">🔄 Fortschritt zurücksetzen</button>
+                    <button class="btn-pdf" onclick="downloadCompletePDF()">📄 Gesamt-PDF herunterladen</button>
                 </div>
             </div>
         </main>
@@ -495,13 +502,13 @@
 
         function openPoint(pointNumber) {
             const fileNames = {
-                1: 'schritt1.html',
-                2: 'schritt2.html',
-                3: 'schritt3.html',
-                4: 'schritt4.html'
+                1: 'konsumverhalten_schritt1.html',
+                2: 'konsumverhalten_schritt2.html',
+                3: 'konsumverhalten_schritt3.html',
+                4: 'konsumverhalten_schritt4.html'
             };
             
-            window.location.href = fileNames[pointNumber] || `schritt${pointNumber}.html`;
+            window.location.href = fileNames[pointNumber];
         }
 
         function completePoint(pointNumber) {
@@ -509,7 +516,7 @@
                 learningProgress.completedPoints.push(pointNumber);
                 learningProgress.currentPoint = pointNumber + 1;
                 saveProgress();
-                window.location.href = 'index.html';
+                window.location.href = 'konsumverhalten_index_final.html';
             }
         }
 
@@ -550,6 +557,147 @@
                 loadProgress();
                 alert('✓ Fortschritt wurde zurückgesetzt!');
             }
+        }
+
+        function downloadCompletePDF() {
+            const progress = learningProgress;
+            
+            // Prüfe ob überhaupt Einträge vorhanden sind
+            const hasAnyText = Object.values(progress.texts || {}).some(text => text && text.trim() !== '');
+            
+            if (!hasAnyText) {
+                alert('⚠️ Sie haben noch keine Lernjournal-Einträge erstellt.\n\nBearbeiten Sie zuerst die einzelnen Schritte und tragen Sie Ihre Reflexionen ein.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Titelseite
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.text("Lernjournal", 105, 40, { align: "center" });
+            doc.setFontSize(18);
+            doc.text("Konsumverhalten & Nachhaltigkeit", 105, 55, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text(`Erstellt am: ${new Date().toLocaleDateString('de-DE')}`, 105, 70, { align: "center" });
+            
+            doc.setFontSize(11);
+            const completedSteps = progress.completedPoints.length;
+            doc.text(`Abgeschlossene Schritte: ${completedSteps} von 4`, 105, 80, { align: "center" });
+            
+            let yPos = 100;
+            
+            // Übersicht der Schritte
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Übersicht:", 20, yPos);
+            yPos += 10;
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            
+            const stepTitles = {
+                '1': 'Schritt 1: Ökologischer Fussabdruck',
+                '2': 'Schritt 2: Planetare Belastungsgrenzen',
+                '3': 'Schritt 3: 17 Ziele für nachhaltige Entwicklung',
+                '4': 'Schritt 4: Nachhaltiges Konsumverhalten'
+            };
+            
+            for (let i = 1; i <= 4; i++) {
+                const status = progress.completedPoints.includes(i) ? '✓' : '○';
+                const hasText = progress.texts[i] && progress.texts[i].trim() !== '';
+                const textStatus = hasText ? ' (mit Eintrag)' : '';
+                doc.text(`${status} ${stepTitles[i]}${textStatus}`, 25, yPos);
+                yPos += 7;
+            }
+            
+            // Einzelne Schritte mit Inhalten
+            for (let step = 1; step <= 4; step++) {
+                const text = progress.texts[step] || '';
+                
+                if (text.trim() === '') {
+                    continue; // Überspringe leere Einträge
+                }
+                
+                doc.addPage();
+                yPos = 20;
+                
+                // Schritt-Titel
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text(stepTitles[step], 20, yPos);
+                yPos += 10;
+                
+                // Linie unter Titel
+                doc.setDrawColor(251, 146, 60);
+                doc.setLineWidth(0.5);
+                doc.line(20, yPos, 190, yPos);
+                yPos += 10;
+                
+                // Status
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                const isCompleted = progress.completedPoints.includes(step);
+                doc.text(`Status: ${isCompleted ? '✓ Abgeschlossen' : '○ In Bearbeitung'}`, 20, yPos);
+                yPos += 12;
+                
+                // Journal-Inhalt
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("Meine Reflexion:", 20, yPos);
+                yPos += 8;
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                
+                const lines = doc.splitTextToSize(text, 170);
+                
+                for (let line of lines) {
+                    if (yPos > 280) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(line, 20, yPos);
+                    yPos += 6;
+                }
+            }
+            
+            // Schlussseite
+            doc.addPage();
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.text("Zusammenfassung & Ausblick", 105, 40, { align: "center" });
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            yPos = 60;
+            
+            const summaryText = `Sie haben ${completedSteps} von 4 Schritten abgeschlossen und dabei wichtige Erkenntnisse über nachhaltiges Konsumverhalten gewonnen.
+
+Die Auseinandersetzung mit dem ökologischen Fussabdruck, planetaren Belastungsgrenzen und den 17 Nachhaltigkeitszielen zeigt: Jede Entscheidung zählt.
+
+Ihre nächsten Schritte:
+• Setzen Sie Ihre Erkenntnisse im Alltag um
+• Hinterfragen Sie regelmässig Ihr Konsumverhalten
+• Teilen Sie Ihr Wissen mit anderen
+• Bleiben Sie am Ball – Nachhaltigkeit ist ein kontinuierlicher Prozess
+
+Vielen Dank für Ihr Engagement!`;
+            
+            const summaryLines = doc.splitTextToSize(summaryText, 170);
+            for (let line of summaryLines) {
+                if (yPos > 280) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.text(line, 20, yPos);
+                yPos += 7;
+            }
+            
+            doc.save('Lernjournal_Konsumverhalten_Komplett.pdf');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
