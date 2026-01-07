@@ -600,12 +600,243 @@
             <h2>📝 Hörverstehen: Fragen zum Video</h2>
 
             <div class="questions-container">
-                <div id="current-question-display"></div>
+                <!-- Frage 1 -->
+                <div class="question-block" data-question="1">
+                    <span class="question-number">Frage 1</span>
+                    <div class="question-text">Wie viele planetare Grenzen werden im Video erwähnt?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="7">
+                            <span>7 Grenzen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="9">
+                            <span>9 Grenzen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="12">
+                            <span>12 Grenzen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q1" value="17">
+                            <span>17 Grenzen</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(1, 'mc', '9')">Überprüfen</button>
+                    <div class="feedback" id="feedback-1"></div>
+                </div>
+
+                <!-- Frage 2 -->
+                <div class="question-block" data-question="2">
+                    <span class="question-number">Frage 2</span>
+                    <div class="question-text">Wie heisst das Konzept mit den 9 Grenzen laut Video? (Genauer deutscher Begriff)</div>
+                    <input type="text" class="text-input" id="q2-input" placeholder="Ihre Antwort">
+                    <p class="hint-text">Tipp: Hören Sie ab 0:17 genau hin!</p>
+                    <button class="check-btn" onclick="checkQuestion(2, 'text', ['planetare belastbarkeitsgrenzen', 'planetare belastungsgrenzen'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-2"></div>
+                </div>
+
+                <!-- Frage 3 -->
+                <div class="question-block" data-question="3">
+                    <span class="question-number">Frage 3</span>
+                    <div class="question-text">Was passiert laut Video, wenn wir die planetaren Grenzen überschreiten?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="ende">
+                            <span>Die Welt geht sofort unter</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="systeme">
+                            <span>Die Systeme der Erde werden instabil und kippen um</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="teurer">
+                            <span>Produkte werden teurer</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q3" value="nichts">
+                            <span>Es passiert nichts Besonderes</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(3, 'mc', 'systeme')">Überprüfen</button>
+                    <div class="feedback" id="feedback-3"></div>
+                </div>
+
+                <!-- Frage 4 -->
+                <div class="question-block" data-question="4">
+                    <span class="question-number">Frage 4</span>
+                    <div class="question-text">Welche drei planetaren Grenzen werden im Video explizit als Beispiele genannt?</div>
+                    <div class="checkbox-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="ozon">
+                            <span>Ozonloch</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="wasser">
+                            <span>Süsswasserverbrauch</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="biodiv">
+                            <span>Verlust von Biodiversität</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="klima">
+                            <span>Klimaerwärmung</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q4" value="boden">
+                            <span>Bodennutzung</span>
+                        </label>
+                    </div>
+                    <p class="hint-text">Wählen Sie genau 3 Antworten</p>
+                    <button class="check-btn" onclick="checkQuestion(4, 'checkbox', ['ozon', 'biodiv', 'klima'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-4"></div>
+                </div>
+
+                <!-- Frage 5 -->
+                <div class="question-block" data-question="5">
+                    <span class="question-number">Frage 5</span>
+                    <div class="question-text">Vervollständigen Sie den Satz aus dem Video:</div>
+                    <div class="cloze-text">
+                        <p style="color: #78350f; line-height: 2;">
+                            "Aktuell sind <input type="text" class="cloze-input" id="q5a-input" style="width: 60px;" placeholder="?"> von neun Grenzen überschritten. 
+                            Wir verlassen den sicheren <input type="text" class="cloze-input" id="q5b-input" style="width: 180px;" placeholder="...">."
+                        </p>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(5, 'cloze', {a: ['4', 'vier'], b: ['handlungsraum']})">Überprüfen</button>
+                    <div class="feedback" id="feedback-5"></div>
+                </div>
+                <!-- Frage 6 -->
+                <div class="question-block" data-question="6">
+                    <span class="question-number">Frage 6</span>
+                    <div class="question-text">Was passiert laut Video mit Meerestieren, wenn zu viel Stickstoff ins Wasser gelangt?</div>
+                    <select class="dropdown-select" id="q6-select">
+                        <option value="">-- Bitte wählen --</option>
+                        <option value="mutieren">Sie mutieren und werden grösser</option>
+                        <option value="bakterien">Bakterien verbrauchen Sauerstoff, Tiere sterben oder wandern ab</option>
+                        <option value="vermehren">Sie vermehren sich unkontrolliert</option>
+                        <option value="gruen">Sie werden grün gefärbt</option>
+                    </select>
+                    <button class="check-btn" onclick="checkQuestion(6, 'dropdown', 'bakterien')">Überprüfen</button>
+                    <div class="feedback" id="feedback-6"></div>
+                </div>
+
+                <!-- Frage 7 -->
+                <div class="question-block" data-question="7">
+                    <span class="question-number">Frage 7</span>
+                    <div class="question-text">Welches historische Beispiel wird im Video genannt, bei dem eine planetare Grenze eingehalten werden konnte?</div>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="kyoto">
+                            <span>Das Kyoto-Protokoll</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="montreal">
+                            <span>Das Montreal-Protokoll (FCKW-Verbot)</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="paris">
+                            <span>Das Pariser Klimaabkommen</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q7" value="rio">
+                            <span>Der Rio-Gipfel</span>
+                        </label>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(7, 'mc', 'montreal')">Überprüfen</button>
+                    <div class="feedback" id="feedback-7"></div>
+                </div>
+
+                <!-- Frage 8 -->
+                <div class="question-block" data-question="8">
+                    <span class="question-number">Frage 8</span>
+                    <div class="question-text">Bringen Sie die vier Bereiche in die richtige Reihenfolge, wie sie im Video für Veränderungen genannt werden:</div>
+                    <div class="sorting-area">
+                        <div class="sorting-instructions">Nutzen Sie die Pfeile, um die Reihenfolge anzupassen (von oben nach unten):</div>
+                        <div class="sortable-list" id="sortable-list">
+                            <div class="sortable-item" data-id="4">
+                                <span class="item-text">Gesellschaft</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="3">
+                                <span class="item-text">Wirtschaft</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="1">
+                                <span class="item-text">Finanzbereich</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                            <div class="sortable-item" data-id="2">
+                                <span class="item-text">Politik</span>
+                                <div class="sort-buttons">
+                                    <button class="sort-btn" onclick="moveUp(this, event)">▲</button>
+                                    <button class="sort-btn" onclick="moveDown(this, event)">▼</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(8, 'sorting', [1, 2, 3, 4])">Überprüfen</button>
+                    <div class="feedback" id="feedback-8"></div>
+                </div>
+
+                <!-- Frage 9 -->
+                <div class="question-block" data-question="9">
+                    <span class="question-number">Frage 9</span>
+                    <div class="question-text">Welche drei konkreten Lösungsansätze werden im Video genannt?</div>
+                    <div class="checkbox-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="investition">
+                            <span>Investitionsentscheide ohne fossile Energieträger</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="steuern">
+                            <span>Höhere Steuern für Unternehmen</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="geschaeft">
+                            <span>Unternehmen mit nachhaltigen Geschäftsmodellen</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="konsum">
+                            <span>Konsumenten, die hinterfragen was sie wirklich brauchen</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q9" value="verbot">
+                            <span>Komplettes Verbot von Plastik</span>
+                        </label>
+                    </div>
+                    <p class="hint-text">Wählen Sie genau 3 Antworten</p>
+                    <button class="check-btn" onclick="checkQuestion(9, 'checkbox', ['investition', 'geschaeft', 'konsum'])">Überprüfen</button>
+                    <div class="feedback" id="feedback-9"></div>
+                </div>
+
+                <!-- Frage 10 -->
+                <div class="question-block" data-question="10">
+                    <span class="question-number">Frage 10</span>
+                    <div class="question-text">Vervollständigen Sie das Schlusszitat aus dem Video:</div>
+                    <div class="cloze-text">
+                        <p style="color: #78350f; line-height: 2;">
+                            "Wir haben nur eine <input type="text" class="cloze-input" id="q10a-input" style="width: 120px;" placeholder="...">, 
+                            aber unsere <input type="text" class="cloze-input" id="q10b-input" style="width: 140px;" placeholder="..."> und Innovationskraft ist unerschöpflich."
+                        </p>
+                    </div>
+                    <button class="check-btn" onclick="checkQuestion(10, 'cloze', {a: ['erde'], b: ['kreativität']})">Überprüfen</button>
+                    <div class="feedback" id="feedback-10"></div>
+                </div>
 
                 <div class="score-display">
                     <h3>Ihre Punktzahl</h3>
                     <div class="score-number" id="scoreDisplay">0 / 10</div>
-                    <p style="color: #78350f; margin-top: 10px;">Frage <span id="questionProgress">1</span> von 10</p>
+                    <p style="color: #78350f; margin-top: 10px;">Fragen beantwortet: <span id="questionProgress">0</span> von 10</p>
                 </div>
             </div>
 
@@ -616,7 +847,6 @@
                 </p>
                 <ul style="margin: 10px 0 15px 20px; line-height: 1.8; color: #78350f;">
                     <li>Welche planetare Belastungsgrenze hat Sie am meisten überrascht oder beunruhigt?</li>
-                    <li>Was bedeutet es für Sie persönlich, dass bereits 6 von 9 Grenzen überschritten sind?</li>
                     <li>Welche Veränderungen in Wirtschaft und Gesellschaft halten Sie für am dringendsten?</li>
                 </ul>
                 <textarea 
@@ -837,6 +1067,7 @@
             answeredQuestions.add(questionNum);
             button.disabled = true;
             document.getElementById('scoreDisplay').textContent = `${score} / 10`;
+            document.getElementById('questionProgress').textContent = answeredQuestions.size;
         }
 
         function loadPortfolio() {
