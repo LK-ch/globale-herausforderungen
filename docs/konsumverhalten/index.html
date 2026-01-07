@@ -602,20 +602,20 @@
             const stepTitles = {
                 '1': 'Schritt 1: Ökologischer Fussabdruck',
                 '2': 'Schritt 2: Planetare Belastungsgrenzen',
-                '3': 'Schritt 3: Nachhaltiges Konsumverhalten',
-                '4': 'Schritt 4: 17 Ziele für nachhaltige Entwicklung'
+                '3': 'Schritt 3: 17 Ziele für nachhaltige Entwicklung',
+                '4': 'Schritt 4: Nachhaltiges Konsumverhalten'
             };
             
             // Separate Titel für PDF mit getauschten Nummern
             const pdfStepTitles = {
                 '1': 'Schritt 1: Ökologischer Fussabdruck',
                 '2': 'Schritt 2: Planetare Belastungsgrenzen',
-                '3': 'Schritt 3: Nachhaltiges Konsumverhalten',
-                '4': 'Schritt 4: 17 Ziele für nachhaltige Entwicklung'
+                '3': 'Schritt 3: Nachhaltiges Konsumverhalten',  // Im PDF: Schritt 3
+                '4': 'Schritt 4: 17 Ziele für nachhaltige Entwicklung'  // Im PDF: Schritt 4
             };
             
             // Übersicht mit korrekten PDF-Titeln
-            const overviewOrder = [1, 2, 4, 3]; // Reihenfolge wie im PDF
+            const overviewOrder = [1, 2, 3, 4]; // Normale Reihenfolge
             for (let step of overviewOrder) {
                 const status = progress.completedPoints.includes(step) ? '✓' : '○';
                 const hasText = progress.texts[step] && progress.texts[step].trim() !== '';
@@ -627,15 +627,14 @@
             yPos += 5;
             
             // Einzelne Schritte mit Inhalten - KOMPAKT auf wenigen Seiten
-            // WICHTIG: Reihenfolge im PDF ist 1, 2, 3, 4
             let firstEntry = true;
-            const pdfOrder = [1, 2, 3, 4];
+            const pdfOrder = [1, 2, 3, 4]; // Normale Reihenfolge
             
             for (let step of pdfOrder) {
                 let text = progress.texts[step] || '';
                 
-                // Spezielle Behandlung für Schritt 4 (JSON-Format)
-                if (step === 4 && text.trim() !== '') {
+                // Spezielle Behandlung für Schritt 3 (JSON-Format von Konsumverhalten)
+                if (step === 3 && text.trim() !== '') {
                     try {
                         const step4Data = JSON.parse(text);
                         // Formatiere die Daten leserlich
