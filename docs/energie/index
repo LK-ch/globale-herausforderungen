@@ -1,1 +1,802 @@
-...
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energiequellen Lernspiel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #c92a2a;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .game-mode {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .mode-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .mode-btn.active {
+            background: #c92a2a;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .mode-btn:not(.active) {
+            background: #f1f3f5;
+            color: #666;
+        }
+
+        .mode-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #c92a2a;
+        }
+
+        .game-area {
+            margin-top: 20px;
+        }
+
+        .info-text {
+            background: #e7f5ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #339af0;
+        }
+
+        .quiz-question {
+            background: #fff5f5;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #c92a2a;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 12px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #c92a2a;
+            background: #fff5f5;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d3f9d8;
+            border-color: #2f9e44;
+            animation: correctPulse 0.5s;
+        }
+
+        .option-btn.incorrect {
+            background: #ffe0e0;
+            border-color: #c92a2a;
+            animation: shake 0.5s;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .drag-match {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .column {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .column h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .energy-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: move;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .energy-item:hover {
+            transform: scale(1.02);
+            border-color: #c92a2a;
+        }
+
+        .energy-item.dragging {
+            opacity: 0.5;
+        }
+
+        .description-slot {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+            min-height: 80px;
+            transition: all 0.3s;
+        }
+
+        .description-slot.drag-over {
+            background: #fff5f5;
+            border-color: #c92a2a;
+        }
+
+        .description-slot.filled {
+            border-style: solid;
+            border-color: #339af0;
+            background: #e7f5ff;
+        }
+
+        .description-slot.correct {
+            border-color: #2f9e44;
+            background: #d3f9d8;
+        }
+
+        .description-slot.incorrect {
+            border-color: #c92a2a;
+            background: #ffe0e0;
+        }
+
+        .slot-text {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .placed-item {
+            background: #339af0;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #c92a2a;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background: #a61e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(201, 42, 42, 0.3);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            background: #d3f9d8;
+            color: #2f9e44;
+        }
+
+        .feedback.incorrect {
+            background: #ffe0e0;
+            color: #c92a2a;
+        }
+
+        .completion-message {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #d3f9d8 0%, #b2f2bb 100%);
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .completion-message h2 {
+            color: #2f9e44;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .completion-message p {
+            font-size: 1.3em;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .energy-icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .drag-match {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Energiequellen Lernspiel</h1>
+        <p class="subtitle">Lerne die 5 erneuerbaren Energiequellen kennen!</p>
+
+        <div class="game-mode">
+            <button class="mode-btn active" onclick="switchMode('learn')">📚 Lernen</button>
+            <button class="mode-btn" onclick="switchMode('quiz')">🎯 Quiz</button>
+            <button class="mode-btn" onclick="switchMode('match')">🎮 Zuordnen</button>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">Punkte</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Richtig</div>
+                <div class="score-value" id="correct">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Fragen</div>
+                <div class="score-value" id="total">0</div>
+            </div>
+        </div>
+
+        <!-- Lernmodus -->
+        <div id="learn-mode" class="game-area">
+            <div class="info-text">
+                <h2 style="margin-bottom: 15px; color: #339af0;">💡 Über Erneuerbare Energien</h2>
+                <p style="line-height: 1.6; margin-bottom: 15px;">
+                    Energie ist der Motor der Wirtschaft. Weil die Reserven für herkömmliche Energieträger wie Erdöl endlich sind, 
+                    wird die Suche und Nutzung alternativer Energiequellen vorangetrieben. Ein sorgamer und verantwortungsvoller 
+                    Umgang mit Energie wird weltweit die grosse Herausforderung der Zukunft sein.
+                </p>
+                <p style="line-height: 1.6;"><strong>Nachfolgend werden fünf wichtige erneuerbare Energiequellen beschrieben.</strong></p>
+            </div>
+
+            <div class="info-text">
+                <h3 style="margin-bottom: 12px; color: #1971c2;"><span class="energy-icon">💧</span>Wasserkraft</h3>
+                <p style="line-height: 1.6;">
+                    Die Wasserkraft ist zurzeit noch die wichtigste erneuerbare Energiequelle der Schweiz. 
+                    Deren Nutzung mittels Lauf- und Speicherkraftwerken deckt rund 56% des schweizerischen Strombedarfs. 
+                    Wasserkraftwerke nutzen die natürliche oder künstlich erzeugte Strömung des Wassers mit Turbinen und Generatoren zur Stromproduktion.
+                </p>
+            </div>
+
+            <div class="info-text">
+                <h3 style="margin-bottom: 12px; color: #1971c2;"><span class="energy-icon">🌬️</span>Windenergie</h3>
+                <p style="line-height: 1.6;">
+                    Die Windenergie nutzt die kinetische Energie der bewegten Luftmassen. Zur Stromgewinnung wird die Windkraft mithilfe von 
+                    Rotoren auf Turbinen umgelenkt. Windanlagen werden einzeln oder als Windparks errichtet. 
+                    Die Nutzung der Windenergie befindet sich in der Schweiz noch in der Anfangsphase.
+                </p>
+            </div>
+
+            <div class="info-text">
+                <h3 style="margin-bottom: 12px; color: #1971c2;"><span class="energy-icon">☀️</span>Sonnenenergie</h3>
+                <p style="line-height: 1.6;">
+                    Als Sonnenenergie oder Solarenergie bezeichnet man die Energie der Sonnenstrahlung. Diese Energie, die in Form von Licht und Wärme auf 
+                    die Erdoberfläche trifft, kann aktiv durch Sonnenkollektoren zur Wärmeerzeugung (Warmwasser und Heizungsunterstützung) sowie 
+                    durch Fotovoltaik-Anlagen zur Stromerzeugung genutzt werden.
+                </p>
+            </div>
+
+            <div class="info-text">
+                <h3 style="margin-bottom: 12px; color: #1971c2;"><span class="energy-icon">🌋</span>Erdwärme (Geothermie)</h3>
+                <p style="line-height: 1.6;">
+                    Als Geothermie wird jene Wärme bezeichnet, die im zugänglichen Teil der Erdkruste gespeichert und nutzbar ist. 
+                    Geothermie kann etwa zum Heizen und Kühlen (Wärmepumpenheizung), aber auch zur Erzeugung von elektrischem Strom oder 
+                    in einer Wärme-Kraft-Kopplung genutzt werden.
+                </p>
+            </div>
+
+            <div class="info-text">
+                <h3 style="margin-bottom: 12px; color: #1971c2;"><span class="energy-icon">🌱</span>Biomasse</h3>
+                <p style="line-height: 1.6;">
+                    Biogas wird durch die Vergärung von Biomasse jeglicher Art hergestellt und ist brennbar. 
+                    In Biogasanlagen können sowohl Abfälle als auch nachwachsende Rohstoffe vergoren werden. 
+                    Eingesetzt werden kann das Gas zur Erzeugung von elektrischer Energie, für den Betrieb von Fahrzeugen oder 
+                    zur Einspeisung in ein Gasversorgungsnetz.
+                </p>
+            </div>
+
+            <button class="btn-primary" onclick="switchMode('quiz')">Jetzt Quiz starten! 🎯</button>
+        </div>
+
+        <!-- Quiz-Modus -->
+        <div id="quiz-mode" class="game-area hidden">
+            <div id="quiz-container"></div>
+        </div>
+
+        <!-- Zuordnungs-Modus -->
+        <div id="match-mode" class="game-area hidden">
+            <div style="background: #fff3bf; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                <strong>🎯 Ziehe die Energiequellen zu den passenden Beschreibungen!</strong>
+            </div>
+            <div class="drag-match">
+                <div class="column">
+                    <h3>Energiequellen</h3>
+                    <div id="energy-sources"></div>
+                </div>
+                <div class="column">
+                    <h3>Beschreibungen</h3>
+                    <div id="descriptions"></div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="checkMatching()">Überprüfen ✓</button>
+            <div id="match-feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+        let currentQuestionIndex = 0;
+
+        const energySources = [
+            {
+                name: "💧 Wasserkraft",
+                key: "water",
+                description: "Nutzt Strömung des Wassers mit Turbinen und Generatoren. Deckt 56% des schweizerischen Strombedarfs.",
+                quiz: {
+                    question: "Wie viel Prozent des schweizerischen Strombedarfs deckt die Wasserkraft?",
+                    options: ["etwa 30%", "etwa 56%", "etwa 75%", "etwa 90%"],
+                    correct: 1
+                }
+            },
+            {
+                name: "🌬️ Windenergie",
+                key: "wind",
+                description: "Nutzt kinetische Energie der Luftmassen. Rotoren lenken Windkraft auf Turbinen um. In der Schweiz noch in der Anfangsphase.",
+                quiz: {
+                    question: "In welcher Phase befindet sich die Windenergie in der Schweiz?",
+                    options: ["In der Endphase", "In der Anfangsphase", "Voll entwickelt", "Nicht vorhanden"],
+                    correct: 1
+                }
+            },
+            {
+                name: "☀️ Sonnenenergie",
+                key: "solar",
+                description: "Energie der Sonnenstrahlung in Form von Licht und Wärme. Nutzung durch Sonnenkollektoren und Fotovoltaik-Anlagen.",
+                quiz: {
+                    question: "Wie wird Sonnenenergie zur Stromerzeugung genutzt?",
+                    options: ["Durch Turbinen", "Durch Fotovoltaik-Anlagen", "Durch Windräder", "Durch Verbrennung"],
+                    correct: 1
+                }
+            },
+            {
+                name: "🌋 Erdwärme",
+                key: "geo",
+                description: "Wärme aus der Erdkruste. Genutzt zum Heizen, Kühlen (Wärmepumpe) oder zur Stromerzeugung.",
+                quiz: {
+                    question: "Was ist ein anderer Name für Erdwärme?",
+                    options: ["Solarenergie", "Geothermie", "Biomasse", "Windkraft"],
+                    correct: 1
+                }
+            },
+            {
+                name: "🌱 Biomasse",
+                key: "bio",
+                description: "Biogas aus Vergärung von Biomasse. Nutzbar für Strom, Fahrzeuge oder Gasversorgungsnetz.",
+                quiz: {
+                    question: "Wie wird Biogas hergestellt?",
+                    options: ["Durch Sonneneinstrahlung", "Durch Vergärung von Biomasse", "Durch Windkraft", "Durch Wasserströme"],
+                    correct: 1
+                }
+            }
+        ];
+
+        const additionalQuestions = [
+            {
+                question: "Warum werden alternative Energiequellen vorangetrieben?",
+                options: [
+                    "Weil sie billiger sind",
+                    "Weil fossile Energieträger wie Erdöl endlich sind",
+                    "Weil sie schneller sind",
+                    "Weil sie bunter sind"
+                ],
+                correct: 1
+            },
+            {
+                question: "Was nutzt ein Wasserkraftwerk zur Stromerzeugung?",
+                options: [
+                    "Windkraft",
+                    "Sonnenstrahlen",
+                    "Strömung des Wassers",
+                    "Erdwärme"
+                ],
+                correct: 2
+            },
+            {
+                question: "Welche Energiequelle ist in der Schweiz derzeit am wichtigsten?",
+                options: [
+                    "Windenergie",
+                    "Sonnenenergie",
+                    "Wasserkraft",
+                    "Biomasse"
+                ],
+                correct: 2
+            }
+        ];
+
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.game-area').forEach(area => area.classList.add('hidden'));
+            
+            if (mode === 'learn') {
+                document.querySelector('.mode-btn:nth-child(1)').classList.add('active');
+                document.getElementById('learn-mode').classList.remove('hidden');
+            } else if (mode === 'quiz') {
+                document.querySelector('.mode-btn:nth-child(2)').classList.add('active');
+                document.getElementById('quiz-mode').classList.remove('hidden');
+                startQuiz();
+            } else if (mode === 'match') {
+                document.querySelector('.mode-btn:nth-child(3)').classList.add('active');
+                document.getElementById('match-mode').classList.remove('hidden');
+                setupMatching();
+            }
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            const allQuestions = [...energySources.map(e => e.quiz), ...additionalQuestions];
+            shuffleArray(allQuestions);
+            window.quizQuestions = allQuestions;
+            showQuestion();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function showQuestion() {
+            if (currentQuestionIndex >= window.quizQuestions.length) {
+                showCompletion();
+                return;
+            }
+
+            const question = window.quizQuestions[currentQuestionIndex];
+            const container = document.getElementById('quiz-container');
+            
+            container.innerHTML = `
+                <div class="quiz-question">
+                    <div class="question-text">Frage ${currentQuestionIndex + 1} von ${window.quizQuestions.length}: ${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <button class="option-btn" onclick="checkAnswer(${index}, ${question.correct})">${option}</button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback"></div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(selected, correct) {
+            totalQuestions++;
+            const buttons = document.querySelectorAll('.option-btn');
+            const feedback = document.getElementById('feedback');
+            
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === correct) {
+                    btn.classList.add('correct');
+                }
+                if (index === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (selected === correct) {
+                score += 10;
+                correctAnswers++;
+                feedback.innerHTML = '<div class="feedback correct">✓ Richtig! Gut gemacht!</div>';
+            } else {
+                feedback.innerHTML = '<div class="feedback incorrect">✗ Leider falsch. Die richtige Antwort wurde markiert.</div>';
+            }
+
+            updateScore();
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showQuestion();
+            }, 2000);
+        }
+
+        function showCompletion() {
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+            const container = document.getElementById('quiz-container');
+            
+            let message = '';
+            if (percentage >= 80) {
+                message = 'Ausgezeichnet! Du bist ein Energie-Experte! 🌟';
+            } else if (percentage >= 60) {
+                message = 'Gut gemacht! Du kennst dich schon gut aus! 👍';
+            } else {
+                message = 'Nicht schlecht! Schau dir den Lernmodus nochmal an! 📚';
+            }
+
+            container.innerHTML = `
+                <div class="completion-message">
+                    <h2>🎉 Quiz abgeschlossen!</h2>
+                    <p><strong>${message}</strong></p>
+                    <p>Du hast ${correctAnswers} von ${totalQuestions} Fragen richtig beantwortet</p>
+                    <p style="font-size: 2em; margin-top: 15px;">${percentage}%</p>
+                    <button class="btn-primary" onclick="startQuiz()">Nochmal spielen</button>
+                    <button class="btn-primary" style="background: #339af0; margin-top: 10px;" onclick="switchMode('match')">Zuordnungsspiel</button>
+                </div>
+            `;
+        }
+
+        function setupMatching() {
+            const sourcesContainer = document.getElementById('energy-sources');
+            const descriptionsContainer = document.getElementById('descriptions');
+            
+            const shuffledSources = [...energySources];
+            const shuffledDescriptions = [...energySources];
+            shuffleArray(shuffledSources);
+            shuffleArray(shuffledDescriptions);
+
+            sourcesContainer.innerHTML = shuffledSources.map(source => `
+                <div class="energy-item" draggable="true" data-key="${source.key}">
+                    ${source.name}
+                </div>
+            `).join('');
+
+            descriptionsContainer.innerHTML = shuffledDescriptions.map(source => `
+                <div class="description-slot" data-key="${source.key}">
+                    <div class="slot-text">${source.description}</div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.energy-item').forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+
+            document.querySelectorAll('.description-slot').forEach(slot => {
+                slot.addEventListener('dragover', handleDragOver);
+                slot.addEventListener('drop', handleDrop);
+                slot.addEventListener('dragleave', handleDragLeave);
+            });
+
+            document.getElementById('match-feedback').innerHTML = '';
+        }
+
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.target.closest('.description-slot').classList.add('drag-over');
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            e.target.closest('.description-slot').classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            const slot = e.target.closest('.description-slot');
+            slot.classList.remove('drag-over');
+
+            if (draggedElement && slot) {
+                const existingItem = slot.querySelector('.placed-item');
+                if (existingItem) {
+                    existingItem.remove();
+                }
+
+                const placedItem = document.createElement('div');
+                placedItem.className = 'placed-item';
+                placedItem.textContent = draggedElement.textContent;
+                placedItem.dataset.key = draggedElement.dataset.key;
+                
+                slot.insertBefore(placedItem, slot.firstChild);
+                slot.classList.add('filled');
+                
+                draggedElement.style.opacity = '0.3';
+                draggedElement.draggable = false;
+            }
+
+            return false;
+        }
+
+        function checkMatching() {
+            let correctMatches = 0;
+            const slots = document.querySelectorAll('.description-slot');
+            
+            slots.forEach(slot => {
+                const placedItem = slot.querySelector('.placed-item');
+                const slotKey = slot.dataset.key;
+                
+                slot.classList.remove('correct', 'incorrect');
+                
+                if (placedItem) {
+                    const placedKey = placedItem.dataset.key;
+                    if (placedKey === slotKey) {
+                        slot.classList.add('correct');
+                        correctMatches++;
+                    } else {
+                        slot.classList.add('incorrect');
+                    }
+                }
+            });
+
+            const feedback = document.getElementById('match-feedback');
+            const percentage = Math.round((correctMatches / energySources.length) * 100);
+            
+            if (correctMatches === energySources.length) {
+                score += 50;
+                correctAnswers += energySources.length;
+                totalQuestions += energySources.length;
+                updateScore();
+                
+                feedback.innerHTML = `
+                    <div class="completion-message" style="margin-top: 20px;">
+                        <h2>🎉 Perfekt!</h2>
+                        <p>Du hast alle Energiequellen richtig zugeordnet!</p>
+                        <p style="font-size: 1.5em; margin-top: 10px;">+50 Bonuspunkte!</p>
+                        <button class="btn-primary" onclick="setupMatching()">Nochmal spielen</button>
+                    </div>
+                `;
+            } else {
+                feedback.innerHTML = `
+                    <div class="feedback ${correctMatches > energySources.length / 2 ? 'correct' : 'incorrect'}" style="margin-top: 20px;">
+                        Du hast ${correctMatches} von ${energySources.length} richtig zugeordnet (${percentage}%)
+                        <br><br>
+                        <button class="btn-primary" onclick="setupMatching()">Neu starten</button>
+                    </div>
+                `;
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('correct').textContent = correctAnswers;
+            document.getElementById('total').textContent = totalQuestions;
+        }
+    </script>
+</body>
+</html>
